@@ -1,0 +1,8 @@
+def hola_mundo():
+	popup("Hola Mundo", blocking=True)
+end
+
+def adios_mundo():
+	popup("Adios Mundo", blocking=True)
+end
+
