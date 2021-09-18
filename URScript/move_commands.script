@@ -1,0 +1,10 @@
+movel(p, a, v, t, r)
+# Position, acceleration, velocity, blend radius  # movep acceletares differently (constant TCP - speed)
+movej([J0, J1, J2, J3, J4, J5], a, v, r)
+# Joint angles, acceleration, velocity, blend radius
+
+movec(p[x1, y1, z1, rx1, ry1, rz1], p[x2, y2, z2, rx2, ry2, rz2], a, v, r)
+# Via point, End point, acceleration, velocity, blend radius
+
+get_inverse_kin(pose, qnear, maxPositionError)
+# Parameter qnear for multiple solutions

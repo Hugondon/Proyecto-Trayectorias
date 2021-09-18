@@ -1,0 +1,5 @@
+# ##
+# Pose: vector describing the location and orientation in Cartesian space.
+# position vector + rotation vector
+# poser_var = p[x, y, z, rx, ry, rz]  # x, ym z in meters / rx, ry, rz in radians
+# ##
