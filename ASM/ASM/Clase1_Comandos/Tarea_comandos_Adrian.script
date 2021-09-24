@@ -1,0 +1,141 @@
+def Tarea_comandos_Adrian():
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_gravity([0.0, 0.0, 9.82])
+  set_safety_mode_transition_hardness(1)
+  step_count_77add3ab_2359_4f38_818c_f77bbf29c707 = 0.0
+  thread Step_Counter_Thread_6580e4f5_58ec_42fa_ab21_b4082333763d():
+    while (True):
+      step_count_77add3ab_2359_4f38_818c_f77bbf29c707 = step_count_77add3ab_2359_4f38_818c_f77bbf29c707 + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_6580e4f5_58ec_42fa_ab21_b4082333763d()
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_target_payload(0.000000, [0.000000, 0.000000, 0.000000], [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000])
+  global Waypoint_1_from_p=p[.200000000005, -.299999999983, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_1_to_p=p[.200000000005, -.299999999983, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_2_from_p=p[.200000000005, -.300000000110, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_2_to_p=p[.200000000005, -.099999999890, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_3_from_p=p[.200000000005, -.099999999890, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_3_to_p=p[.200000000005, -.099999999890, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_4_from_p=p[.200000000005, -.099999999890, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_4_to_p=p[.200000000005, .000000000219, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_5_from_p=p[.200000000005, .000000000219, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_5_to_p=p[.200000000005, .000000000219, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_6_from_p=p[.200000000005, .000000000219, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_6_to_p=p[.200000000005, -.300000000109, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_7_from_p=p[.200000000005, -.300000000109, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_7_to_p=p[.200000000005, -.300000000109, .400000000110, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_8_p=p[.200000000005, -.299999999983, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_8_q=[1.7588024112412264, -1.9399422938392208, -4.196570693895815, -1.6950994830483435, 4.783791243600185, 3.3284981213371334]
+  global Waypoint_9_p=p[.200000000005, -.099999999890, .399999999988, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_9_q=[1.9972143216762435, -2.403136930990752, -4.011011474351248, -1.4349884885774529, 4.787050778575561, 3.56752806603579]
+  global Waypoint_10_p=p[.200000000005, -.099999999890, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_10_q=[1.9972143217939644, -2.4044054768861103, -3.7550989901222356, -1.689632426919907, 4.787050778576097, 3.567528066153839]
+  global Waypoint_11_p=p[.200000000005, .000000000219, .299999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_11_q=[2.3633254762449654, -2.545229556289698, -3.7275205550694492, -1.6034821965136352, 4.783828199764346, 3.93461531986794]
+  global Waypoint_12_p=p[.200000000005, .000000000219, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_12_q=[2.3633254763912435, -2.4487361635234857, -3.477992834392639, -1.949503309967132, 4.783828199761093, 3.934615320014551]
+  global Waypoint_13_p=p[.200000000005, -.300000000109, .199999999781, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_13_q=[1.7588024112931029, -1.6540654289323067, -3.81760020977343, -2.359946832081402, 4.7837912436012955, 3.3284981213891287]
+  global Waypoint_14_p=p[.200000000005, -.300000000109, .400000000110, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_14_q=[1.7588024111704075, -1.9399422935796427, -4.196570694367565, -1.6950994828311376, 4.7837912435985395, 3.328498121266139]
+  global Waypoint_15_p=p[.200000000005, -.299999978632, .400000025736, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_15_q=[1.7588024231779338, -1.9399423558548534, -4.196570722534416, -1.695099393247288, 4.783791243867329, 3.328498133301353]
+  global Waypoint_16_p=p[.200000000005, -.299999978632, .199999999890, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_16_q=[1.7588024233006265, -1.654065479476741, -3.8176001659323737, -2.3599468262362167, 4.783791243870093, 3.3284981334243393]
+  global Waypoint_17_p=p[.399999999987, -.000000000019, .400000025846, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_17_q=[2.787030602284434, -1.8419716056023878, -4.2420458012607485, -1.8196386931817425, 4.768360733936121, 4.358916121883211]
+  global Waypoint_18_p=p[.200000000012, .299999999983, .400000025846, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_18_q=[3.748253185921272, -1.9523214935129731, -4.1643038008479065, -1.8116776569168342, 4.703769780008887, 5.318427428538398]
+  global Waypoint_19_p=p[.200000000012, .299999999983, .199999999890, -3.104634461109, -.000468239918, -.102472083050]
+  global Waypoint_19_q=[3.748253186046356, -1.6426363422664512, -3.791192960823237, -2.494473648186963, 4.703769779999591, 5.318427428663158]
+  $ 1 "Robot Program"
+  $ 2 "tipo_trayec≔'Tipo de Trayectoria [1,2,3]'"
+  global tipo_trayec=request_integer_from_primary_client("Tipo de Trayectoria [1,2,3]")
+  $ 3 "num_oper≔'Numero de Operaciones'"
+  global num_oper=request_integer_from_primary_client("Numero de Operaciones")
+  $ 4 "cont_oper≔0"
+  global cont_oper=0
+  $ 5 "Loop cont_oper<num_oper"
+  while (cont_oper<num_oper):
+    $ 6 "Switch tipo_trayec"
+    switch_1 = tipo_trayec
+    $ 7 "Case 1"
+    if (1 == switch_1):
+      $ 8 "Movimiento1"
+      $ 9 "MoveL"
+      $ 10 "Waypoint_1" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_1_to_p, Waypoint_1_from_p)), a=1.2, v=0.25)
+      $ 11 "Waypoint_2" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_2_to_p, Waypoint_2_from_p)), a=1.2, v=0.25)
+      $ 12 "Waypoint_3" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_3_to_p, Waypoint_3_from_p)), a=1.2, v=0.25)
+      $ 13 "Waypoint_4" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_4_to_p, Waypoint_4_from_p)), a=1.2, v=0.25)
+      $ 14 "Waypoint_5" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_5_to_p, Waypoint_5_from_p)), a=1.2, v=0.25)
+      $ 15 "Waypoint_6" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_6_to_p, Waypoint_6_from_p)), a=1.2, v=0.25)
+      $ 16 "Waypoint_7" "breakAfter"
+      movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_7_to_p, Waypoint_7_from_p)), a=1.2, v=0.25)
+    elif (2 == switch_1):
+      $ 17 "Case 2"
+      $ 18 "Movimiento2"
+      $ 19 "MoveL"
+      $ 20 "Waypoint_8" "breakAfter"
+      movel(Waypoint_8_p, a=1.2, v=0.25)
+      $ 21 "Waypoint_9" "breakAfter"
+      movel(Waypoint_9_p, a=1.2, v=0.25, r=0.05)
+      $ 22 "Waypoint_10" "breakAfter"
+      movel(Waypoint_10_p, a=1.2, v=0.25, r=0.05)
+      $ 23 "Waypoint_11" "breakAfter"
+      movel(Waypoint_11_p, a=1.2, v=0.25, r=0.05)
+      $ 24 "Waypoint_12" "breakAfter"
+      movel(Waypoint_12_p, a=1.2, v=0.25)
+      $ 25 "Waypoint_13" "breakAfter"
+      movel(Waypoint_13_p, a=1.2, v=0.25, r=0.05)
+      $ 26 "Waypoint_14" "breakAfter"
+      movel(Waypoint_14_p, a=1.2, v=0.25)
+    elif (3 == switch_1):
+      $ 27 "Case 3"
+      $ 28 "Movimiento3"
+      $ 29 "MoveL"
+      $ 30 "Waypoint_15" "breakAfter"
+      movel(Waypoint_15_p, a=1.2, v=0.25)
+      $ 31 "Waypoint_16" "breakAfter"
+      movel(Waypoint_16_p, a=1.2, v=0.25)
+      $ 32 "Waypoint_15" "breakAfter"
+      movel(Waypoint_15_p, a=1.2, v=0.25)
+      $ 33 "MoveJ"
+      $ 34 "Waypoint_17" "breakAfter"
+      movej(get_inverse_kin(Waypoint_17_p, qnear=Waypoint_17_q), a=1.3962634015954636, v=1.0471975511965976)
+      $ 35 "Popup: ¿Salir de la estacion?"
+      popup("¿Salir de la estacion?", "Message", False, False, blocking=True)
+      $ 36 "MoveJ"
+      $ 37 "Waypoint_18" "breakAfter"
+      movej(get_inverse_kin(Waypoint_18_p, qnear=Waypoint_18_q), a=1.3962634015954636, v=1.0471975511965976)
+      $ 38 "MoveL"
+      $ 39 "Waypoint_19" "breakAfter"
+      movel(Waypoint_19_p, a=1.2, v=0.25)
+      $ 40 "Waypoint_18" "breakAfter"
+      movel(Waypoint_18_p, a=1.2, v=0.25)
+      $ 41 "MoveJ"
+      $ 42 "Waypoint_15" "breakAfter"
+      movej(get_inverse_kin(Waypoint_15_p, qnear=Waypoint_15_q), a=1.3962634015954636, v=1.0471975511965976)
+    end
+    $ 43 "cont_oper≔cont_oper+1"
+    global cont_oper=cont_oper+1
+  end
+end

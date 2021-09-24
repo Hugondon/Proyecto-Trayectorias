@@ -1,0 +1,113 @@
+def tarea1_prog():
+  set_safety_mode_transition_hardness(1)
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_target_payload(0.500000, [0.000000, 0.000000, 0.000000], [0.000485, 0.000485, 0.000485, 0.000000, 0.000000, 0.000000])
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  set_gravity([0.0, 0.0, 9.82])
+  step_count_f64f7b66_482b_4cfc_bb7f_7a57cf9ea2b8 = 0.0
+  thread Step_Counter_Thread_7ac65952_7a17_409a_8949_159d04a0314c():
+    while (True):
+      step_count_f64f7b66_482b_4cfc_bb7f_7a57cf9ea2b8 = step_count_f64f7b66_482b_4cfc_bb7f_7a57cf9ea2b8 + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_7ac65952_7a17_409a_8949_159d04a0314c()
+  $ 1 "Robot Program"
+  $ 2 "Script: tarea1.script_bak"
+      def tarea1(tipo_oper,num_oper):
+  
+      	cont_oper=0
+      	while(cont_oper<num_oper):
+      		if tipo_oper==1:
+      			#movimiento1()
+      		elif tipo_oper==2:
+      			movimiento2()
+      		elif tipo_oper==3:
+      			movimiento3()
+      		else:
+      			halt
+      		end
+  		cont_oper=cont_oper+1
+      	end
+      end
+  $ 3 "Script: movimiento3.script"
+  def movimiento3():
+  	#Waypoints guardados como poses
+  	wp1=p[0.5,-0.3,0.4,	0,3.14,0]
+  	wp2=p[0.5,-0.3,0.2,	0,3.14,0]
+  	wp3=p[0.5,0,0.4,		0,3.14,0]
+  	wp4=p[0.5,0.3,0.4,	0,3.14,0]
+  	wp5=p[0.5,0.3,0.2,	0,3.14,0]
+  	lpai=[-0.604,-1.204,-2.091,-1.417,1.569,0]
+  
+  	#Movimientos
+  	movej(get_inverse_kin(wp1,qnear=lpai))
+  
+  	movel(wp2)
+  	movel(wp1)
+  
+  	movej(get_inverse_kin(wp3))
+  	popup("Continue cuando el proceso haya acabado",title="¿Ya acabo el proceso?",blocking=True)
+  	movej(get_inverse_kin(wp4))
+  
+  	movel(wp5)
+  	movel(wp4)
+  
+  	movej(get_inverse_kin(wp1,qnear=lpai))
+  end
+  $ 4 "Script: movimiento2.script"
+  def movimiento2():
+  	#Waypoints definidos por poses
+  	wp1=p[0.4,-0.3,0.4,	0,1.57,0]
+  	wp2=p[0.4,-0.1,0.4,	0,1.57,0]
+  	wp3=p[0.4,-0.1,0.3,	0,1.57,0]
+  	wp4=p[0.4,0,0.3,		0,1.57,0]
+  	wp5=p[0.4,0,0.2,		0,1.57,0]
+  	wp6=p[0.4,-0.3,0.2,	0,1.57,0]
+  	lpai=[-0.604,-1.204,-2.091,-1.417,1.569,0]
+  
+  	#Movimientos
+  	movej(get_inverse_kin(wp1,qnear=lpai))
+  	movel(wp2,r=0.05)
+  	movel(wp3,r=0.05)
+  	movel(wp4,r=0.05)
+  	movel(wp5)
+  	movel(wp6,r=0.05)
+  	movel(wp1)
+  end
+  $ 5 "Script: movimiento1.script"
+  def movimiento1():
+  
+  	wp1r=get_actual_tcp_pose()
+  	wp2r=pose_trans(wp1r,p[0,0.2,0,	0,0,0])
+  	wp3r=pose_trans(wp2r,p[0,0,0.1,	0,0,0])
+  	wp4r=pose_trans(wp3r,p[0,0.1,0,	0,0,0])
+  	wp5r=pose_trans(wp4r,p[0,0,0.1,	0,0,0])
+  	wp6r=pose_trans(wp5r,p[0,-0.3,0,	0,0,0])
+  	movel(wp2r)
+  	movel(wp3r)
+  	movel(wp4r)
+  	movel(wp5r)
+  	movel(wp6r)
+  	movel(wp1r)
+  	popup("Paso un ciclo",blocking=True)
+  
+  end
+  $ 6 "tipo_oper≔'Tipo de Operacion:'"
+  global tipo_oper=request_integer_from_primary_client("Tipo de Operacion:")
+  $ 7 "num_oper≔'Numero de Operaciones:'"
+  global num_oper=request_integer_from_primary_client("Numero de Operaciones:")
+  $ 8 "tarea1(tipo_oper,num_oper)"
+  tarea1(tipo_oper,num_oper)
+end

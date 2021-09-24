@@ -1,0 +1,5 @@
+ Program
+   Robot Program
+     Script: hola_mundo.script
+     hola_mundo()
+     adios_mundo()

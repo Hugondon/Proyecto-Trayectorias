@@ -1,0 +1,13 @@
+ Program
+   Robot Program
+     continuar≔'¿Empezar?'
+     Loop continuar≟ True 
+       Estrella
+         MoveL
+           Waypoint_1
+           Waypoint_4
+           Waypoint_2
+           Waypoint_5
+           Waypoint_3
+           Waypoint_1
+       continuar≔'¿Continuar?'

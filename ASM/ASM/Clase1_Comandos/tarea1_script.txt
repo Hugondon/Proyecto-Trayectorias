@@ -1,0 +1,4 @@
+ Program
+   Robot Program
+     Script: tarea1_script.script
+     tarea1(1, 2)

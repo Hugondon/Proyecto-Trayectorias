@@ -1,0 +1,9 @@
+ Program
+   Robot Program
+     Script: tarea1.script_bak
+     Script: movimiento3.script
+     Script: movimiento2.script
+     Script: movimiento1.script
+     tipo_oper≔'Tipo de Operacion:'
+     num_oper≔'Numero de Operaciones:'
+     tarea1(tipo_oper,num_oper)

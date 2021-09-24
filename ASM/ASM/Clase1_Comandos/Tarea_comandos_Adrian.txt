@@ -1,0 +1,44 @@
+ Program
+   Robot Program
+     tipo_trayec≔'Tipo de Trayectoria [1,2,3]'
+     num_oper≔'Numero de Operaciones'
+     cont_oper≔0
+     Loop cont_oper<num_oper
+       Switch tipo_trayec
+         Case 1
+           Movimiento1
+             MoveL
+               Waypoint_1
+               Waypoint_2
+               Waypoint_3
+               Waypoint_4
+               Waypoint_5
+               Waypoint_6
+               Waypoint_7
+         Case 2
+           Movimiento2
+             MoveL
+               Waypoint_8
+               Waypoint_9
+               Waypoint_10
+               Waypoint_11
+               Waypoint_12
+               Waypoint_13
+               Waypoint_14
+         Case 3
+           Movimiento3
+             MoveL
+               Waypoint_15
+               Waypoint_16
+               Waypoint_15
+             MoveJ
+               Waypoint_17
+             Popup: ¿Salir de la estacion?
+             MoveJ
+               Waypoint_18
+             MoveL
+               Waypoint_19
+               Waypoint_18
+             MoveJ
+               Waypoint_15
+       cont_oper≔cont_oper+1

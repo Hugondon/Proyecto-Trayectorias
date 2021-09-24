@@ -1,0 +1,111 @@
+def tarea_comandos():
+  set_target_payload(0.000000, [0.000000, 0.000000, 0.000000], [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000])
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_safety_mode_transition_hardness(1)
+  set_gravity([0.0, 0.0, 9.82])
+  step_count_dbc8a954_3a74_46e2_8731_ad049eed2381 = 0.0
+  thread Step_Counter_Thread_eae57136_027f_4a92_8e95_53c882d90bbf():
+    while (True):
+      step_count_dbc8a954_3a74_46e2_8731_ad049eed2381 = step_count_dbc8a954_3a74_46e2_8731_ad049eed2381 + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_eae57136_027f_4a92_8e95_53c882d90bbf()
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  global Waypoint_1_from_p=p[.200000000003, -.299999999996, .399999999978, -.001311266111, 3.119331886262, .035894917688]
+  global Waypoint_1_to_p=p[.200000000003, -.299999999996, .399999999978, -.001311266111, 3.119331886262, .035894917688]
+  global Waypoint_2_from_p=p[.200000000044, -.299999999983, .400000000025, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_2_to_p=p[.200000000044, -.099999999890, .400000000025, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_3_from_p=p[.200000000044, -.099999999890, .400000000025, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_3_to_p=p[.200000000044, -.099999999890, .300000000116, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_4_from_p=p[.200000000044, -.099999999890, .300000000116, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_4_to_p=p[.200000000044, .000000000219, .300000000116, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_5_from_p=p[.200000000044, .000000000219, .300000000191, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_5_to_p=p[.200000000044, .000000000219, .200000000064, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_6_from_p=p[.200000000044, .000000000219, .200000000064, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_6_to_p=p[.200000000044, -.299999999972, .200000000064, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_13_from_p=p[.200000000044, -.299999999972, .200000000064, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_13_to_p=p[.200000000044, -.299999999972, .400000000110, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_7_p=p[.200000000002, -.299999999997, .399999999985, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_7_q=[-0.6134029208432299, -1.2064747229726116, -2.0900572154962305, -1.4111542499233334, 1.602151977446144, 0.9566237567442581]
+  global Waypoint_8_p=p[.200000000002, -.099999999890, .399999999985, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_8_q=[0.16451267532238018, -0.7502073274832535, -2.277007771678787, -1.6598163974732252, 1.5898321229405756, 1.7347069873442575]
+  global Waypoint_9_p=p[.200000000002, -.099999999890, .299999999781, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_9_q=[0.16451267520741014, -0.7556868622916459, -2.5315969350534666, -1.399747699292349, 1.589832122943491, 1.734706987229305]
+  global Waypoint_10_p=p[.200000000002, .000000000219, .299999999781, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_10_q=[0.7277967660081328, -0.6218949900031099, -2.5546239918188145, -1.5042670595047962, 1.573354114046659, 2.2977901280448143]
+  global Waypoint_11_p=p[.200000000002, .000000000219, .199999999781, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_11_q=[0.7277967658678312, -0.7342445532461319, -2.802181973721545, -1.1443595143593885, 1.5733541140510832, 2.2977901279045736]
+  global Waypoint_12_p=p[.200000000002, -.300000000109, .199999999781, -.001315463314, 3.119484011356, .035758356563]
+  global Waypoint_12_q=[-0.6134029212394276, -1.497972704707661, -2.4656293947430092, -0.74408408895395, 1.6021519774479904, 0.9566237563478549]
+  while (True):
+    $ 1 "Robot Program"
+    $ 2 "movimiento≔'Elige Movimiento [1 - Relativos, 2 - Absolutos, 3 - Problema]'"
+    global movimiento=request_integer_from_primary_client("Elige Movimiento [1 - Relativos, 2 - Absolutos, 3 - Problema]")
+    $ 3 "repeticiones≔'Introduce cantidad de repeticiones'"
+    global repeticiones=request_integer_from_primary_client("Introduce cantidad de repeticiones")
+    $ 4 "Loop repeticiones"
+    while (repeticiones):
+      $ 5 "Switch movimiento"
+      switch_1 = movimiento
+      $ 6 "Case 1"
+      if (1 == switch_1):
+        $ 7 "Movimiento 1"
+        $ 8 "MoveL"
+        $ 9 "Waypoint_1" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_1_to_p, Waypoint_1_from_p)), a=1.2, v=0.25)
+        $ 10 "Waypoint_2" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_2_to_p, Waypoint_2_from_p)), a=1.2, v=0.25)
+        $ 11 "Waypoint_3" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_3_to_p, Waypoint_3_from_p)), a=1.2, v=0.25)
+        $ 12 "Waypoint_4" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_4_to_p, Waypoint_4_from_p)), a=1.2, v=0.25)
+        $ 13 "Waypoint_5" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_5_to_p, Waypoint_5_from_p)), a=1.2, v=0.25)
+        $ 14 "Waypoint_6" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_6_to_p, Waypoint_6_from_p)), a=1.2, v=0.25)
+        $ 15 "Waypoint_13" "breakAfter"
+        movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_13_to_p, Waypoint_13_from_p)), a=1.2, v=0.25)
+      elif (2 == switch_1):
+        $ 16 "Case 2"
+        $ 17 "Movimiento 2"
+        $ 18 "MoveL"
+        $ 19 "Waypoint_7" "breakAfter"
+        movel(Waypoint_7_p, a=1.2, v=0.25)
+        $ 20 "Waypoint_8" "breakAfter"
+        movel(Waypoint_8_p, a=1.2, v=0.25, r=0.05)
+        $ 21 "Waypoint_9" "breakAfter"
+        movel(Waypoint_9_p, a=1.2, v=0.25, r=0.05)
+        $ 22 "Waypoint_10" "breakAfter"
+        movel(Waypoint_10_p, a=1.2, v=0.25, r=0.05)
+        $ 23 "Waypoint_11" "breakAfter"
+        movel(Waypoint_11_p, a=1.2, v=0.25)
+        $ 24 "Waypoint_12" "breakAfter"
+        movel(Waypoint_12_p, a=1.2, v=0.25, r=0.05)
+        $ 25 "Waypoint_7" "breakAfter"
+        movel(Waypoint_7_p, a=1.2, v=0.25)
+      elif (3 == switch_1):
+        $ 26 "Case 3"
+        $ 27 "Halt"
+        halt
+      else:
+        $ 28 "Default Case"
+        $ 29 "Wait: 0.5"
+        sleep(0.5)
+      end
+      $ 30 "repeticiones≔repeticiones-1"
+      global repeticiones=repeticiones-1
+    end
+  end
+end

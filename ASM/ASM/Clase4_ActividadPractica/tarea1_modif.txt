@@ -1,0 +1,6 @@
+ Program
+   Robot Program
+     Script: movimientos.script
+     tipo_oper≔'Tipo de Operacion:'
+     num_oper≔'Numero de Operaciones:'
+     tarea1(tipo_oper,num_oper)

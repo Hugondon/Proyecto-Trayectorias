@@ -1,0 +1,17 @@
+def movimiento1():
+
+	wp1r=get_actual_tcp_pose()
+	wp2r=pose_trans(wp1r,p[0,0.2,0,	0,0,0])
+	wp3r=pose_trans(wp2r,p[0,0,0.1,	0,0,0])
+	wp4r=pose_trans(wp3r,p[0,0.1,0,	0,0,0])
+	wp5r=pose_trans(wp4r,p[0,0,0.1,	0,0,0])
+	wp6r=pose_trans(wp5r,p[0,-0.3,0,	0,0,0])
+	movel(wp2r)
+	movel(wp3r)
+	movel(wp4r)
+	movel(wp5r)
+	movel(wp6r)
+	movel(wp1r)
+	popup("Paso un ciclo",blocking=True)
+
+end

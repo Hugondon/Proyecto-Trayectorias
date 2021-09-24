@@ -1,0 +1,16 @@
+    def tarea1(tipo_oper,num_oper):
+
+    	cont_oper=0
+    	while(cont_oper<num_oper):
+    		if tipo_oper==1:
+    			movimiento1()
+    		elif tipo_oper==2:
+    			movimiento2()
+    		elif tipo_oper==3:
+    			movimiento3()
+    		else:
+    			halt
+    		end
+		cont_oper=cont_oper+1
+    	end
+    end

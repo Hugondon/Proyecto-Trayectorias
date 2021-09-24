@@ -1,0 +1,58 @@
+def examen_e8():
+  set_safety_mode_transition_hardness(1)
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  step_count_78bd5b10_be59_431b_a692_585fc93ca24c = 0.0
+  thread Step_Counter_Thread_fa67ae2d_aaaf_464c_bbba_c8f95d729684():
+    while (True):
+      step_count_78bd5b10_be59_431b_a692_585fc93ca24c = step_count_78bd5b10_be59_431b_a692_585fc93ca24c + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_fa67ae2d_aaaf_464c_bbba_c8f95d729684()
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_gravity([0.0, 0.0, 9.82])
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  set_target_payload(0.500000, [0.000000, 0.000000, 0.000000], [0.000485, 0.000485, 0.000485, 0.000000, 0.000000, 0.000000])
+  global Waypoint_1_from_p=p[.000000000004, -.400000000009, .200000000013, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_1_to_p=p[.160000000115, -.400000000009, .200000000001, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_4_from_p=p[.000000000004, -.400000000009, .200000000013, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_4_to_p=p[-.129440000091, -.400000000009, .105949999896, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_2_from_p=p[.000000000004, -.400000000009, .200000000013, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_2_to_p=p[.049439999996, -.400000000009, .352169999987, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_5_from_p=p[.000000000004, -.400000000009, .200000000013, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_5_to_p=p[.049440000024, -.400000000009, .047839999994, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_3_from_p=p[.000000000004, -.400000000009, .200000000013, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_3_to_p=p[-.129439999970, -.400000000009, .293999999991, -.001221359682, 3.116276528482, .038891915637]
+  $ 1 "Robot Program"
+  $ 2 "continuar≔'¿Empezar?'"
+  global continuar=request_boolean_from_primary_client("¿Empezar?")
+  $ 3 "Loop continuar≟ True "
+  while (continuar ==   True  ):
+    $ 4 "Estrella"
+    $ 5 "MoveL"
+    $ 6 "Waypoint_1" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_1_to_p, Waypoint_1_from_p)), a=1.2, v=0.25)
+    $ 7 "Waypoint_4" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_4_to_p, Waypoint_4_from_p)), a=1.2, v=0.25)
+    $ 8 "Waypoint_2" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_2_to_p, Waypoint_2_from_p)), a=1.2, v=0.25)
+    $ 9 "Waypoint_5" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_5_to_p, Waypoint_5_from_p)), a=1.2, v=0.25)
+    $ 10 "Waypoint_3" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_3_to_p, Waypoint_3_from_p)), a=1.2, v=0.25)
+    $ 11 "Waypoint_1" "breakAfter"
+    movel(pose_add(get_target_tcp_pose(), pose_sub(Waypoint_1_to_p, Waypoint_1_from_p)), a=1.2, v=0.25)
+    $ 12 "continuar≔'¿Continuar?'"
+    global continuar=request_boolean_from_primary_client("¿Continuar?")
+  end
+end

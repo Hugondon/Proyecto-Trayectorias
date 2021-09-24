@@ -1,0 +1,31 @@
+ Program
+   Robot Program
+     movimiento≔'Elige Movimiento [1 - Relativos, 2 - Absolutos, 3 - Problema]'
+     repeticiones≔'Introduce cantidad de repeticiones'
+     Loop repeticiones
+       Switch movimiento
+         Case 1
+           Movimiento 1
+             MoveL
+               Waypoint_1
+               Waypoint_2
+               Waypoint_3
+               Waypoint_4
+               Waypoint_5
+               Waypoint_6
+               Waypoint_13
+         Case 2
+           Movimiento 2
+             MoveL
+               Waypoint_7
+               Waypoint_8
+               Waypoint_9
+               Waypoint_10
+               Waypoint_11
+               Waypoint_12
+               Waypoint_7
+         Case 3
+           Halt
+         Default Case
+           Wait: 0.5
+       repeticiones≔repeticiones-1

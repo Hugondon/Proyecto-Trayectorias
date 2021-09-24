@@ -1,0 +1,23 @@
+ Program
+   Robot Program
+     MoveL
+       Waypoint_1
+       Waypoint_2
+       Waypoint_3
+       Waypoint_4
+       Waypoint_5
+       Waypoint_4
+       Waypoint_6
+     MoveJ
+       Waypoint_7
+       Waypoint_8
+     MoveJ
+       Waypoint_7
+       Waypoint_8
+     MoveL
+       Waypoint_9
+     MoveJ
+       Waypoint_10
+       Waypoint_11
+       Waypoint_12
+       Halt
