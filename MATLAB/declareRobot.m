@@ -3,9 +3,9 @@ function [robot, numJoints, endEffector] = declareRobot(Name)
     % and set the format of the parameters
     robot = loadrobot(Name, "DataFormat", "column", "Gravity", [0 0 -9.81]);
 
-    %Get the number of joints using home position
+    % Get the number of joints using home position
     numJoints = numel(homeConfiguration(robot));
 
-    %Get the name of the last eigid body on the Rigidbodytree
+    % Get the name of the last eigid body on the Rigidbodytree
     endEffector = robot.BodyNames{end};
 end

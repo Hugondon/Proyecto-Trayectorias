@@ -3,6 +3,14 @@
 % the point of the complex trajectory.
 % The units used in the program and its functions are from the International System(IS)
 
+%{
+Comentarios:
+Por qué calcular varias veces number of waypoints?
+Más que sampling time, no debería ser time interval entre intermediate waypoints?
+A qué se refiere específicamente con configuración el resultado de la ik?
+https: // la.mathworks.com / help / robotics / ref / inversekinematics - system - object.html?searchHighlight = inverse %20kinematics&s_tid=srchtitle
+%}
+
 %% Setup
 
 clear, clc, clear all
@@ -11,76 +19,76 @@ clear, clc, clear all
 
 declareRobot = @declareRobot;
 setWaypoints = @setWaypoints;
-getTrajectoryTimes = @getTrajectoryTimes;
+getSamplingTime = @getSamplingTime;
 
 %% Loading Robot
 
-%Get the object robot, the number of joints and endeffector
+% Get the object robot, the number of joints and endeffector
 [robot, numJoint, endEffector] = declareRobot("universalUR5");
 
-%Get Joint angles Home position and TCP position and
-%orientation
+% Get Joint angles Home position; TCP position and its orientation
 
 jointHomeAngles = [-1.055051532830572; -0.922930108454602; -2.274513081199010; -1.514247659030281; 1.572192590196492; 0.515570261039125];
 toolHomeOrientation = [0; 3.141592653589793; 0];
 toolHomePosition = [0; -0.270000000000000; 0.380000000000000];
+
 %% Set Inverse Kinematics
 
 % Define IK
 ik = inverseKinematics('RigidBodyTree', robot);
-ikWeights = [1 1 1 1 1 1];
-ikInitGuess = jointHomeAngles;
+ikWeights = ones(1, numJoint);
+ikInitialGuess = jointHomeAngles;
 
 %% Get Waypoints
 
-%The function return an array of poses(waypoints) the number
-%of waypoints and the magnitude between consecutive
-%waypoints.
 [waypoints, numberWaypoints, magnitudeDistances] = setWaypoints();
 
 %% Trajectory sample time
 
 % TCP Speed(Defined by user)
-tcpSpeed = 3; %[m/s]
+tcpSpeed_ms = 3; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
 nIntermediateWaypoints = 50;
 
-% Get the cummulative sum of the magnitudes of the distance
+% Between main waypoints
+
+% Get the cummulative sum of the magnitudes of the distance (initial distance = 0m)
 csMagnitudeDistances = cumsum([0, magnitudeDistances]);
 
-% Get the times between (main) Waypoints dividing by TCP speed
-timesBetweenWaypoints = csMagnitudeDistances / tcpSpeed;
+% Total time to get to each waypoint from the initial waypoint. t = d / v
+total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 
-[trajTimes, ts] = getTrajectoryTimes(nIntermediateWaypoints, csMagnitudeDistances);
+ts = getSamplingTime(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
-%trajTimes = 0:ts:timesBetweenWaypoints(end);
-%timesBetweenWaypoints=0:10:20;
+%trajTimes = 0:ts:total_time_to_waypoint(end);
+%total_time_to_waypoint=0:10:20;
 %ts = 0.2;
-%trajTimes = 0:ts:timesBetweenWaypoints(end);
+%trajTimes = 0:ts:total_time_to_waypoint(end);
 
 %% Trajectory
 
+% Main waypoints movement
 for count = 1:numberWaypoints - 1
-    timeInterval = timesBetweenWaypoints(count:count + 1);
-    trajInterval = timeInterval(1):ts(count):timeInterval(2);
+    main_waypoints_time_interval = total_time_to_waypoint(count:count + 1);
+    intermediate_waypoints_time_interval = main_waypoints_time_interval(1):ts(count):main_waypoints_time_interval(2);
 
     % Find the transforms from trajectory generation
-    [T, vel, acc] = transformtraj(waypoints(:, :, count), waypoints(:, :, count + 1), timeInterval, trajInterval);
+    [transformation_matrix_array, vel, acc] = transformtraj(waypoints(:, :, count), waypoints(:, :, count + 1), main_waypoints_time_interval, intermediate_waypoints_time_interval);
 
-    for idx = 1:numel(trajInterval)
+    % Intermediate waypoints movement
+    for index = 1:numel(intermediate_waypoints_time_interval)
         % Solve IK
-        tgtPose = T(:, :, idx);
-        [config, info] = ik(endEffector, tgtPose, ikWeights, ikInitGuess);
-        ikInitGuess = config;
+        target_pose = transformation_matrix_array(:, :, index);
+        [config, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
+        ikInitialGuess = config;
 
-        % Show the robot
-        %show(robot,config,'Frames','off','PreservePlot',false);
         show(robot, config, 'Frames', 'off', 'PreservePlot', false);
-        title(['Trajectory at t = ' num2str(trajInterval(idx))])
-        %Get the desired View
+
+        title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
+
+        % Get the desired View
         view([-0.6 -0.6 0.2]);
-        %view(-45, 0.5)
         drawnow
     end
 
