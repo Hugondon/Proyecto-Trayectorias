@@ -1,11 +1,11 @@
 function ts = getSamplingTime(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed)
     % getSamplingTime.m Calculate the sampling time between waypoints for ik solver
     % Inputs:
-    % nIntermediateWaypoints:
-    % csMagnitudeDistances:
-    % tcpSpeed:
+    % nIntermediateWaypoints: Number of intermediate waypoints defined by the user
+    % csMagnitudeDistances: cummulative sum of the magnitudes of the distances between main waypoints
+    % tcpSpeed: tcp speed defined by the user.
     % Outputs:
-    % ts:
+    % ts: Time interval between intermediate waypoints
 
     % Get amount of columns
     numberWaypoints = size(csMagnitudeDistances, 2);

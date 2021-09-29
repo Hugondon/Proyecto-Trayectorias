@@ -80,6 +80,8 @@ for count = 1:numberWaypoints - 1
     for index = 1:numel(intermediate_waypoints_time_interval)
         % Solve IK
         target_pose = transformation_matrix_array(:, :, index);
+
+        % Configuration contains the angle for each joint.
         [config, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
         ikInitialGuess = config;
 
