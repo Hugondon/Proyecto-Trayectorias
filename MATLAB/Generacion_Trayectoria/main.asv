@@ -71,22 +71,11 @@ ts = getSamplingTime(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 % Type of Plot
 plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames
 show(robot,jointHomeAngles,'Frames','off','PreservePlot',false);
-xlim([-1 1]), ylim([-1 1]), zlim([-0.5 1.5])
+xlim([-1 1]), ylim([-1 1]), zlim([- 1.5])
 hold on
-
-
 % if plotMode == 1
 %     hTraj = plot3(waypoints(1,1),waypoints(2,1),waypoints(3,1),'b.-');
 % end
-
-% waypoints_positions = tform2trvec(waypoints());
-% 
-% 
-% for count = 1:numberWaypoints
-%     mainWaypoint=tform2trvec(waypoints(:,:,count));
-%     plot3(waypoints_positions(1,1),waypoints_positions(1,2),waypoints_positions(1,3),'ro','LineWidth',2);
-% end
-
 for count = 1:numberWaypoints
     mainWaypoint=tform2trvec(waypoints(:,:,count));
     plot3(mainWaypoint(1,1),mainWaypoint(1,2),mainWaypoint(1,3),'ro','LineWidth',2);
