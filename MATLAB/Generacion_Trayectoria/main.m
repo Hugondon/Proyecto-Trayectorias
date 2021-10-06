@@ -6,7 +6,6 @@
 %{
 Comentarios:
 Por qué calcular varias veces number of waypoints?
-Más que sampling time, no debería ser time interval entre intermediate waypoints?
 A qué se refiere específicamente con configuración el resultado de la ik?
 https: // la.mathworks.com / help / robotics / ref / inversekinematics - system - object.html?searchHighlight = inverse %20kinematics&s_tid=srchtitle
 %}
@@ -17,9 +16,9 @@ clear, clc, clear all
 
 %% Function Handles
 
-declareRobot = @declareRobot;
-setWaypoints = @setWaypoints;
-getSamplingTime = @getSamplingTime;
+declareRobot    = @declareRobot;
+setWaypoints    = @setWaypoints;
+getTimeInterval = @getTimeInterval;
 
 %% Loading Robot
 
@@ -59,7 +58,7 @@ csMagnitudeDistances = cumsum([0, magnitudeDistances]);
 % Total time to get to each waypoint from the initial waypoint. t = d / v
 total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 
-ts = getSamplingTime(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
+ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
 %trajTimes = 0:ts:total_time_to_waypoint(end);
 %total_time_to_waypoint=0:10:20;
@@ -70,27 +69,20 @@ ts = getSamplingTime(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
 % Type of Plot
 plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames
+
+% Show robot in Initial Configuration Space
 show(robot,jointHomeAngles,'Frames','off','PreservePlot',false);
+
+% Establish graph limits
 xlim([-1 1]), ylim([-1 1]), zlim([-0.5 1.5])
 hold on
 
-
-% if plotMode == 1
-%     hTraj = plot3(waypoints(1,1),waypoints(2,1),waypoints(3,1),'b.-');
-% end
-
-% waypoints_positions = tform2trvec(waypoints());
-% 
-% 
-% for count = 1:numberWaypoints
-%     mainWaypoint=tform2trvec(waypoints(:,:,count));
-%     plot3(waypoints_positions(1,1),waypoints_positions(1,2),waypoints_positions(1,3),'ro','LineWidth',2);
-% end
-
-for count = 1:numberWaypoints
-    mainWaypoint=tform2trvec(waypoints(:,:,count));
-    plot3(mainWaypoint(1,1),mainWaypoint(1,2),mainWaypoint(1,3),'ro','LineWidth',2);
-end
+% Graph main waypoints
+waypoints_positions = tform2trvec(waypoints(:,:,:));
+plot3(  waypoints_positions(:,1),...
+        waypoints_positions(:,2),...
+        waypoints_positions(:,3),...
+        'ro','LineWidth',2);
 
 
 
@@ -101,8 +93,13 @@ for count = 1:numberWaypoints - 1
     main_waypoints_time_interval = total_time_to_waypoint(count:count + 1);
     intermediate_waypoints_time_interval = main_waypoints_time_interval(1):ts(count):main_waypoints_time_interval(2);
 
+
     % Find the transforms from trajectory generation
-    [transformation_matrix_array, vel, acc] = transformtraj(waypoints(:, :, count), waypoints(:, :, count + 1), main_waypoints_time_interval, intermediate_waypoints_time_interval);
+    [transformation_matrix_array, vel, acc] =...
+        transformtraj(waypoints(:, :, count),...
+        waypoints(:, :, count + 1),...
+        main_waypoints_time_interval,...
+        intermediate_waypoints_time_interval);
     
     % Trajectory visualization for the segment
     if plotMode == 1
@@ -120,10 +117,10 @@ for count = 1:numberWaypoints - 1
         target_pose = transformation_matrix_array(:, :, index);
 
         % Configuration contains the angle for each joint.
-        [config, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
-        ikInitialGuess = config;
+        [configuration_space, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
+        ikInitialGuess = configuration_space;
 
-        show(robot, config, 'Frames', 'off', 'PreservePlot', false);
+        show(robot, configuration_space, 'Frames', 'off', 'PreservePlot', false);
 
         title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
 
