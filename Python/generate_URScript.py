@@ -4,16 +4,15 @@ import typing
 """
 Pendientes:
     1. No se actualiza automáticamente en la interfaz de Polyscope el archivo que se modifica
-    2. Problema con EOL: en todos, menos el ultimo elemento de la estructura (debe llevar EOLC=True)
-
     Hacerlo por archivos que escriban diferentes funciones ? 
 """
 
 """
 Estandarización:
-    1. EOL: Se debe hacer EOLC=True para la última línea llamada en cada función.
-    2. Tab: Se debe hacer SOL=True cuando no se desee poner el tab inicial
+    1. EOL: Se debe hacer EOLC (End of Line)=True para la última línea llamada en cada función.
+    2. Tab: Se debe hacer SOL (Start of Line)=True cuando no se desee poner el tab inicial
 
+    Solamente es necesaria para funciones que puedan o no estar dentro de otras.
 """
 
 # FILENAME = 'hello_world.script'
@@ -75,16 +74,16 @@ class Pose:
 def function_structure(name: str, content: str) -> str:
     """Function structure string generator."""
     structure = f"def {name}():\n"
-    structure += f"{content}\n"
+    structure += f"{content}"
     structure += f"end\n"
     return structure
 
 
 def while_structure(variable: str, condition: str, content: str) -> str:
     """While structure based on 'less than' condition and variable increments."""
-    structure = f"while({variable} < {condition}):\n"
-    structure += f"\t{content}\n"
-    structure += f"\t{variable} = {variable} + 1\n"
+    structure = f"\twhile({variable} < {condition}):\n"
+    structure += f"{content}"
+    structure += f"{variable} = {variable} + 1"
     structure += f"\tend\n"
     return structure
 
@@ -94,18 +93,35 @@ def popup_function(msg: str) -> str:
     return f'popup("{msg}", blocking=True)'
 
 
-def movel_function(initial_pose: str, radius: str = "0.05", EOLC=True) -> str:
+def movel_function(
+    initial_pose: str, radius: str = "0.05", EOLC: bool = True, SOL: bool = False
+) -> str:
     """Return string for movel function."""
-    return (
-        f"movel({initial_pose}, r={radius})\n"
-        if EOLC
-        else f"movel({initial_pose}, r={radius})"
-    )
+    return_string = ""
+    if not SOL:
+        return_string += "\t"
+
+    return_string += f"movel({initial_pose}, r={radius})"
+
+    if EOLC:
+        return_string += "\n"
+
+    return return_string
 
 
-def movej_function(initial_pose: str, EOLC: bool = True) -> str:
+def movej_function(initial_pose: str, EOLC: bool = True, SOL: bool = False) -> str:
     """Return string for movej function."""
-    return f"movej({initial_pose})\n" if EOLC else f"movej({initial_pose})"
+
+    return_string = ""
+    if not SOL:
+        return_string += "\t"
+
+    return_string += f"movej({initial_pose})"
+
+    if EOLC:
+        return_string += "\n"
+
+    return return_string
 
 
 def get_inverse_kin_function(pose: str, qnear: str) -> str:
@@ -113,9 +129,18 @@ def get_inverse_kin_function(pose: str, qnear: str) -> str:
     return f"get_inverse_kin({pose}, qnear={qnear})"
 
 
-def request_integer_from_primary_client_function(variable: str, msg: str) -> str:
+def request_integer_from_primary_client_function(
+    variable: str, msg: str, SOL: bool = False
+) -> str:
     """Return string for assigment of variable using UI."""
-    return f'global {variable} = request_integer_from_primary_client("{msg}")\n'
+    return_string = ""
+    if not SOL:
+        return_string += "\t"
+
+    return_string += (
+        f'global {variable} = request_integer_from_primary_client("{msg}")\n'
+    )
+    return return_string
 
 
 def main():
@@ -140,21 +165,21 @@ def main():
     """ Inicializaciones en Script."""
 
     # initialization_content = "\t" + "counter = 0\n"
-    initialization_content = "\t" + request_integer_from_primary_client_function(
+    initialization_content = request_integer_from_primary_client_function(
         "counter", "Inserte cantidad de repeticiones:"
     )
 
-    initialization_content += "\t" + movej_function(
-        get_inverse_kin_function(pose_1, initial_configuration_space), EOLC=False
+    initialization_content += movej_function(
+        get_inverse_kin_function(pose_1, initial_configuration_space)
     )
 
     """ main en Script."""
 
-    main_content = "\t" + movel_function(pose_2)
-    main_content += "\t" + movel_function(pose_3)
-    main_content += "\t" + movel_function(pose_4)
-    main_content += "\t" + movel_function(pose_5)
-    main_content += "\t" + movel_function(pose_1, EOLC=False)
+    main_content = movel_function(pose_2)
+    main_content += movel_function(pose_3)
+    main_content += movel_function(pose_4)
+    main_content += movel_function(pose_5)
+    main_content += movel_function(pose_1)
 
     """ Generación de archivo"""
 
