@@ -5,16 +5,14 @@ import typing
 Pendientes:
     1. No se actualiza automáticamente en la interfaz de Polyscope el archivo que se modifica
     2. Problema con EOL: en todos, menos el ultimo elemento de la estructura (debe llevar EOLC=True)
-    3. Problema con tabs. en todos, menos el primero
-    
+
     Hacerlo por archivos que escriban diferentes funciones ? 
 """
 
 """
 Estandarización:
-    1. EOL
-    2. Tab
-    3. Funciones
+    1. EOL: Se debe hacer EOLC=True para la última línea llamada en cada función.
+    2. Tab: Se debe hacer SOL=True cuando no se desee poner el tab inicial
 
 """
 
@@ -31,12 +29,34 @@ ELBOW_ANGLE_RAD = -2.091
 WRIST_1_ANGLE_RAD = -1.417
 WRIST_2_ANGLE_RAD = 1.569
 WRIST_3_ANGLE_RAD = 0
+
 # BASE_ANGLE_RAD = -1.055051532830572
 # SHOULDER_ANGLE_RAD = -0.922930108454602
 # ELBOW_ANGLE_RAD = -2.274513081199010
 # WRIST_1_ANGLE_RAD = -1.514247659030281
 # WRIST_2_ANGLE_RAD = 1.572192590196492
 # WRIST_3_ANGLE_RAD = 0.515570261039125
+
+
+class ConfigurationSpace:
+    def __init__(
+        self,
+        base_angle_rad: float,
+        shoulder_angle_rad: float,
+        elbow_angle_rad: float,
+        wrist_1_angle_rad: float,
+        wrist_2_angle_rad: float,
+        wrist_3_angle_rad: float,
+    ):
+        self.base_angle_rad = base_angle_rad
+        self.shoulder_angle_rad = shoulder_angle_rad
+        self.elbow_angle_rad = elbow_angle_rad
+        self.wrist_1_angle_rad = wrist_1_angle_rad
+        self.wrist_2_angle_rad = wrist_2_angle_rad
+        self.wrist_3_angle_rad = wrist_3_angle_rad
+
+    def __str__(self) -> str:
+        return f"[{self.base_angle_rad}, {self.shoulder_angle_rad}, {self.elbow_angle_rad}, {self.wrist_1_angle_rad}, {self.wrist_2_angle_rad}, {self.wrist_3_angle_rad}]"
 
 
 class Pose:
@@ -48,14 +68,14 @@ class Pose:
         self.ry = ry
         self.rz = rz
 
-    def generate_pose(self) -> str:
+    def __str__(self) -> str:
         return f"p[{self.x}, {self.y}, {self.z}, {self.rx}, {self.ry}, {self.rz}]"
 
 
 def function_structure(name: str, content: str) -> str:
     """Function structure string generator."""
     structure = f"def {name}():\n"
-    structure += f"\t{content}\n"
+    structure += f"{content}\n"
     structure += f"end\n"
     return structure
 
@@ -102,7 +122,15 @@ def main():
 
     """Valores iniciales"""
 
-    initial_configuration_space = f"[{BASE_ANGLE_RAD},{SHOULDER_ANGLE_RAD},{ELBOW_ANGLE_RAD}, {WRIST_1_ANGLE_RAD},{WRIST_2_ANGLE_RAD},{WRIST_3_ANGLE_RAD}]"
+    initial_configuration_space = ConfigurationSpace(
+        BASE_ANGLE_RAD,
+        SHOULDER_ANGLE_RAD,
+        ELBOW_ANGLE_RAD,
+        WRIST_1_ANGLE_RAD,
+        WRIST_2_ANGLE_RAD,
+        WRIST_3_ANGLE_RAD,
+    )
+
     pose_1 = Pose(0.4, -0.4, 0.4, 0, 1.57, 0)
     pose_2 = Pose(0.4, -0.2, 0.4, 0, 1.57, 0)
     pose_3 = Pose(0.4, -0.2, 0.6, 0, 1.57, 0)
@@ -111,24 +139,22 @@ def main():
 
     """ Inicializaciones en Script."""
 
-    # initialization_content = "counter = 0\n"
-    initialization_content = request_integer_from_primary_client_function(
+    # initialization_content = "\t" + "counter = 0\n"
+    initialization_content = "\t" + request_integer_from_primary_client_function(
         "counter", "Inserte cantidad de repeticiones:"
     )
 
-    initial_configuration_space_str = get_inverse_kin_function(
-        pose_1.generate_pose(), initial_configuration_space
+    initialization_content += "\t" + movej_function(
+        get_inverse_kin_function(pose_1, initial_configuration_space), EOLC=False
     )
-
-    initialization_content += "\t" + movej_function(initial_configuration_space_str)
 
     """ main en Script."""
 
-    main_content = movel_function(pose_2.generate_pose())
-    main_content += "\t" + movel_function(pose_3.generate_pose())
-    main_content += "\t" + movel_function(pose_4.generate_pose())
-    main_content += "\t" + movel_function(pose_5.generate_pose())
-    main_content += "\t" + movel_function(pose_1.generate_pose(), EOLC=False)
+    main_content = "\t" + movel_function(pose_2)
+    main_content += "\t" + movel_function(pose_3)
+    main_content += "\t" + movel_function(pose_4)
+    main_content += "\t" + movel_function(pose_5)
+    main_content += "\t" + movel_function(pose_1, EOLC=False)
 
     """ Generación de archivo"""
 
