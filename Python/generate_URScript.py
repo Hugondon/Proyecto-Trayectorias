@@ -1,11 +1,11 @@
 import os
+import typing
 
 """
 Pendientes:
     1. No se actualiza automáticamente en la interfaz de Polyscope el archivo que se modifica
-    2. Problema con EOL: en todos, menos el ultimo elemento de la estructura debe llevar EOLC
-    3. Problema con tabs. Hay que andar poniendo a todos, menos al primero
-    4. Typing a funciones que creemos
+    2. Problema con EOL: en todos, menos el ultimo elemento de la estructura (debe llevar EOLC=True)
+    3. Problema con tabs. en todos, menos el primero
     
     Hacerlo por archivos que escriban diferentes funciones ? 
 """
@@ -40,7 +40,7 @@ WRIST_3_ANGLE_RAD = 0
 
 
 class Pose:
-    def __init__(self, x, y, z, rx, ry, rz):
+    def __init__(self, x: float, y: float, z: float, rx: float, ry: float, rz: float):
         self.x = x
         self.y = y
         self.z = z
@@ -48,11 +48,11 @@ class Pose:
         self.ry = ry
         self.rz = rz
 
-    def generate_pose(self):
+    def generate_pose(self) -> str:
         return f"p[{self.x}, {self.y}, {self.z}, {self.rx}, {self.ry}, {self.rz}]"
 
 
-def function_structure(name, content):
+def function_structure(name: str, content: str) -> str:
     """Function structure string generator."""
     structure = f"def {name}():\n"
     structure += f"\t{content}\n"
@@ -60,7 +60,7 @@ def function_structure(name, content):
     return structure
 
 
-def while_structure(variable, condition, content):
+def while_structure(variable: str, condition: str, content: str) -> str:
     """While structure based on 'less than' condition and variable increments."""
     structure = f"while({variable} < {condition}):\n"
     structure += f"\t{content}\n"
@@ -69,12 +69,12 @@ def while_structure(variable, condition, content):
     return structure
 
 
-def popup_function(msg):
+def popup_function(msg: str) -> str:
     """Return string for popup function."""
     return f'popup("{msg}", blocking=True)'
 
 
-def movel_function(initial_pose, radius="0.05", EOLC=True):
+def movel_function(initial_pose: str, radius: str = "0.05", EOLC=True) -> str:
     """Return string for movel function."""
     return (
         f"movel({initial_pose}, r={radius})\n"
@@ -83,17 +83,17 @@ def movel_function(initial_pose, radius="0.05", EOLC=True):
     )
 
 
-def movej_function(initial_pose, EOLC=True):
+def movej_function(initial_pose: str, EOLC: bool = True) -> str:
     """Return string for movej function."""
     return f"movej({initial_pose})\n" if EOLC else f"movej({initial_pose})"
 
 
-def get_inverse_kin_function(pose, qnear):
+def get_inverse_kin_function(pose: str, qnear: str) -> str:
     """Return string for get_inverse_king function."""
     return f"get_inverse_kin({pose}, qnear={qnear})"
 
 
-def request_integer_from_primary_client_function(variable, msg):
+def request_integer_from_primary_client_function(variable: str, msg: str) -> str:
     """Return string for assigment of variable using UI."""
     return f'global {variable} = request_integer_from_primary_client("{msg}")\n'
 
