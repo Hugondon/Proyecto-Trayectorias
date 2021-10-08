@@ -20,10 +20,10 @@ def main():
     configuration_spaces_list = []
 
     with open(CSV_PATH, 'r') as file:
-        next(file)            # Por si es necesario saltarse la primera linea
+        next(file)              # Por si es necesario saltarse la primera linea
         csv_rows = csv.reader(file)
         for row in csv_rows:
-            if row[0] == '':
+            if row[0] == '':    # Por si al csv se le seca el cerebro y añade valores vacios
                 break
             movement_type = int(row[0])
             current_pose = Pose(
@@ -32,7 +32,7 @@ def main():
             movements_list.append(movement_type)
             poses_list.append(current_pose)
 
-            if(movement_type == MOVEJ_MOVEMENT):
+            if(movement_type == MOVEJ_MOVEMENT):    # Solamente los movej necesitan ConfigurationSpace
 
                 current_configuration_space = ConfigurationSpace(
                     base_angle_rad=float(row[7]),
@@ -44,30 +44,23 @@ def main():
                 )
                 configuration_spaces_list.append(current_configuration_space)
 
-        print(movements_list)
-        for pose in poses_list:
-            print(pose)
-        for configuration_space in configuration_spaces_list:
-            print(configuration_space)
+        # print(movements_list)
+        # for pose in poses_list:
+        #     print(pose)
+        # for configuration_space in configuration_spaces_list:
+        #     print(configuration_space)
 
     """Generacion de Script."""
 
-    initial_configuration_space = ConfigurationSpace(
-        BASE_ANGLE_RAD,
-        SHOULDER_ANGLE_RAD,
-        ELBOW_ANGLE_RAD,
-        WRIST_1_ANGLE_RAD,
-        WRIST_2_ANGLE_RAD,
-        WRIST_3_ANGLE_RAD,
-    )
+    # Inicializaciones en Script.
+
+    initial_configuration_space = configuration_spaces_list[0]
 
     pose_1 = poses_list[0]
     pose_2 = poses_list[1]
     pose_3 = poses_list[2]
     pose_4 = poses_list[3]
     pose_5 = poses_list[4]
-
-    # Inicializaciones en Script.
 
     # initialization_content = "\t" + "counter = 0\n"
     initialization_content = request_integer_from_primary_client_function(
@@ -88,13 +81,12 @@ def main():
 
     # Generación de archivo
 
-    # Cambiar a directorio destino
-
+    # Cambiar a directorio destino del archivo Script
     # print(os.getcwd())
     os.chdir(rf"{URSCRIPT_FILE_PATH}")
     # print(os.getcwd())
 
-    with open(FILENAME, "w") as file:
+    with open(FILENAME, "w") as file:   # Generacion de funciones de Script
         # func = function_structure("hola_mundo", popup_function("Nemo es buena peli"))
         func = function_structure("initialization", initialization_content)
         func += function_structure("main", main_content)
