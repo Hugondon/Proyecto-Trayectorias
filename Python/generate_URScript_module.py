@@ -17,8 +17,10 @@ Estandarización:
 
 # FILENAME = 'hello_world.script'
 # FILENAME = "movel_1.script"
-FILENAME = "movel_2.script"
-URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Hello_World_Python"
+# FILENAME = "movel_2.script"
+FILENAME = "movel_3.script"
+# URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Hello_World_Python"
+URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
 # URSCRIPT_FILE_PATH = "/home/damiau/ursim-5.9.4.1031232/programs"
 
 
@@ -144,7 +146,6 @@ def request_integer_from_primary_client_function(
 
 
 def main():
-
     """Valores iniciales"""
 
     initial_configuration_space = ConfigurationSpace(
