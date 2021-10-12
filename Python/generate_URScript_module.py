@@ -15,14 +15,6 @@ Estandarización:
     Solamente es necesaria para funciones que puedan o no estar dentro de otras.
 """
 
-# FILENAME = 'hello_world.script'
-# FILENAME = "movel_1.script"
-# FILENAME = "movel_2.script"
-FILENAME = "movel_3.script"
-# URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Hello_World_Python"
-URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
-# URSCRIPT_FILE_PATH = "/home/damiau/ursim-5.9.4.1031232/programs"
-
 
 BASE_ANGLE_RAD = -0.604
 SHOULDER_ANGLE_RAD = -1.204
@@ -85,7 +77,7 @@ def while_structure(variable: str, condition: str, content: str) -> str:
     """While structure based on 'less than' condition and variable increments."""
     structure = f"\twhile({variable} < {condition}):\n"
     structure += f"{content}"
-    structure += f"{variable} = {variable} + 1"
+    structure += f"\t{variable} = {variable} + 1\n"
     structure += f"\tend\n"
     return structure
 
