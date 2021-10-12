@@ -39,7 +39,7 @@ function [ts,realIntermediateWaypoints] = getTimeInterval(nIntermediateWaypoints
         %of the robot
         if (ts(count) < 1/125)
             ts(count) = 1/125;
-            realIntermediateWaypoints(count) = (distanceBetweenWaypoints/(tcpSpeed*ts(count)))-1;
+            realIntermediateWaypoints(count) = (distanceBetweenWaypoints
         end
 
     end
