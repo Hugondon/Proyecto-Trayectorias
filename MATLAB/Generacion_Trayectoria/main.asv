@@ -153,12 +153,10 @@ for count = 1:numberWaypoints - 1
         [configuration_space, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
         ikInitialGuess = configuration_space;
         
-        % Save the configuration space in a matrix
+        
         config_space_data(:,index)=configuration_space;
     end
     
-    % Save the configuration space in trajectory data to use
-    % it in the Simulation of the robot
     trajectory_data{3,count}=config_space_data;
 end
 
@@ -180,10 +178,4 @@ for count = 1:numberWaypoints - 1
 
 end
 
-%% Convertion to CSV
-
-% Falta el moveJ
-
 % Falta convertir trajectory_data a csv
-
-% Tal vez agregar clears
