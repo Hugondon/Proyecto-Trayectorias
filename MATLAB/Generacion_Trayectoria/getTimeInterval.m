@@ -1,4 +1,4 @@
-function [ts,realIntermediateWaypoints] = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed)
+function ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed)
     % getSamplingTime.m Calculate the sampling time between waypoints for ik solver
     % Inputs:
     % nIntermediateWaypoints: Number of intermediate waypoints defined by the user
@@ -16,7 +16,6 @@ function [ts,realIntermediateWaypoints] = getTimeInterval(nIntermediateWaypoints
     % Allocate memory for the different sampling times and
     % number of intermediate Waypoints
     ts = zeros(1, numberWaypoints - 1);
-    realIntermediateWaypoints=zeros(1, numberWaypoints - 1);
     
     % Calculate Trajectory times and sampling times
     for count = 1:numberWaypoints - 1
@@ -34,12 +33,10 @@ function [ts,realIntermediateWaypoints] = getTimeInterval(nIntermediateWaypoints
             distanceBetweenWaypoints/ ...
             ((nIntermediateWaypoints + 1) * tcpSpeed);
         
-        realIntermediateWaypoints(count) = nIntermediateWaypoints;
         %To make sure the sampling time of the program is less than the sampling time
         %of the robot
         if (ts(count) < 1/125)
-            ts(count) = 1/125;
-            realIntermediateWaypoints(count) = (distanceBetweenWaypoints/(tcpSpeed*ts(count)))-1;
+            ts(count) = 1/125;  
         end
 
     end

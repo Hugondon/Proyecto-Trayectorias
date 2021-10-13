@@ -58,17 +58,12 @@ csMagnitudeDistances = cumsum([0, magnitudeDistances]);
 % Total time to get to each waypoint from the initial waypoint. t = d / v
 total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 
-[ts,real_intermediate_waypoints]= getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
-
-%trajTimes = 0:ts:total_time_to_waypoint(end);
-%total_time_to_waypoint=0:10:20;
-%ts = 0.2;
-%trajTimes = 0:ts:total_time_to_waypoint(end);
+ts= getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
 %% Parameters of the Graphed Trajectory 
 
 % Type of Plot
-plotMode = 2; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames
+plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames
 
 % Show robot in Initial Configuration Space
 show(robot,jointHomeAngles,'Frames','off','PreservePlot',false);
@@ -93,6 +88,7 @@ trajectory_data=cell(3,numberWaypoints-1);
 %% Calculate Poses
 
 for count = 1:numberWaypoints - 1
+    
     % Extract the starting and finishing waypoint times of the segment of the trajectory
     main_waypoints_time_interval = total_time_to_waypoint(count:count + 1);
     % Get the times of the intermediate waypoints in the segment of the trajectory
@@ -106,7 +102,8 @@ for count = 1:numberWaypoints - 1
         waypoints(:, :, count + 1),...
         main_waypoints_time_interval,...
         intermediate_waypoints_time_interval);
-    % 
+    
+    % To avoid repeated Waypoints
     if count>1
         transformation_matrix_array(:,:,1)=[];
     end
@@ -123,11 +120,12 @@ end
 
 for count = 1:numberWaypoints - 1
 
-    % Trajectory visualization for the segment
+    % Trajectory visualization of the Waypoints for the segment
     if plotMode == 1
-        eePos = tform2trvec(trajectory_data{2,count});
-        plot3(eePos(:,1),eePos(:,2),eePos(:,3),'-^','Color','k')
-        %set(hTraj,'xdata',eePos(:,1),'ydata',eePos(:,2),'zdata',eePos(:,3));
+        tcp_position = tform2trvec(trajectory_data{2,count});
+        plot3(tcp_position(:,1),tcp_position(:,2),tcp_position(:,3),'-^','Color','k');
+        
+    % Trajectory visualization of the TCP poses for the segment  
     elseif plotMode == 2
         plotTransforms(tform2trvec(trajectory_data{2,count}),...
             tform2quat(trajectory_data{2,count}),'FrameSize',0.05);
@@ -135,20 +133,43 @@ for count = 1:numberWaypoints - 1
 end
 
 
-%% Robot Inverse Kinematics and Simulate Robot
+%% Robot Inverse Kinematics
 
 for count = 1:numberWaypoints - 1
- 
+    
+    % Get number of Configurations on the configuration space
+    size_config_space=size(trajectory_data{2,count},3);
+    
+    % Reserve memory for the configurations
+    config_space_data=zeros(6,size_config_space);
+    
     % Intermediate waypoints movement
-    for index = 1:size(trajectory_data{2,count},3)
+    for index = 1:size_config_space
+      
         % Solve IK
         target_pose = trajectory_data{2,count}(:, :, index);
 
         % Configuration contains the angle for each joint.
         [configuration_space, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
         ikInitialGuess = configuration_space;
+        
+        % Save the configuration space in a matrix
+        config_space_data(:,index)=configuration_space;
+    end
+    
+    % Save the configuration space in trajectory data to use
+    % it in the Simulation of the robot
+    trajectory_data{3,count}=config_space_data;
+end
 
-        show(robot, configuration_space, 'Frames', 'off', 'PreservePlot', false);
+%% Simulate Robot
+
+for count = 1:numberWaypoints - 1
+    
+    % Intermediate waypoints movement
+    for index = 1:size(trajectory_data{2,count},3)
+        
+        show(robot, trajectory_data{3,count}(:,index), 'Frames', 'off', 'PreservePlot', false);
 
         title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
 
@@ -159,47 +180,10 @@ for count = 1:numberWaypoints - 1
 
 end
 
+%% Convertion to CSV
 
+% Falta el moveJ
 
-% % Main waypoints movement
-% for count = 1:numberWaypoints - 1
-%     main_waypoints_time_interval = total_time_to_waypoint(count:count + 1);
-%     intermediate_waypoints_time_interval = main_waypoints_time_interval(1):ts(count):main_waypoints_time_interval(2);
-% 
-% 
-%     % Find the transforms from trajectory generation
-%     [transformation_matrix_array, vel, acc] =...
-%         transformtraj(waypoints(:, :, count),...
-%         waypoints(:, :, count + 1),...
-%         main_waypoints_time_interval,...
-%         intermediate_waypoints_time_interval);
-%     
-%     % Trajectory visualization for the segment
-%     if plotMode == 1
-%         eePos = tform2trvec(transformation_matrix_array);
-%         plot3(eePos(:,1),eePos(:,2),eePos(:,3),'-^','Color','k')
-%         %set(hTraj,'xdata',eePos(:,1),'ydata',eePos(:,2),'zdata',eePos(:,3));
-%     elseif plotMode == 2
-%         plotTransforms(tform2trvec(transformation_matrix_array),...
-%             tform2quat(transformation_matrix_array),'FrameSize',0.05);
-%     end
-%     
-%     % Intermediate waypoints movement
-%     for index = 1:numel(intermediate_waypoints_time_interval)
-%         % Solve IK
-%         target_pose = transformation_matrix_array(:, :, index);
-% 
-%         % Configuration contains the angle for each joint.
-%         [configuration_space, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
-%         ikInitialGuess = configuration_space;
-% 
-%         show(robot, configuration_space, 'Frames', 'off', 'PreservePlot', false);
-% 
-%         title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
-% 
-%         % Get the desired View
-%         view([-0.6 -0.6 0.2]);
-%         drawnow
-%     end
-% 
-%  end
+% Falta convertir trajectory_data a csv
+
+% Tal vez agregar clears
