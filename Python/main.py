@@ -15,25 +15,26 @@ Consideraciones importantes en programa:
 """
 
 """ Constantes relacionadas a lectura de CSV"""
-complete_path = os.path.realpath(__file__)  # .../Proyecto-Trayectorias/Python/file.py
+complete_path = os.path.realpath(
+    __file__)  # .../Proyecto-Trayectorias/Python/file.py
+parent_directory_name = os.path.dirname(complete_path)
 
 # Si está en carpeta de Python
-parent_directory_name = os.path.dirname(complete_path)
-CSV_PATH = os.path.join(parent_directory_name, "trajectory.csv")
+# CSV_PATH = os.path.join(parent_directory_name, "trajectory.csv")
 
 # Si está en carpeta de MATLAB
-# parent_directory_name = os.path.dirname(parent_directory_name)
-# CSV_PATH = os.path.join(parent_directory_name, "MATLAB")
-# CSV_PATH = os.path.join(CSV_PATH, "Generacion_Trayectoria")
-# CSV_PATH = os.path.join(CSV_PATH, "trajectory.csv")
+parent_directory_name = os.path.dirname(parent_directory_name)
+CSV_PATH = os.path.join(parent_directory_name, "MATLAB")
+CSV_PATH = os.path.join(CSV_PATH, "Generacion_Trayectoria")
+CSV_PATH = os.path.join(CSV_PATH, "trajectory.csv")
 
 MOVEJ_MOVEMENT = 0
 MOVEL_MOVEMENT = 1
 
 """ Constantes relacionadas a escritura de Script"""
 FILENAME = "trajectory.script"
-URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Trayectorias"
-# URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
+# URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Trayectorias"
+URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
 # URSCRIPT_FILE_PATH = "/home/damiau/ursim-5.9.4.1031232/programs"
 
 
@@ -121,7 +122,8 @@ def main():
     for index, pose in enumerate(poses_list[1:], 1):
         if movements_list[index] == MOVEJ_MOVEMENT:
             main_content += movej_function(
-                get_inverse_kin_function(pose, configuration_spaces_list[index])
+                get_inverse_kin_function(
+                    pose, configuration_spaces_list[index])
             )
         else:
             main_content += movel_function(pose)

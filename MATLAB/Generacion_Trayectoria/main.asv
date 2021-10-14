@@ -153,10 +153,12 @@ for count = 1:numberWaypoints - 1
         [configuration_space, info] = ik(endEffector, target_pose, ikWeights, ikInitialGuess);
         ikInitialGuess = configuration_space;
         
-        
+        % Save the configuration space in a matrix
         config_space_data(:,index)=configuration_space;
     end
     
+    % Save the configuration space in trajectory data to use
+    % it in the Simulation of the robot
     trajectory_data{3,count}=config_space_data;
 end
 
@@ -178,4 +180,30 @@ for count = 1:numberWaypoints - 1
 
 end
 
+%% Convertion to CSV
+FILENAME = 'trajectory.csv';
+% Mustn't be changed to [] although warning says so.
+column_names = {"Tipo de Movimiento", ...
+    "X [m]", "Y [m]", "Z [m]", 
+    "Rx [rad]", "Ry [rad]", "Rz [rad]", 
+    "Base [rad]", "Shoulder [rad]", "Elbow [rad]",
+    "Wrist 1 [rad]", "Wrist 2 [rad]", "Wrist 3 [rad]"
+    };
+
+% Writes row containing column headers.
+writecell(column_names, FILENAME, 'WriteMode', 'overwrite');
+% Falta el moveJ
+
 % Falta convertir trajectory_data a csv
+% tform2axang para obtener ángulos (necesitamos 3, hacer primeros 3 por el último y eso en un solo vector)
+
+poses_array = cell2mat(trajectory_data(2,1));
+
+pose = poses_array(:,:,1);
+axis_angle_rotation = tform2axang(pose);
+pose_rotation = axis_angle_rotation(1,1:3).*axis_angle_rotation(1,4);
+pose_translation = tform2trvec(pose);
+
+
+% Tal vez agregar clears
+
