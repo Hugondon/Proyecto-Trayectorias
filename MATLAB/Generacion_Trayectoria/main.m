@@ -165,7 +165,7 @@ for count = 1:numberWaypoints - 1
 
         show(robot, trajectory_data{3, count}(:, index), 'Frames', 'off', 'PreservePlot', false);
 
-        title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
+        %title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
 
         % Get the desired View
         view([-0.6 -0.6 0.2]);
