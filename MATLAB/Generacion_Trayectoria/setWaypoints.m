@@ -1,6 +1,9 @@
 function [waypoints, number_waypoints, distances_magnitude_m] = setWaypoints()
-    
-    nameTrajectory='hola_mundo';
+    %X=[-0.7,0.7]
+    %Z=[0.2,0.7]
+
+
+    nameTrajectory='thunder';
     % setWaypoints.m Returns an array of poses (waypoints), the number of waypoints and
     % the magnitude of the distance between consecutive waypoints.
     % Inputs:
