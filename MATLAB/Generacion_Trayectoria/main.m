@@ -165,7 +165,7 @@ for count = 1:numberWaypoints - 1
 
         show(robot, trajectory_data{3, count}(:, index), 'Frames', 'off', 'PreservePlot', false);
 
-        title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
+        %title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
 
         % Get the desired View
         view([-0.6 -0.6 0.2]);
@@ -193,17 +193,17 @@ for main_waypoint = 1:size(trajectory_data, 2)
     poses_array = cell2mat(trajectory_data(2, main_waypoint));
     configuration_space = cell2mat(trajectory_data(3, main_waypoint));
 
-    % Obtain configuration space information
-    configuration_space = configuration_space(:, main_waypoint);
-
     for intermediate_waypoints = 1:size(poses_array, 3)
+        % Obtain configuration space information
+        intermediate_configuration_space = configuration_space(:, intermediate_waypoints);
+        
         % Obtain pose information
         pose = poses_array(:, :, intermediate_waypoints);
         axis_angle_rotation = tform2axang(pose);
         pose_rotation = axis_angle_rotation(1, 1:3) .* axis_angle_rotation(1, 4);
         pose_translation = tform2trvec(pose);
 
-        csv_information = [movement_type, pose_translation, pose_rotation, configuration_space'];
+        csv_information = [movement_type, pose_translation, pose_rotation, intermediate_configuration_space'];
         writematrix(csv_information, FILENAME, 'WriteMode', 'append');
     end
 
