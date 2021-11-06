@@ -32,11 +32,11 @@ MOVEJ_MOVEMENT = 0
 MOVEL_MOVEMENT = 1
 
 """ Constantes relacionadas a escritura de Script"""
-FILENAME = "trajectory.script"
+FILENAME = "trajectory_cruz.script"
 # URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Trayectorias"
 # URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
-URSCRIPT_FILE_PATH = "E:/Documentos_HD/Universidad_HD/Proyecto_Final_Carrera/Programas/Repositorio_PT/Proyecto-Trayectorias/Python"
-
+# URSCRIPT_FILE_PATH = "E:/Documentos_HD/Universidad_HD/Proyecto_Final_Carrera/Programas/Repositorio_PT/Proyecto-Trayectorias/Python"
+URSCRIPT_FILE_PATH = "E:/Documentos_HD/UR_Polyscope/Carpeta_Compartida_UR-Polyscope_594"
 # URSCRIPT_FILE_PATH = "/home/damiau/ursim-5.9.4.1031232/programs"
 
 

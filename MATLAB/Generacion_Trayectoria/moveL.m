@@ -1,7 +1,9 @@
-function trajectory_data= moveL(waypoints,total_time_to_waypoint,ts,ik,endEffector,ikWeights,ikInitialGuess)
-
+function trajectory_data= moveL(waypoints,total_time_to_waypoint,ts,...
+                                ik,endEffector,ikWeights,ikInitialGuess)
+%
 numberWaypoints=size(waypoints,3);
 
+%Get number of translations between waypoints
 trajectory_data = cell(3, numberWaypoints - 1);   
     %% Calculate Poses
 

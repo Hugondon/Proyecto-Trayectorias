@@ -48,7 +48,7 @@ ikInitialGuess = jointHomeAngles;
 tcpSpeed_ms = 1; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
-nIntermediateWaypoints = 5;
+nIntermediateWaypoints = 1;
 
 % Between main waypoints
 
@@ -90,7 +90,7 @@ trajectory_data= moveL( waypoints,total_time_to_waypoint,ts,...
                         ik,endEffector,ikWeights,ikInitialGuess);
 
 %% Graph Trajectory and Simulate Robot                      
-figureRobot = simulateRobot(numberWaypoints,plotMode,trajectory_data,...
+figureRobot = simulateRobot(plotMode,trajectory_data,...
                             robot,figureRobot);
 
 %% Convertion to CSV
@@ -127,9 +127,9 @@ for main_waypoint = 1:size(trajectory_data, 2)
     end
 
 end
-clear axis_angle_rotation pose_rotation pose_translation COLUMN_HEADERS ik ikWeights...
-    ikInitialGuess poses_array configuration_space FILENAME nIntermediateWaypoints...
-    intermediate_waypoints main_waypoint movement_type pose tcpSpeed_ms ...
-    total_time_to_waypoint ans
+% clear axis_angle_rotation pose_rotation pose_translation COLUMN_HEADERS ik ikWeights...
+%     ikInitialGuess poses_array configuration_space FILENAME nIntermediateWaypoints...
+%     intermediate_waypoints main_waypoint movement_type pose tcpSpeed_ms ...
+%     total_time_to_waypoint ans
 % Falta el moveJ
 

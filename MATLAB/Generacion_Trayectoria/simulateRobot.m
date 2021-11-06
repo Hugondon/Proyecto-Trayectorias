@@ -1,11 +1,12 @@
-function figureRobot = simulateRobot(numberWaypoints,plotMode,trajectory_data,robot,figureRobot)
+function figureRobot = simulateRobot(plotMode,trajectory_data,robot,figureRobot)
 %SIMULATEROBOT Summary of this function goes here
 %   Detailed explanation goes here
 
-figure(figureRobot)
+    figure(figureRobot);
+    numberTranslations =   size(trajectory_data,2);
     %% Graph Trajectory
 
-    for count = 1:numberWaypoints - 1
+    for count = 1:numberTranslations
 
         % Trajectory visualization of the Waypoints for the segment
         if plotMode == 1
@@ -22,7 +23,7 @@ figure(figureRobot)
 
     %% Simulate Robot
 
-    for count = 1:numberWaypoints - 1
+    for count = 1:numberTranslations
 
         % Intermediate waypoints movement
         for index = 1:size(trajectory_data{2, count}, 3)
@@ -32,7 +33,7 @@ figure(figureRobot)
             %title(sprintf("Trajectory at t = %.4f s", intermediate_waypoints_time_interval(index)));
 
             % Get the desired View
-            view([0.6 0.6 0.2]);
+            view([-0.6 -1 0.2]);
             drawnow
         end
 
