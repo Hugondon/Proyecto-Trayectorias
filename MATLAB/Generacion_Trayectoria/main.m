@@ -23,7 +23,7 @@ simulateRobot   =   @simulateRobot;
 %% Loading Robot
 
 % Get the object robot, the number of joints and endeffector
-[robot, numJoint, endEffector] = declareRobot("universalUR5");
+[robot, numJoints, endEffector] = declareRobot("universalUR5");
 
 % Get Joint angles Home position; TCP position and its orientation
 
@@ -35,7 +35,7 @@ load UR5positions
 
 % Define IK
 ik = inverseKinematics('RigidBodyTree', robot);
-ikWeights = ones(1, numJoint);
+ikWeights = ones(1, numJoints);
 ikInitialGuess = jointHomeAngles;
 
 %% Get Waypoints
@@ -48,7 +48,7 @@ ikInitialGuess = jointHomeAngles;
 tcpSpeed_ms = 1; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
-nIntermediateWaypoints = 1;
+nIntermediateWaypoints = 5;
 
 % Between main waypoints
 
