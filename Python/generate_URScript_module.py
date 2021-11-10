@@ -88,7 +88,7 @@ def popup_function(msg: str) -> str:
 
 
 def movel_function(
-    initial_pose: str, radius: str = "0.05", EOLC: bool = True, SOL: bool = False
+    initial_pose: str, radius: str = "0.0", EOLC: bool = True, SOL: bool = False
 ) -> str:
     """Return string for movel function."""
     return_string = ""

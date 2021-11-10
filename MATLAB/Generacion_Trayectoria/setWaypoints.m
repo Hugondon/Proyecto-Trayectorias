@@ -3,7 +3,7 @@ function [waypoints, number_waypoints, distances_magnitude_m] = setWaypoints()
     %Z=[0.2,0.7]
 
 
-    nameTrajectory='thunder';
+    nameTrajectory='cruz';
     % setWaypoints.m Returns an array of poses (waypoints), the number of waypoints and
     % the magnitude of the distance between consecutive waypoints.
     % Inputs:
@@ -25,7 +25,7 @@ function [waypoints, number_waypoints, distances_magnitude_m] = setWaypoints()
 %                     0, 1, 0, pi; ...
 %                     0, 1, 0, pi];
     %nameTrajectory = 'triangule';
-    waypointStruct=load(['Test_trajectories\',nameTrajectory,'.mat']);
+    waypointStruct=load(['Test_trajectories/',nameTrajectory,'.mat']);
                 
     % Get number of positions
     number_waypoints = size(waypointStruct.positions_m, 1);
