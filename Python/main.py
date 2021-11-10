@@ -32,7 +32,7 @@ MOVEJ_MOVEMENT = 0
 MOVEL_MOVEMENT = 1
 
 """ Constantes relacionadas a escritura de Script"""
-FILENAME = "trajectory_cruz.script"
+FILENAME = "trajectory_hola_v3.script"
 # URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Trayectorias"
 # URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
 # URSCRIPT_FILE_PATH = "E:/Documentos_HD/Universidad_HD/Proyecto_Final_Carrera/Programas/Repositorio_PT/Proyecto-Trayectorias/Python"

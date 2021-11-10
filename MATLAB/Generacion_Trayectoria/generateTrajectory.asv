@@ -1,6 +1,6 @@
 
 % Script to generate trajectories    
-nameTrajectory='thunder_v2';
+nameTrajectory='cruz_v2';
 
 % Get positions declare w.r.t Global reference (Robot base)
 %      positions_m =... [0,-0.3,0.55] 
@@ -10,12 +10,13 @@ nameTrajectory='thunder_v2';
 %                 0, 1, 0, pi; ...
 %                 0, 1, 0, pi; ...
 %                 0, 1, 0, pi];
-load Test_trajectories/thunder.mat
+load Test_trajectories/cruz.mat
+%positions_m(:,3)= positions_m(:,3)+0.15;
 
 positions_m(:,2)=positions_m(:,2)+0.64;
-% positions_m(:,3)=positions_m(:,3)*0.5;
-% positions_m(:,3)=positions_m(:,3)+0.3;
-% positions_m(:,1)=positions_m(:,1)*0.5;
+positions_m(:,3)=positions_m(:,3)*0.5;
+positions_m(:,3)=positions_m(:,3)+0.2;
+positions_m(:,1)=positions_m(:,1)*0.5;
 
 % Get number of positions
 number_waypoints = size(positions_m, 1);
