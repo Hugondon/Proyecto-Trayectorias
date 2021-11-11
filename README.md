@@ -1,13 +1,12 @@
-# Proyecto-Trayectorias
 
-Códigos utilizados para el proyecto de ingeniería
+<h1 align="center">Proyecto Trayectorias</h1>
+<h2 align="center">Parser para transformar trayectorias 2D en programas de URScript</h2>
 
 ## Herramientas Utilizadas
 
-- Polyscope
-- Python 3.8.10
 - MATLAB R2021b
-
+- Python 3.8.10
+- Polyscope
 
 ## Manual de Usuario
 ### Instalación Polyscope en Ubuntu
