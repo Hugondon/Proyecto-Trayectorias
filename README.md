@@ -2,7 +2,15 @@
 
 Códigos utilizados para el proyecto de ingeniería
 
-## Instalación Polyscope en Ubuntu
+## Herramientas Utilizadas
+
+- Polyscope
+- Python 3.8.10
+- MATLAB R2021b
+
+
+## Manual de Usuario
+### Instalación Polyscope en Ubuntu
 
 Seguir tutorial en [este repositorio](https://github.com/arunavanag591/ursim) con las siguientes modificaciones:
 
@@ -12,13 +20,13 @@ Seguir tutorial en [este repositorio](https://github.com/arunavanag591/ursim) co
   `commonDependencies='libcurl4 openjdk-8-jre libjava3d-* ttf-dejavu* fonts-ipafont fonts-baekmuk fonts-nanum fonts-arphic-uming fonts-arphic-ukai'`
 
 Ejemplo de `install.sh` en carpeta Polyscope.
-## Instalación MATLAB.engine
+### Instalación MATLAB.engine
 
 1. Se debe localizar la carpeta con el instalador a través del comando `matlabroot` en la consola de MATLAB. 
-2. Una vez encontrada la carpeta, se deberá llegar a la carpeta `matlabroot/extern/engines/python`
-3. Para instalar la libreriá se debe correr el comando `python setup.py install` dentro de esta librería.
+2. Una vez encontrada la carpeta, se deberá llegar a la subcarpeta `matlabroot/extern/engines/python`
+3. Para instalar la librería se debe correr el comando `python setup.py install` dentro de esta carpeta.
 
-## Uso general
+### Uso general
 
 Para el uso general del código después de instalaciones previas se deben ajustar las siguientes constantes:
 
