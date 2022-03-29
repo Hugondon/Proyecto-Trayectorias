@@ -1,5 +1,6 @@
 %% Main program
-% This program executes all the functions needed to create the point of the complex trajectory.
+% This program executes all the functions needed to create the poses and configurations
+% of the complex trajectory.
 % The units used in the program and its functions are from the International System(IS)
 
 %{
@@ -12,6 +13,7 @@ https: // la.mathworks.com / help / robotics / ref / inversekinematics - system 
 clear, clc, clear
 
 %% Function Handles
+% Pre-loads the functions that will be used in memory thus improving performance.
 
 declareRobot    =   @declareRobot;      
 setWaypoints    =   @setWaypoints;      
@@ -23,7 +25,7 @@ setObstacles    =   @setObstacles;
 
 %% Loading Robot
 
-% Get the object robot, the number of joints and endeffector
+% Get the object robot, the number of joints and endEffector's label
 [robot, numJoints, endEffector] = declareRobot("universalUR5");
 
 % Get Joint angles, Home position, TCP position and its orientation
@@ -46,6 +48,7 @@ nameTrajectory  =   'hola_mundo_v3';
 [waypoints, numberWaypoints, magnitudeDistances] = setWaypoints(nameTrajectory);
 
 %% Obstacles
+% Set the obstacles for the trajectory (The cell array can be empty)
 obstCell=setObstacles();
 
 %% Parameters of the Trajectory of the Robot's TCP
@@ -65,12 +68,12 @@ total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 % Get time step(ts) interval
 ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
-%% Parameters of the Trajectory Graph 
+%% Trajectory Graph Setup
 
 % Type of Plot
 plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames
 
-%Create Figure for the Robot Simulation
+% Create Figure for the Robot Simulation
 figureRobot=figure('Name','Robot','NumberTitle','off','WindowState','maximized');
 
 % Show robot in Initial Configuration Space
@@ -93,18 +96,25 @@ for count=1:size(obstCell,2)
 end
 
 %% Trajectory Data Cell Array
-
-%Cell array to store the data of the trajectory
+% Cell array to store the data of the trajectory
 trajectory_data = {};
 
 %{
-    Number of interval waypoints keep in moveJ(Move J generates a lot of intermidiate waypoints 
-    which would put a heavy load on both the simulator and the physical robot,
-    that is why just a fraction is used)
+    Number of interval waypoints kept in moveJ(Defined by user)(Move J generates a lot of 
+    intermidiate waypoints which would put a heavy load on both the simulator and 
+    the physical robot, that is the reason just a fraction of the waypoints is used)
 %}
 intervalWaypoints=10;
 
-%% Waypoints Joint Trajectories
+%% Waypoints Joint Trajectories(This sections is just for test)
+%{
+    Later this section should be modified to do 2 things:
+        1-Create MoveJ trajectory from home to a waypoint near the first waypoint of the complex
+        trajectory.
+        2-Create MoveJ trajectory from a waypoint near the last waypoint of the complex trajectory
+        to home.
+%}
+
 % Trajectory 1 of moveJ
 waypointsJ1=zeros(4,4,2);
 waypointsJ1(:,:,1)=trvec2tform([-0.4,-0.4,0.5])*axang2tform([1 0 0 pi]);
@@ -146,10 +156,11 @@ trajectory_data = moveJ(    robot,endEffector,ikInitialGuess,ikWeights,ik,...
 %% Graph Trajectory and Simulate Robot                      
 figureRobot = simulateRobot(plotMode,trajectory_data,...
                             robot,figureRobot,[-0.6 -0.6 0.5]);
-                        %[-0.6 -0.2 0.8]
-                        %[-0.6 -1 0.2]
-                        %[0.6 -1 0]
-                        %[-0.6 -0.6 0.5]
+                        %   Ux      Uy      Uz
+                        %[  -0.6    -0.2    0.8 ]
+                        %[  -0.6    -1      0.2 ]
+                        %[  0.6     -1      0   ]
+                        %[  -0.6    -0.6    0.5 ]
 
 %% Convertion to CSV
 
@@ -197,7 +208,7 @@ for main_waypoint = 1:size(trajectory_data, 1)
 
 end
 
-%Delete process variables
+% Delete process variables
 clear   axis_angle_rotation pose_rotation pose_translation COLUMN_HEADERS ik ikWeights...
         ikInitialGuess poses_array configuration_space FILENAME nIntermediateWaypoints...
         intermediate_waypoints main_waypoint movement_type pose tcpSpeed_ms ...
