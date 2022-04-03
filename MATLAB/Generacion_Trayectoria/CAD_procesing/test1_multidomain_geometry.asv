@@ -54,9 +54,8 @@ handle.x = nodes(1,:);
 handle.y = nodes(2,:);
 handle.z = nodes(3,:);
 % plot in 3D
-handle.p = pdemesh(msd,'FaceAlpha',1);
-%handle.p = pdemesh(msd);
-
+%handle.p = pdemesh(msd,'FaceAlpha',0.8);
+handle.p = pdemesh(msd,'FaceAlpha',0);
 
 hold on
 % handle.dcm=datacursormode;
@@ -82,10 +81,10 @@ function click(~,~,handle,gm,msh,nodes)
     
     
     % Find the nearest Face from the user selected point
-    nearFaceID=nearestFace(gm,userSelectedPoint');
+    nearFaceID=nearestFace(gm,userSelectedPoint);
     % Get nodes from nearest Face from the user selected point 
-    %nodesInFaceID=findNodes(msh,'region','Face',nearFaceID);
-    nodesInFaceID=findNodes(msh,'region','Face',1:gm.NumFaces);
+    nodesInFaceID=findNodes(msh,'region','Face',nearFaceID);
+    
     
     % Find the ID of the nearest node from the user selected point
     nearUserSelectionNodeID=findNodes(msh,'nearest',userSelectedPoint);
@@ -94,7 +93,7 @@ function click(~,~,handle,gm,msh,nodes)
     % Get the distance fromthe user selected point to the nearest node
     radiusSearchSphere=norm(userSelectedPoint-nearUserSelectionNode);
     %Find the ID of the nodes within the search sphere
-    nodesWithinSearchSphereID=findNodes(msh,'radius',userSelectedPoint,radiusSearchSphere);
+    nodesWithinSearchSphereID=findNodes(msh,'radius',radiusSearchSphere);
     % Get the ID of the intersection of the nodes within search sphere and the nodes in face
     nodesInFaceWithinSearchSphereID=intersect(nodesWithinSearchSphereID,nodesInFaceID);
     %Find the nodes within the search sphere
@@ -113,15 +112,9 @@ function click(~,~,handle,gm,msh,nodes)
     disp(nearFaceID);
     
     %Plot nodes of the nearest Face
-%     plot3(  nodes(1,nodesInFaceID),...
-%             nodes(2,nodesInFaceID),...
-%             nodes(3,nodesInFaceID),...
-%             'r*','MarkerSize',10);
-    disp(nearestNodeInFaceID)
-            %Plot nodes of the nearest Face
-    plot3(  nodes(1,nearestNodeInFaceID),...
-            nodes(2,nearestNodeInFaceID),...
-            nodes(3,nearestNodeInFaceID),...
+    plot3(  nodes(1,nodesInFaceID),...
+            nodes(2,nodesInFaceID),...
+            nodes(3,nodesInFaceID),...
             'r*','MarkerSize',10);
 
     writematrix(nearUserSelectionNodeID,'puntos.csv','WriteMode', 'append','Delimiter','comma');
