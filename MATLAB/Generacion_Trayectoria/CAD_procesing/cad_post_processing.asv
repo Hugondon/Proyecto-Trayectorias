@@ -59,9 +59,7 @@ end
 
 
 for cont=1:numFaces
-   distCentroid2FaceNodes=...
-   norm(surfaceInfo.centroidFaces(cont,:)-nodes(:,surfaceInfo.nodesInSurfaceID{cont,:})')
-   surfaceInfo.minor
+   dista=norm(surfaceInfo.centroidFaces(cont,:)-nodes(:,surfaceInfo.nodesInSurfaceID{cont,:})')
    
 end
 
