@@ -1,3 +1,5 @@
+% First try for csv convertion
+
 clear, clc, clear all
 
 FILENAME = 'coordinates.csv';

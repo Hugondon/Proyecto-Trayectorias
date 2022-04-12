@@ -8,15 +8,15 @@ function final_trajectory_data = moveJ(robot,endEffector,ikInitialGuess,ikWeight
 Calculates the IK for linear movement of the robot
     Inputs:
         robot:
-        endEffector:                Name of the end effector
-        ikInitialGuess:             Initial Configuration space guess
-        ikWeights:                  Weights of each joint for the IK Solver
-        ik:                         Inverse Kinematic(IK) solver
-        waypoints:                  The array of poses of the trajectory
-        obstCell:                   Cell array that collision box and pose of each obstacle
-        rrt:                        Rapidly exploring Random Tree
-        intervalWaypoints:          Number of interval waypoints keep in moveJ
-        complete_trajectory_data:   Cell array of the trajectory data
+        endEffector:                Name of the end effector.
+        ikInitialGuess:             Initial Configuration space guess.
+        ikWeights:                  Weights of each joint for the IK Solver.
+        ik:                         Inverse Kinematic(IK) solver.
+        waypoints:                  The array of poses of the trajectory.
+        obstCell:                   Cell array that collision box and pose of each obstacle.
+        rrt:                        Rapidly exploring Random Tree.
+        intervalWaypoints:          Number of interval waypoints keep in moveJ.
+        complete_trajectory_data:   Cell array of the trajectory data.
     Outputs:
         final_trajectory_data:      Cell array of the trajectory data(updated)
 
@@ -40,27 +40,31 @@ trajectory_data=cell(numMainWaypoints-1,3);
 
 %% Rapidly exploring Random Tree (RRT)
 
-% Plan Trajectory
-
-% Allocate memory for path obtain through rrt
+% Allocate memory for the configurations between main waypoints
 pathCell=cell(numMainWaypoints-1,1);
 
-% Get path planning for each consecutive waypoints
+% Get poses between main waypoints
 for count=1:numMainWaypoints-1
+    % Get configurations of the main waypoints and the neccesary intermidiate waypoints to plan the
+    % trajectory
     path = plan(rrt,configMat(count,:),configMat(count+1,:));
+    % Save the configurations
     pathCell{count}=path;
 end
 
 
-% Interpolate Trajectory
+% Interpolate Configurations
 for count=1:numMainWaypoints-1
-    % Interpolation of the paths
+    % Interpolate between configurations
     interpPath = interpolate(rrt,pathCell{count})';
     
     % Store results
+    % Save movement type
     trajectory_data{count,1}=0; % MoveJ=0 MoveL=1
+    % Save Robot Configurations
     trajectory_data{count,3}=interpPath(:,1:intervalWaypoints:end);
 end
+
 %% Number of waypoints between main waypoints
 
 % Allocater memory for the number of intermidiate waypoints between main waypoints
@@ -79,12 +83,12 @@ for count1 = 1:numMainWaypoints-1
     
     
     for count2 = 1:numWaypoints(count1,1)
-        % Inputs the configuration space in the robot the pose is obtained
+        % Apply forward kinematics to obtain poses of each configuration
         waypointsCS(:,:,count2)=getTransform(robot,trajectory_data{count1,3}(:,count2),endEffector);
         
     end
     
-    % Store results
+    % Store poses obtain through forward kinematics
     trajectory_data{count1,2}=waypointsCS;
 end
     %% Append Trajectories

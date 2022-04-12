@@ -1,22 +1,30 @@
+% The script was used to generate test trajectories
 
-% Script to generate trajectories    
-nameTrajectory='thunder_v2';
+%% Import Setup
+nameTrajectory='thunder_test';
 
 % Get positions declare w.r.t Global reference (Robot base)
-%      positions_m =... [0,-0.3,0.55] 
-%  [-0.300000000000000,-0.300000000000000,0.450000000000000;0,-0.300000000000000,0;-0.300000000000000,0,0];
-%  % Get orientations (in rotation vector)
-% orientations = [0, 1, 0, pi; ...
-%                 0, 1, 0, pi; ...
-%                 0, 1, 0, pi; ...
-%                 0, 1, 0, pi];
+% Load struct with positions and orientations
 load Test_trajectories/thunder.mat
 
-positions_m(:,2)=positions_m(:,2)+0.64;
-% positions_m(:,3)=positions_m(:,3)*0.5;
-% positions_m(:,3)=positions_m(:,3)+0.3;
-% positions_m(:,1)=positions_m(:,1)*0.5;
+%% Trajectory processing
 
+% Create Trajectory modifiers(only displacement and stretching not rotation)
+trajectoryModiefiers.stretch=[1,1,1];
+trajectoryModiefiers.offset=[0,0,0];
+
+% Changing trajectories with the modifiers
+positions_m(:,1)    =   trajectoryModiefiers.stretch(1)*...
+                        positions_m(:,1)+...
+                        trajectoryModiefiers.offset(1);
+positions_m(:,2)    =   trajectoryModiefiers.stretch(2)*...
+                        positions_m(:,2)+...
+                        trajectoryModiefiers.offset(2);
+positions_m(:,3)    =   trajectoryModiefiers.stretch(3)*...
+                        positions_m(:,3)+...
+                        trajectoryModiefiers.offset(3);
+
+%% Generate orientations
 % Get number of positions
 number_waypoints = size(positions_m, 1);
 
@@ -24,7 +32,7 @@ number_waypoints = size(positions_m, 1);
 orientations= ones(number_waypoints,1)*[0, 1, 0, pi];
 
 
-%Plot Trajectory
+%% Plot Trajectory
 plot3(positions_m(:,1),positions_m(:,2),positions_m(:,3))
 grid on
 

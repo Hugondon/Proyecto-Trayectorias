@@ -1,5 +1,5 @@
 function [robot, numJoints, endEffector] = declareRobot(Name)
-% declareRobot.m Create a robot object and obtain some of its parameters.
+% Create a robot object and obtain some of its parameters.
 
 %{
 Create a robot objecta and extract important parameters

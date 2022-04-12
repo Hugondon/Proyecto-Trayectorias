@@ -6,18 +6,18 @@ This function does 2 things:
 
     1-Graphs the trajectory the robot will follow:
         Inputs:
-            plotMode        % Dictates how the trajectory will be ploted
-            trajectory_data % This holds the information of the trajectory
-            figureRobot     % Is were the trajectory will be plotted
+            plotMode            Dictates how the trajectory will be ploted
+            trajectory_data     This holds the information of the trajectory
+            figureRobot         Is were the trajectory will be plotted
         Outputs:
             figureRobot (with trajectory plotted)
 
     2-Simulates The robot following the trajectory
         Inputs:
-            trajectory_data % This holds the information of the trajectory
-            robot           % Robot object
-            figureRobot     % Is were were the robot will be simulated
-            viewVector      % Perspective of the robot simulation
+            trajectory_data     This holds the information of the trajectory
+            robot               Robot object
+            figureRobot         Is were were the robot will be simulated
+            viewVector          Perspective of the robot simulation
         Outputs:
             figureRobot (with simulation of the robot)
 %}

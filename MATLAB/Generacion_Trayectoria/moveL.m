@@ -6,15 +6,15 @@ function final_trajectory_data= moveL(waypoints,total_time_to_waypoint,ts,...
 %{
 Calculates the IK for linear movement of the robot
     Inputs:
-        waypoints:                  The array of poses of the trajectory
-        total_time_to_waypoint:     Total time between main waypoints
-        ts:                         Time between interval waypoints
-        ik:                         Inverse Kinematic(IK) solver
-        endEffector:                Name of the end effector
-        ikInitialGuess:             Initial Configuration space guess
-        complete_trajectory_data:   Cell array of the trajectory data
+        waypoints:                  The array of poses of the trajectory.
+        total_time_to_waypoint:     Total time between main waypoints.
+        ts:                         Time between interval waypoints.
+        ik:                         Inverse Kinematic(IK) solver.
+        endEffector:                Name of the end effector.
+        ikInitialGuess:             Initial Configuration space guess.
+        complete_trajectory_data:   Cell array of the trajectory data.
     Outputs:
-        final_trajectory_data:      Cell array of the trajectory data(updated)
+        final_trajectory_data:      Cell array of the trajectory data(updated).
 
 %}
 

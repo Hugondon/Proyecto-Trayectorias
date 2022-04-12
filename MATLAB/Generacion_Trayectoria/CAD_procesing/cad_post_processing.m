@@ -57,13 +57,21 @@ for cont=1:numFaces
    surfaceInfo.centroidFaces(cont,:)=mean(nodes(:,surfaceInfo.nodesInSurfaceID{cont,:}),2);
 end
 
+surfaceInfo.nearestNodeInFace2CentroidID=zeros(numFaces,1);
 
+% Get the node on face nearest to the centroid
 for cont=1:numFaces
-   distCentroid2FaceNodes=...
-   norm(surfaceInfo.centroidFaces(cont,:)-nodes(:,surfaceInfo.nodesInSurfaceID{cont,:})')
-   surfaceInfo.minor
+    distCentroid2FaceNodes=...
+        surfaceInfo.centroidFaces(cont,:)-nodes(:,surfaceInfo.nodesInSurfaceID{cont,:})';
+    
+    [~,idxNearestNode2Centroid]=min(vecnorm(distCentroid2FaceNodes'));
+    surfaceInfo.nearestNodeInFace2CentroidID(cont,1)=...
+        surfaceInfo.nodesInSurfaceID{cont,:}(idxNearestNode2Centroid,:);
    
 end
+
+
+
 
 %% Graph Mesh
 % Create figure
@@ -85,7 +93,7 @@ boton.a=figure;
 figure
 
 % plot in 3D
-handle.p = pdemesh(msd,'FaceAlpha',1);
+handle.p = pdemesh(msd,'FaceAlpha',0.2);
 hold on
 
 %Setup Cursor Mode
@@ -97,6 +105,21 @@ handle.dcm.DisplayStyle = 'window';
 % Clear process variables 
 clear unitConvertionConstant_mm2m
 
+
+% Plot centroid of faces
+% figure(2)
+plot3(  surfaceInfo.centroidFaces(:,1),...
+        surfaceInfo.centroidFaces(:,2),...
+        surfaceInfo.centroidFaces(:,3),...
+        'r*','MarkerSize',15)
+    
+% Plot nearest node to the centroid
+% figure(2)
+figure(2)
+plot3(nodes(1,surfaceInfo.nearestNodeInFace2CentroidID)',...
+    nodes(2,surfaceInfo.nearestNodeInFace2CentroidID)',...
+    nodes(3,surfaceInfo.nearestNodeInFace2CentroidID)',...
+    'm*','MarkerSize',15)
 
 % add callback when point on plot object 'handle.p' is selected
 % 'click' is the callback function being called when user clicks a point on plot
@@ -128,6 +151,9 @@ function click(~,~,handle,gm,msh,nodes)
 
 end
 
+
+
+ 
 
 
 

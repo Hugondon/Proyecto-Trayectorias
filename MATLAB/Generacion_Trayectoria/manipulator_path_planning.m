@@ -1,4 +1,4 @@
-
+% This script was a test for the moveJ function
 %% Function Handles
 declareRobot    =   @declareRobot;
 setObstacles    =   @setObstacles;
@@ -13,6 +13,7 @@ ikInitialGuess = jointHomeAngles;
 obstCell=setObstacles();
 
 %% Inverse Kinematics Solver Setup
+% Inverse kinematics weights for the solver
 ikWeights = ones(1, numJoints);
 ik = inverseKinematics('RigidBodyTree',robot);
 
@@ -26,12 +27,15 @@ waypoints(:,:,2)=trvec2tform([-0.4,0.5,0.7])*axang2tform([1 0 0 pi]);
 waypoints(:,:,3)=trvec2tform([0,-0.5,0.7])*axang2tform([1 0 0 pi]);
 waypoints(:,:,4)=trvec2tform([0.4,0.5,0.7])*axang2tform([1 0 0 pi]);
 
+% Number of waypoints
 numMainWaypoints=size(waypoints,3);
 
-% Configuration of the poses
+% Allocate memory for the robot poses
 configMat=zeros(numMainWaypoints,6);
 
+% Get the configuration for each pose
 for count=1:numMainWaypoints
+    % Calculate inverse kinematics of the poses on "waypoints"
     configMat(count,:)=ik(endEffector,waypoints(:,:,count),ikWeights,ikInitialGuess)';
 end
 
@@ -39,7 +43,9 @@ end
 trajectory_data=cell(numMainWaypoints-1,3);
 
 %% Graph Parameters
+% Mode to graph
 plotMode=1;
+% Interval waypoints between main waypoints
 intervalWaypoints=10;
 
 %% Rapidly exploring Random Tree (RRT)
@@ -47,19 +53,26 @@ intervalWaypoints=10;
 rrt = manipulatorRRT(robot,obstCell);
 % Set random seed to zero
 rng(0)
-% Plan Trajectory
+% Allocate memory for the configurations between main waypoints
 pathCell=cell(numMainWaypoints-1,1);
 
+% Get poses between main waypoints
 for count=1:numMainWaypoints-1
+    % Get configurations of the main waypoints and the neccesary intermidiate waypoints to plan the
+    % trajectory
     path = plan(rrt,configMat(count,:),configMat(count+1,:));
+    % Save the configurations
     pathCell{count}=path;
 end
 
 
-% Interpolate Trajectory
+% Interpolate Configurations
 for count=1:numMainWaypoints-1
+    % Interpolate between configurations
     interpPath = interpolate(rrt,pathCell{count})';
+    % Establish movement type
     trajectory_data{count,1}=0;
+    % Save configurations
     trajectory_data{count,3}=interpPath(:,1:intervalWaypoints:end);
 end
 
@@ -72,36 +85,42 @@ show(robot, jointHomeAngles, 'Frames', 'off', 'PreservePlot', false);
 hold on
 grid on
 
-waypoints_positions = tform2trvec(waypoints(:, :, :));
-plot3(waypoints_positions(:, 1),waypoints_positions(:, 2),waypoints_positions(:, 3), ...
-    'ro', 'LineWidth', 2);
+% Establish axis limits
+xlim([-0.8 0.8]), ylim([-0.8 0.8]), zlim([-0.5 1.2])
 
 % Show Obstacles
 for count=1:size(obstCell,2)
    show(obstCell{count});
 end
 
-% Establish axis limits
-xlim([-0.8 0.8]), ylim([-0.8 0.8]), zlim([-0.5 1.2])
+%% Graph Trajectory
+waypoints_positions = tform2trvec(waypoints(:, :, :));
+plot3(waypoints_positions(:, 1),waypoints_positions(:, 2),waypoints_positions(:, 3), ...
+    'ro', 'LineWidth', 2);
 
-% Number of waypoints between main waypoints
-numWaypoints=zeros(numMainWaypoints-1,1);
-for count = 1:numMainWaypoints-1
-    numWaypoints(count,1)=size(trajectory_data{count,3},2);
-end
 
 %% Waypoints obtain through RRT
-% waypointsRRT=zeros(4,4,numWaypoints);
+
+% Allocate memory for number of waypoints between main waypoints
+numIntermidiateWaypoints=zeros(numMainWaypoints-1,1);
+
+% Get the number of intermidiate waypoints between each main waypoint pair
+for count = 1:numMainWaypoints-1
+    numIntermidiateWaypoints(count,1)=size(trajectory_data{count,3},2);
+end
+
 
 for count1 = 1:numMainWaypoints-1
-    waypointsRRT=zeros(4,4,numWaypoints(count1,1));
+    % Allocate memory for Waypoints generated through RRT
+    waypointsRRT=zeros(4,4,numIntermidiateWaypoints(count1,1));
     
-    for count2 = 1:numWaypoints(count1,1)
+    % Apply forward kinematics to obtain poses of each configuration
+    for count2 = 1:numIntermidiateWaypoints(count1,1)
         waypointsRRT(:,:,count2)=getTransform(robot,trajectory_data{count1,3}(:,count2),endEffector);
         
     end
-    
-   trajectory_data{count1,2}=waypointsRRT;
+    % Save poses
+    trajectory_data{count1,2}=waypointsRRT;
 end
 
 

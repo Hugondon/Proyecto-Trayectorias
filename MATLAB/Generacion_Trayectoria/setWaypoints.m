@@ -3,30 +3,31 @@ function [waypoints, number_waypoints, distances_magnitude_m] = setWaypoints(nam
 
 %{
 This function do 2 things:
-    1-Import CSV File
+    1-Import mat File
         Input:
-            nameTrajectory:         Name of the CSV file where the trajectory is stored
+            nameTrajectory:         Name of the mat file where the trajectory is stored.
         Output:
-            waypointStruct:         Structure storing the trajectory information
+            waypointStruct:         Structure storing the trajectory information.
 
-    2-Extract Information of the CSV file
+    2-Extract Information of the mat file
         Input:
-            waypointStruct:         Structure storing the trajectory information
+            waypointStruct:         Structure storing the trajectory information.
         Output:
-            waypoints:              Array of Poses
-            number_waypoints:       Number of poses in the variable "waypoints"
-            distances_magnitude_m:  Cumulative sum of the magnitudes of the distances between consecutive waypoints
+            waypoints:              Array of Poses.
+            number_waypoints:       Number of poses in the variable "waypoints".
+            distances_magnitude_m:  Cumulative sum of the magnitudes of the distances between
+                                    consecutive waypoints.
 %}
     
     %% Note: Physical limits of the robot
-    % X=[-0.7,0.7]
-    % Y=[-0.7,0.7]
-    % Z=[0.2,0.7]
+        % X=[-0.7,0.7]
+        % Y=[-0.7,0.7]
+        % Z=[0.2,0.7]
 
 
     %% Import File
     
-    % Importing the CSV file
+    % Importing the mat file
     waypointStruct=load(['Test_trajectories/',nameTrajectory,'.mat']);
     
     %% Information extractions
