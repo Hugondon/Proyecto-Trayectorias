@@ -1,3 +1,4 @@
+% CAD Interactive Node Selector Script.
 % Source:
 % https://www.mathworks.com/help/pde/geometry-and-mesh.html?s_tid=CRUX_lftnav
 % File format .STL
@@ -7,7 +8,7 @@ delete listSelectedNodesID.csv nodesTrajectoryInSurfaceID.csv
 %% Function Handles
 getSurfacePath  =   @getSurfacePath;
 
-%% Create and configure DiscreteGeometric model
+%% Create and configure Discrete Geometric Model
 % Create PDE model
 msd = createpde;
 
@@ -25,9 +26,10 @@ centroid.position=mean(gm.Vertices,1);
 
 % Align origin an centroid from the Geometric model
 gm=translate(gm,-1*centroid.position);
-
-% To plot Discrete Geometry
-%pdegplot(gm)
+%{
+% Uncomment to plot Discrete Geometry Model
+pdegplot(gm);
+%}
 
 %Establish new centroid
 centroid.position=[0,0,0];
@@ -36,46 +38,25 @@ centroid.position=[0,0,0];
 
 %Establish maximum and minimum edge lenght( in milimeters)
 edgeLenght.Hmax=0.01;
-edgeLenght.Hmin=edgeLenght.Hmax/4;
+edgeLenght.Hmin=edgeLenght.Hmax;
 
 % Generate a Mesh
 msh = generateMesh(msd,'GeometricOrder','linear','Hmax', edgeLenght.Hmax,'Hmin', edgeLenght.Hmin);
 
-%Nodes are extracted (units meters)
+%Nodes are extracted (units in meters)
 nodes=msh.Nodes;
 
-% Number of Faces in the DiscreteGeometry
+% Number of Faces in the Discrete Geometry Model
 numFaces=gm.NumFaces;
 
-%% Surface centroids
-% % Preallocate memory for the IDs of the nodes in the surface of the mesh
-% surfaceInfo.nodesInSurfaceID=cell(numFaces,1);
-% 
-% % Get nodes IDs of each face
-% for cont=1:numFaces
-%     surfaceInfo.nodesInSurfaceID{cont}=findNodes(msh,'region','Face',cont)';
-% end
-% 
-% % Preallocate memory for face centroids
-% surfaceInfo.centroidFaces=zeros(numFaces,3);
-% 
-% % Get Centroid of each face
-% for cont=1:numFaces
-%    surfaceInfo.centroidFaces(cont,:)=mean(nodes(:,surfaceInfo.nodesInSurfaceID{cont,:}),2);
-% end
-% 
-% surfaceInfo.nearestNodeInFace2CentroidID=zeros(numFaces,1);
-% 
-% % Get the node on face nearest to the centroid
-% for cont=1:numFaces
-%     distCentroid2FaceNodes=...
-%         surfaceInfo.centroidFaces(cont,:)-nodes(:,surfaceInfo.nodesInSurfaceID{cont,:})';
-%     
-%     [~,idxNearestNode2Centroid]=min(vecnorm(distCentroid2FaceNodes'));
-%     surfaceInfo.nearestNodeInFace2CentroidID(cont,1)=...
-%         surfaceInfo.nodesInSurfaceID{cont,:}(idxNearestNode2Centroid,:);
-%    
-% end
+%% Nodes in Surface
+% Preallocate memory for the IDs of the nodes in the surface of the mesh
+surfaceInfo.nodesInSurfaceID=cell(numFaces,1);
+
+% Get nodes IDs of each face
+for cont=1:numFaces
+    surfaceInfo.nodesInSurfaceID{cont}=findNodes(msh,'region','Face',cont)';
+end
 
 %% Vertices of each face
 surfaceInfo.VerticesInFaces=cell(numFaces,1);
@@ -84,16 +65,7 @@ for cont=1:numFaces
     surfaceInfo.VerticesInFaces{cont}=faceEdges(gm,cont)';
 end
 
-
-%% Graph Mesh
-% Create figure
-% figureCAD=figure('Name','CAD Model','NumberTitle','off','WindowState','maximized','Pointer','crosshair');
-% 
-% % Graph mesh
-% pdemesh(msd,'FaceAlpha',0.8)
-
-
-%% Test 
+%% Interactive Node Selection
 %handle.a = axes;
 handle.x = nodes(1,:);
 handle.y = nodes(2,:);
@@ -104,7 +76,7 @@ handle.z = nodes(3,:);
 boton.a=figure;
 figure
 
-% plot in 3D
+% Plot Mesh in 3D
 handle.p = pdemesh(msd,'FaceAlpha',1,'FaceColor',[0.9,0.9,0.9]);
 hold on
 
@@ -117,29 +89,12 @@ handle.dcm.DisplayStyle = 'window';
 % Clear process variables 
 clear unitConvertionConstant_mm2m
 
-
-% % Plot centroid of faces
-% % figure(2)
-% plot3(  surfaceInfo.centroidFaces(:,1),...
-%         surfaceInfo.centroidFaces(:,2),...
-%         surfaceInfo.centroidFaces(:,3),...
-%         'r*','MarkerSize',15)
-%     
-% % Plot nearest node to the centroid
-% % figure(2)
-% figure(2)
-% plot3(nodes(1,surfaceInfo.nearestNodeInFace2CentroidID)',...
-%     nodes(2,surfaceInfo.nearestNodeInFace2CentroidID)',...
-%     nodes(3,surfaceInfo.nearestNodeInFace2CentroidID)',...
-%     'm*','MarkerSize',15)
-
-% add callback when point on plot object 'handle.p' is selected
-% 'click' is the callback function being called when user clicks a point on plot
+% Add callback figure 1 'handle.p' is clicked.
+% 'click' is the callback function being called when user clicks on Figure 1
 boton.a.ButtonDownFcn = {@click,handle,gm,msh,surfaceInfo,edgeLenght,nodes};
-%handle.p.ButtonDownFcn= {@click,handle,gm,msh,nodes};
 
 
-%Callback to define the click
+% Callback to Select Node
 function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
     
     % Get info from Data tip
@@ -184,11 +139,3 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
     end
 
 end
-
-
-
- 
-
-
-
-% It could be that the mesh can be graphed and the user selects the nodes it wants in the trajectory

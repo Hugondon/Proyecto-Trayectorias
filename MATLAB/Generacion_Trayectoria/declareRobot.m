@@ -2,7 +2,7 @@ function [robot, numJoints, endEffector] = declareRobot(Name)
 % Create a robot object and obtain some of its parameters.
 
 %{
-Create a robot objecta and extract important parameters
+Create a robot object and extract important parameters.
     Inputs:
         Name:           Name of the robot
     Outputs:
