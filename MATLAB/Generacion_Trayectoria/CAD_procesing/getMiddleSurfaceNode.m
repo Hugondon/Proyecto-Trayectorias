@@ -62,20 +62,20 @@ the MSP.
     % If nearest node to MSP is not in face then another process most be done
     %% Complex process(CP): Initial search radius
     % Get Nodes in Surface
-    nodesInNearestSurfaceID=surfaceInfo.VerticesInFaces{nearestFace2MSPID};
+    nodesInNearestSurfaceID=surfaceInfo.verticesInFaces{nearestFace2MSPID};
     % Get vector from Middle Spatial Point(MSP) to vertices of the surface
     vectorsFromMSP2FaceVertices=nodes(:,nodesInNearestSurfaceID)-middleSpatialPoint;
     % Get the norm of the vectors "vectorsFromMSP2FaceVertices"
     normVectorsFromMSP2FaceVertices=vecnorm(vectorsFromMSP2FaceVertices);
-    % Get the mean of the norm of "normVectorsFromMSP2FaceVertices"
-    meanNormVectorsFromMSP2FaceVertices=mean(normVectorsFromMSP2FaceVertices,2);
+    % Get the minimum of the norm of "normVectorsFromMSP2FaceVertices"
+    minNormVectorsFromMSP2FaceVertices=min(normVectorsFromMSP2FaceVertices);
      
     % Initial search Radius
-    searchRadius=meanNormVectorsFromMSP2FaceVertices;
+    searchRadius=minNormVectorsFromMSP2FaceVertices;
 
     % Clear process variables
     clear nodesInNearestSurfaceID vectorsFromMSP2FaceVertices normVectorsFromMSP2FaceVertices...
-          meanNormVectorsFromMSP2FaceVertices
+          minNormVectorsFromMSP2FaceVertices
 
     %% CP: Search for middle node in surface
 

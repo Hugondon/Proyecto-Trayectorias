@@ -59,11 +59,13 @@ for cont=1:numFaces
 end
 
 %% Vertices of each face
-surfaceInfo.VerticesInFaces=cell(numFaces,1);
+surfaceInfo.verticesInFaces=cell(numFaces,1);
 % Get nodes IDs of each all the Vertices in each Face
 for cont=1:numFaces
-    surfaceInfo.VerticesInFaces{cont}=faceEdges(gm,cont)';
+    surfaceInfo.verticesInFaces{cont}=faceEdges(gm,cont)';
 end
+
+%% Nodes Shared between faces
 
 %% Interactive Node Selection
 %handle.a = axes;
@@ -104,8 +106,10 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
     % Get ID from user selected node
     userSelectedNodeID=findNodes(msh,'nearest',userSelectedNode);
     
-    % Display ID of the user selected node
+    %{ 
+    % uncomment to display ID of the user selected node
     disp(userSelectedNodeID)
+    %}
     % Select figure to plot
     figure(2);
     %Plot Node
