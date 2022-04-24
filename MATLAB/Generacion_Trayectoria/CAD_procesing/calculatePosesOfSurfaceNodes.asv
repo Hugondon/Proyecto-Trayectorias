@@ -25,14 +25,8 @@ function surfacePathPoses = calculatePosesOfSurfaceNodes(nameFileNodesInSurfaceP
     %% Build Pose
     % Preallocate memory
     surfacePathPoses = zeros(4,4,numberOfNodesInSurfacePath);
-
-    % Insert Scaling factor
-    surfacePathPoses(4,4,:) = 1;
-    % Insert Basis Vectors
+    % Insert Basis X Vector
     surfacePathPoses(1:3,1,:) = basisXVector';
     surfacePathPoses(1:3,2,:) = basisYVector';
-    surfacePathPoses(1:3,3,:) = basisZVector';
-    % Insert Displacement Vector
-    surfacePathPoses(1:3,4,:) = nodes(:,nodesInSurfacaPathID);
 end
 

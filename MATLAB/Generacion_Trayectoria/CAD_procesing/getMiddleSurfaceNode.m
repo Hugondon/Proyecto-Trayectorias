@@ -47,7 +47,7 @@ the MSP.
     2 Processes to achive the same result.
     There are two processes to find the middle surface node, the simple and the complex one. The
     simple is useful if the MSP is outside the mesh or a little bit inside in the mesh. If the MSP
-    is below--threshold-inside the mesh then the complex process most be used.
+    is below-threshold-inside the mesh then the complex process most be used.
     %}
     %% Simple process
 

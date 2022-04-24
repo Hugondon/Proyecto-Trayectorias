@@ -37,7 +37,7 @@ This function does 2 things:
             tcp_position = tform2trvec(trajectory_data{count,2});
             plot3(tcp_position(:, 1), tcp_position(:, 2), tcp_position(:, 3), '-^', 'Color', 'k');
 
-        %Trajectory visualization of the TCP poses for the segment
+        % Trajectory visualization of the TCP poses for the segment
         elseif plotMode == 2
             plotTransforms(tform2trvec(trajectory_data{count,2}), ...
                 tform2quat(trajectory_data{count,2}), 'FrameSize', 0.05);
