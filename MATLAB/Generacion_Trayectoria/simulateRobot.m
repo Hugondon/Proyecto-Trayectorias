@@ -39,8 +39,7 @@ This function does 2 things:
 
         % Trajectory visualization of the TCP poses for the segment
         elseif plotMode == 2
-            plotTransforms(tform2trvec(trajectory_data{count,2}), ...
-                tform2quat(trajectory_data{count,2}), 'FrameSize', 0.05);
+            plotTransforms(tform2trvec(trajectory_data{count,2}),tform2quat(trajectory_data{count,2}), 'FrameSize', 0.05);
         end
         
     end

@@ -6,8 +6,8 @@
 close all
 delete listSelectedNodesID.csv nodesTrajectoryInSurfaceID.csv
 %% Function Handles
-getSurfacePath                  =   @getSurfacePath;
-calculatePosesOfSurfaceNodes    =   @calculatePosesOfSurfaceNodes;
+getSurfacePath  =   @getSurfacePath;
+
 %% Create and configure Discrete Geometric Model
 % Create PDE model
 msd = createpde;
@@ -133,7 +133,6 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
         if size(listSelectedNodesID,1)>2
             nodesTrajectoryInSurfaceID(1)=[];
         end
-        %% Save trajectory information
         % The nodes in the surface path are saved in a CSV file
         writematrix(nodesTrajectoryInSurfaceID','nodesTrajectoryInSurfaceID.csv','WriteMode','append','Delimiter','comma');
         % The poses of the nodes in the surface path are calculated
