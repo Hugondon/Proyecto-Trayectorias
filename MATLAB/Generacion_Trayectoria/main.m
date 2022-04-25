@@ -81,7 +81,7 @@ total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
 %% TCP Pose adejustment
-% Adjustment betwwen the pose of the tool and the pose of the Surface Pose Path
+% Adjustment between the pose of the tool and the pose of the Surface Pose Path
 toolPoseAdejustment = trvec2tform([0,0,0])*axang2tform([0,1,0,pi])*axang2tform([0,0,1,pi/2]);
 % Adjust Waypoinst to tool pose
 waypoints = pagemtimes(waypoints,toolPoseAdejustment);
