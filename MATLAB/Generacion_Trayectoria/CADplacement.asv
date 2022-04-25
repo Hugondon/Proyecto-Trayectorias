@@ -21,14 +21,13 @@ show(robot, jointHomeAngles);
 hold on
 %% Loading Processed CAD
 load CAD_procesing\processedCAD.mat
-load CAD_procesing\CADparameters.mat
 processedCAD.DiscreteGeometry   =   gm;
 processedCAD.SurfacePathPoses   =   surfacePathPoses;
 processedCAD.ReferenceFrame     =   eye(4);
 
 %% Modifing Processed CAD
-displacementVector  =   [0,0.3,0.3];
-rotationVector      =   [0,1,0,-pi/2];
+displacementVector  =   [0,0,0.2];
+rotationVector      =   [0,1,0,pi/2];
 transformedCAD = processedCADTransformation(processedCAD,displacementVector,rotationVector);
 
 %% Save Struct
@@ -42,4 +41,3 @@ hold on
 plotTransforms(tform2trvec(transformedCAD.SurfacePathPoses),tform2quat(transformedCAD.SurfacePathPoses), 'FrameSize', 0.05);
 hold on
 
-view([1,1,0.5]);

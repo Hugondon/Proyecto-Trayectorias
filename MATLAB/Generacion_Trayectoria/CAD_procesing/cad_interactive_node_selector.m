@@ -19,7 +19,7 @@ gm=importGeometry(msd,'Part\cilindro_r100_h400_mm.STL');
 unitConvertionConstant_mm2m=1E-3;
 
 % Convert from milimiters to meters
-gm=scale(gm,unitConvertionConstant_mm2m);
+gm=scale(gm,unitConvertionConstant_mm2m*1/2);
 
 %Get centroid
 centroid.position=mean(gm.Vertices,1);
@@ -37,7 +37,7 @@ centroid.position=[0,0,0];
 %% Generate Mesh
 
 %Establish maximum and minimum edge lenght( in milimeters)
-edgeLenght.Hmax=0.01;
+edgeLenght.Hmax=0.005;
 edgeLenght.Hmin=edgeLenght.Hmax;
 
 % Generate a Mesh
@@ -90,7 +90,8 @@ handle.dcm.DisplayStyle = 'window';
 clear unitConvertionConstant_mm2m
 
 % Save Geometric model for simulation
-save('processedCAD.mat','gm')
+save('CADparameters.mat','gm','edgeLenght');
+
 
 % Add callback figure 1 'handle.p' is clicked.
 % 'click' is the callback function being called when user clicks on Figure 1
@@ -123,6 +124,7 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
 
     % Get all the reference nodes
     listSelectedNodesID=readmatrix('listSelectedNodesID.csv');
+
     % If the quantity of reference nodes is bigger than one a trajectory can be plotted
     if(size(listSelectedNodesID,1)>1)
         % Get the middle node in surface
@@ -135,11 +137,17 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
         end
         %% Save trajectory information
         % The nodes in the surface path are saved in a CSV file
-        writematrix(nodesTrajectoryInSurfaceID','nodesTrajectoryInSurfaceID.csv','WriteMode','append','Delimiter','comma');
+        writematrix(nodesTrajectoryInSurfaceID','nodesTrajectoryInSurfaceID.csv','WriteMode','overwrite','Delimiter','comma');
+        
         % The poses of the nodes in the surface path are calculated
         surfacePathPoses = calculatePosesOfSurfaceNodes('nodesTrajectoryInSurfaceID.csv',gm,msh,nodes,surfaceInfo,edgeLenght);
+        %delete('processedCAD.mat','surfacePathPoses');
         % The poses are saved in a struct
-        save('processedCAD.mat','surfacePathPoses','-append');
+        %save('processedCAD.mat','surfacePathPoses','-append')
+        %writematrix(surfacePathPoses,'processedCAD','WriteMode','replacefile','FileType','.mat');
+        %delete processedCAD.mat;
+        save('processedCAD.mat','surfacePathPoses');
+        %save('processedCAD.mat','surfacePathPoses');
         %% Plot Nodes
         plotMode = 2;
         % Trajectory visualization of the Waypoints for the segment
@@ -151,7 +159,7 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
                     '-*k','MarkerSize',15);
         % Trajectory visualization of the TCP poses for the segment
         elseif plotMode == 2
-            plotTransforms(tform2trvec(surfacePathPoses),tform2quat(surfacePathPoses), 'FrameSize', 0.05);
+            plotTransforms(tform2trvec(surfacePathPoses),tform2quat(surfacePathPoses), 'FrameSize', edgeLenght.Hmax*5);
         end 
     end
 

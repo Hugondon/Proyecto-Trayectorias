@@ -1,4 +1,4 @@
-function figureRobot = simulateRobot(plotMode,trajectory_data,robot,figureRobot,viewVector)
+function figureRobot = simulateRobot(plotMode,trajectory_data,surfacePosePath,robot,figureRobot,viewVector)
 %SIMULATEROBOT Graphs the trajectory and simulates the robot following the trajectory.
 
 %{
@@ -40,6 +40,9 @@ This function does 2 things:
         % Trajectory visualization of the TCP poses for the segment
         elseif plotMode == 2
             plotTransforms(tform2trvec(trajectory_data{count,2}),tform2quat(trajectory_data{count,2}), 'FrameSize', 0.05);
+        % Trajectory visualization of the Surface Path Poses for the segment
+        elseif plotMode == 3
+            plotTransforms(tform2trvec(surfacePosePath(:,:,count)),tform2quat(surfacePosePath(:,:,count)), 'FrameSize', 0.05);
         end
         
     end

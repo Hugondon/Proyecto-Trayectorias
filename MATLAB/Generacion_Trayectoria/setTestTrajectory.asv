@@ -1,4 +1,4 @@
-function [waypoints, number_waypoints, distances_magnitude_m] = setWaypoints(nameTrajectory)
+function [waypoints, number_waypoints, distances_magnitude_m] = setTestTrajectory(nameTrajectory)
 %SETWAYPOINTS Returns the following information about the trajectory: list of waypoints, the number of waypoints and the cumulative sum of the magnitudes of the distances between consecutive waypoints.
 
 %{
@@ -23,7 +23,6 @@ This function do 2 things:
         % X=[-0.7,0.7]
         % Y=[-0.7,0.7]
         % Z=[0.2,0.7]
-
 
     %% Import File
     
