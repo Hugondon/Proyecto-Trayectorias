@@ -1,0 +1,19 @@
+Comment,Designator,Footprint,LCSC Part #
+0.1u,"C2, C5, C7",Capacitor_SMD:C_0603_1608Metric,C161854
+1u,C4,Capacitor_SMD:C_0603_1608Metric,C2857982
+10u,C6,Capacitor_SMD:C_0603_1608Metric,C2909630
+22u,"C1, C3",Capacitor_SMD:C_0603_1608Metric,C93926
+220,"R4, R9",Resistor_SMD:R_0603_1608Metric,C2907127
+470,R5,Resistor_SMD:R_0603_1608Metric,C2907172
+10k,"R1, R2, R6",Resistor_SMD:R_0603_1608Metric,C98220
+4.35E+11,S1,434781025816:434781025816,
+4k7,"R3, R7, R8",Resistor_SMD:R_0603_1608Metric,C23162
+AMS1117CD-3.3,U1,Package_TO_SOT_SMD:SOT-223-3_TabPin2,C498117
+BC817,"Q1, Q2",Package_TO_SOT_SMD:SOT-23,C475629
+Conn_01x04_Male,"J3, J4",Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical,
+Conn_01x06_Female,J2,Connector_PinHeader_1.27mm:PinHeader_1x06_P1.27mm_Vertical,
+CP2102N-Axx-xQFN28,U2,Package_DFN_QFN:QFN-28-1EP_5x5mm_P0.5mm_EP3.35x3.35mm,C80225
+ESP32-WROOM-32,U3,RF_Module:ESP32-WROOM-32,C82899
+MountingHole,H1-H4,MountingHole:MountingHole_3.2mm_M3,
+RED,"D1, D2",LED_SMD:LED_0603_1608Metric,C253533
+USB_B_Micro,J1,Connector_USB:USB_Micro-B_Wuerth_629105150521,
