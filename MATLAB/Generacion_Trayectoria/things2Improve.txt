@@ -1,0 +1,3 @@
+An OOP aproach would have been better for the project.
+My inexperience in software definetily would make
+this code harder to mantain.

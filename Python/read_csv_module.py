@@ -1,13 +1,14 @@
 import csv
 import os
+from csv_example import CSV_PATH
 
 # from generate_URScript import ConfigurationSpace, Pose
 from generate_URScript_module import Pose, ConfigurationSpace
 
 
 def main():
-    os.chdir("C:/Users/hugon/Documents/Git/Proyecto-Trayectorias")
-
+    #os.chdir("C:/Users/hugon/Documents/Git/Proyecto-Trayectorias")
+    os.chdir("E:\Documentos_HD\Universidad_HD\Proyecto_Final_Carrera\Programas\Repositorio_PT\Proyecto-Trayectorias")
     movements_list = []
     poses_list = []
     configuration_spaces_list = []

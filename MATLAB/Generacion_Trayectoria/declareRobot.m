@@ -1,11 +1,15 @@
 function [robot, numJoints, endEffector] = declareRobot(Name)
-    % declareRobot.m Create a robot object and obtain some of its parameters.
-    % Inputs:
-    % Name: string containing robot name (e.g "universalUR3", "universalUR5")
-    % Outputs:
-    % robot: rigidBodyTree object.
-    % numJoints: number of joints from robot
-    % endEffector: tool connected at the end of robot.
+% Create a robot object and obtain some of its parameters.
+
+%{
+Create a robot object and extract important parameters.
+    Inputs:
+        Name:           Name of the robot
+    Outputs:
+        robot:          Robot object
+        numJoints:      Number of joints
+        endEffector:    Name of the end effector
+%}
 
     % Load the robot object with the Name input in the function and set the format of the parameters
     robot = loadrobot(Name, "DataFormat", "column", "Gravity", [0 0 -9.81]);
