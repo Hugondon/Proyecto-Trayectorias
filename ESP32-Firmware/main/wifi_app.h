@@ -49,7 +49,7 @@ typedef enum wifi_app_message {
     @note Expand this based on your application requirements.
 */
 typedef struct wifi_app_queue_message{
-    wifi_app_message_e MsgID;
+    wifi_app_message_e msgID;
 } wifi_app_queue_message_t;
 
 /*

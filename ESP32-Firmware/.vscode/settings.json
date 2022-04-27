@@ -13,6 +13,11 @@
     "idf.toolsPathWin": "c:\\ESP32\\.espressif",
     "idf.flashType": "UART",
     "files.associations": {
-        "rgb_led.h": "c"
+        "rgb_led.h": "c",
+        "esp_http_server.h": "c",
+        "esp_log.h": "c",
+        "esp_system.h": "c",
+        "freertos.h": "c",
+        "http_server.h": "c"
     }
 }

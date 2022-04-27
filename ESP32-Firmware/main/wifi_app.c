@@ -7,17 +7,16 @@
 */
 #include "wifi_app.h"
 
-#include "driver/gpio.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "freertos/task.h"
+#include "http_server.h"
 #include "lwip/netdb.h"
 #include "rgb_led.h"
 #include "tasks_common.h"
-
 // Tag used for ESP serial console messages
 static const char TAG[] = "wifi_app";
 
@@ -131,14 +130,13 @@ static void wifi_app_soft_ap_config(void) {
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &ap_config));        //> Set our configuration
     ESP_ERROR_CHECK(esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_AP_BANDWIDTH));  //> Our default bandwidth 20MHz
     ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_STA_POWER_SAVE));                   //> Power save set to "NONE"
-};
+}
 
-/*
-    Main task for the WiFi application
-    @param pvParameters parameter which can be passed to the task
-*/
-static void
-wifi_app_task(void* pvParameters) {
+/**
+ * Main task for the WiFi application
+ * @param pvParameters parameter which can be passed to the task
+ */
+static void wifi_app_task(void* pvParameters) {
     wifi_app_queue_message_t msg;
 
     // Initialize the event handler
@@ -158,11 +156,11 @@ wifi_app_task(void* pvParameters) {
 
     for (;;) {
         if (xQueueReceive(wifi_app_queue_handle, &msg, portMAX_DELAY)) {
-            switch (msg.MsgID) {
+            switch (msg.msgID) {
                 case WIFI_APP_MSG_START_HTTP_SERVER:
                     ESP_LOGI(TAG, "WIFI_APP_MSG_START_HTTP_SERVER");
 
-                    // http_server_start();
+                    http_server_start();
                     rgb_led_http_server_started();
                     break;
                 case WIFI_APP_MSG_CONNECTING_FROM_HTTP_SERVER:
@@ -182,7 +180,7 @@ wifi_app_task(void* pvParameters) {
 
 BaseType_t wifi_app_send_message(wifi_app_message_e msgID) {
     wifi_app_queue_message_t msg;
-    msg.MsgID = msgID;
+    msg.msgID = msgID;
     return xQueueSend(wifi_app_queue_handle, &msg, portMAX_DELAY);
 }
 
@@ -198,7 +196,6 @@ void wifi_app_start(void) {
     // Create message queue
     wifi_app_queue_handle = xQueueCreate(3, sizeof(wifi_app_queue_message_t));
 
-    // Startthe WiFi application task
-
+    // Start the WiFi application task
     xTaskCreatePinnedToCore(&wifi_app_task, "wifi_app_task", WIFI_APP_TASK_STACK_SIZE, NULL, WIFI_APP_TASK_PRIORITY, NULL, WIFI_APP_TASK_CORE_ID);
 }
