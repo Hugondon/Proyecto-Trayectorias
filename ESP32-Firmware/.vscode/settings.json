@@ -18,6 +18,7 @@
         "esp_log.h": "c",
         "esp_system.h": "c",
         "freertos.h": "c",
-        "http_server.h": "c"
+        "http_server.h": "c",
+        "wifi_app.h": "c"
     }
 }
