@@ -3,6 +3,7 @@ import tkinter as tk
 
 from tkinter import messagebox, ttk
 from tkinter.filedialog import asksaveasfile, askopenfilename
+from PIL import ImageTk, Image
 from utils import *
 
 
@@ -10,6 +11,8 @@ class FileManager(ttk.Frame):
 
     DEFAULT_CSV_PATH = "C:/*.csv"
     DEFAULT_USCRIPT_PATH = "C:/*.script"
+    LOGO_PATH = "imgs/hara_services_v3.png"
+    LOGO_WIDTH, LOGO_HEIGHT = 291, 241
 
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -43,7 +46,9 @@ class FileManager(ttk.Frame):
             style="LightText.TLabel"
         )
         self.csv_path_entry = ttk.Entry(
-            self, width=25, textvariable=self.csv_file_path_str)
+            self, width=25, textvariable=self.csv_file_path_str,
+            font=("Segoe UI", 9)
+        )
         load_csv_path_button = ttk.Button(
             self,
             text="Load CSV File",
@@ -63,7 +68,10 @@ class FileManager(ttk.Frame):
             style="LightText.TLabel"
         )
         self.urscript_filepath_entry = ttk.Entry(
-            self, width=25, textvariable=self.urscript_file_path_str)
+            self, width=25,
+            textvariable=self.urscript_file_path_str,
+            font=("Segoe UI", 9)
+        )
         urscript_button = ttk.Button(
             self,
             text="Save URScript File",
@@ -79,6 +87,15 @@ class FileManager(ttk.Frame):
         urscript_button.grid(
             row=2, column=2, sticky="EW", padx=(15, 5), pady=(10, 10))
         """ FOURTH ROW """
+
+        hara_logo_img = Image.open(self.LOGO_PATH)
+        hara_logo_img = hara_logo_img.resize(
+            (self.LOGO_WIDTH//4, self.LOGO_HEIGHT//4))
+        hara_logo_img = ImageTk.PhotoImage(hara_logo_img)
+        panel = ttk.Label(self, image=hara_logo_img)
+
+        # Linea importante
+        panel.image = hara_logo_img
         parse_csv_button = ttk.Button(
             self,
             text="Save to specific folder",
@@ -86,11 +103,14 @@ class FileManager(ttk.Frame):
             style="FileManagerButton.TButton",
             cursor="hand2"
         )
+
+        panel.grid(
+            row=3, column=0, sticky="NW", padx=(15, 0), pady=(0, 10)
+        )
         parse_csv_button.grid(
-            row=3, column=2, sticky="EW", padx=(15, 5), pady=(0, 10))
+            row=3, column=2, sticky="NE", padx=(15, 5), pady=(0, 10))
 
     def load_csv_path(self):
-        print("UPDATING CSV Path")
         file = askopenfilename(
             title="Select New Path",
             filetypes=[("csv", ".csv")],
@@ -99,7 +119,6 @@ class FileManager(ttk.Frame):
             self.csv_path_entry.delete(0, tk.END)
             self.csv_path_entry.insert(0, file)
             self.csv_file_path = f"{self.csv_file_path_str.get()}"
-            print(self.csv_file_path)
         else:
             messagebox.showinfo(
                 message="No File Selected",
@@ -107,26 +126,27 @@ class FileManager(ttk.Frame):
             )
 
     def update_urscript_path(self):
-        print("Saving URScript File")
         self.controller.parse_csv(self.csv_file_path)
-
-        # Validarlo
         file_path = f"{self.urscript_file_path_str.get()}"
-
-        with open(file_path, 'w') as f:
-            func = function_structure(
-                "initialization", self.controller.initialization_content)
-            func += function_structure("main",
-                                       self.controller.main_content)
-            f.write(func)
-        self.urscript_filepath_entry.delete(0, tk.END)
-        self.urscript_filepath_entry.insert(0, file_path)
-        print("Se creó archivo Script!")
+        try:
+            with open(file_path, 'w') as f:
+                func = function_structure(
+                    "initialization", self.controller.initialization_content)
+                func += function_structure("main",
+                                           self.controller.main_content)
+                f.write(func)
+        except OSError:
+            messagebox.showinfo(
+                message=f"{file_path} is not a valid path to save your file!",
+                title="Error"
+            )
+        else:
+            self.urscript_filepath_entry.delete(0, tk.END)
+            self.urscript_filepath_entry.insert(0, file_path)
 
     def parser_csv_to_urscript(self):
-        print("PARSING!")
-        # Generación de archivo
 
+        # Generación de archivo
         self.controller.parse_csv(self.csv_file_path)
         file = asksaveasfile(filetypes=[("UR script", ".script")],
                              defaultextension=".script")
@@ -139,9 +159,8 @@ class FileManager(ttk.Frame):
                 file.write(func)
             self.urscript_filepath_entry.delete(0, tk.END)
             self.urscript_filepath_entry.insert(0, file.name)
-            print("Se creó archivo Script!")
         else:
             messagebox.showinfo(
-                message="No se creará archivo",
+                message="File won't be created",
                 title="Error"
             )
