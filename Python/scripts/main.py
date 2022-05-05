@@ -3,7 +3,7 @@ import csv
 # import matlab.engine
 import os
 
-from generate_URScript_module import *
+from scripts.generate_URScript_module import *
 
 
 """
