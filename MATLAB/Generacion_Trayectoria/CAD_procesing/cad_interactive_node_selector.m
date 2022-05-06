@@ -13,13 +13,13 @@ calculatePosesOfSurfaceNodes    =   @calculatePosesOfSurfaceNodes;
 msd = createpde;
 
 % Import STL into the PDE model
-gm=importGeometry(msd,'Part\cilindro_r100_h400_mm.STL');
+gm=importGeometry(msd,'Part\botella.STL');
 
 %Conversion constant, from milimiters to meters
 unitConvertionConstant_mm2m=1E-3;
 
 % Convert from milimiters to meters
-gm=scale(gm,unitConvertionConstant_mm2m*1/2);
+gm=scale(gm,unitConvertionConstant_mm2m);
 
 %Get centroid
 centroid.position=mean(gm.Vertices,1);
@@ -38,9 +38,10 @@ centroid.position=[0,0,0];
 
 %Establish maximum and minimum edge lenght( in milimeters)
 edgeLenght.Hmax=0.005;
-edgeLenght.Hmin=edgeLenght.Hmax;
+edgeLenght.Hmin=edgeLenght.Hmax/2;
 
 % Generate a Mesh
+%msh = generateMesh(msd,'GeometricOrder','linear');
 msh = generateMesh(msd,'GeometricOrder','linear','Hmax', edgeLenght.Hmax,'Hmin', edgeLenght.Hmin);
 
 %Nodes are extracted (units in meters)
@@ -77,7 +78,7 @@ boton.a=figure;
 figure
 
 % Plot Mesh in 3D
-handle.p = pdemesh(msd,'FaceAlpha',1,'FaceColor',[0.9,0.9,0.9]);
+handle.p = pdemesh(msd,'FaceAlpha',0.5,'FaceColor',[0.9,0.9,0.9]);
 hold on
 
 %Setup Cursor Mode

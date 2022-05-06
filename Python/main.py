@@ -26,17 +26,21 @@ parent_directory_name = os.path.dirname(complete_path)
 parent_directory_name = os.path.dirname(parent_directory_name)
 CSV_PATH = os.path.join(parent_directory_name, "MATLAB")
 CSV_PATH = os.path.join(CSV_PATH, "Generacion_Trayectoria")
-CSV_PATH = os.path.join(CSV_PATH, "trajectory.csv")
+CSV_PATH = os.path.join(CSV_PATH, "adrian.csv")
 
 MOVEJ_MOVEMENT = 0
 MOVEL_MOVEMENT = 1
 
 """ Constantes relacionadas a escritura de Script"""
-FILENAME = "trajectory_hola_v3.script"
+FILENAME = "prueba_botella_11.script"
 # URSCRIPT_FILE_PATH = "/home/hugo/URSim-5.10.2/programs/Proyecto/Trayectorias"
 # URSCRIPT_FILE_PATH = "C:/Users/hugon/Documents/Git/Proyecto-Trayectorias/Python"
 # URSCRIPT_FILE_PATH = "E:/Documentos_HD/Universidad_HD/Proyecto_Final_Carrera/Programas/Repositorio_PT/Proyecto-Trayectorias/Python"
-URSCRIPT_FILE_PATH = "E:/Documentos_HD/UR_Polyscope/Carpeta_Compartida_UR-Polyscope_594"
+# URSCRIPT_FILE_PATH = "E:/Documentos_HD/UR_Polyscope/Carpeta_Compartida_UR-Polyscope_594"
+# URSCRIPT_FILE_PATH = "E:/Documentos_HD/Universidad_HD/Proyecto_Final_Carrera/Programas/Repositorio_PT/Proyecto-Trayectorias/Python"
+# URSCRIPT_FILE_PATH = "F:/Programas_UR/pruebas_02_mayo"
+# URSCRIPT_FILE_PATH = "F:/Programas_UR/pruebas_02_mayo_2"
+URSCRIPT_FILE_PATH = "F:/Programas_UR/pruebas_02_mayo_7"
 # URSCRIPT_FILE_PATH = "/home/damiau/ursim-5.9.4.1031232/programs"
 
 
@@ -111,9 +115,9 @@ def main():
     #     "program_counter", "Inserte cantidad de repeticiones:"
     # )
 
-    initialization_content += movej_function(
-        get_inverse_kin_function(pose_1, initial_configuration_space)
-    )
+    # initialization_content += movej_function(
+    #     get_inverse_kin_function(pose_1, initial_configuration_space)
+    # )
 
     #  main en Script.
 
