@@ -32,6 +32,7 @@ processedCADTransformation  =   @processedCADTransformation;
 
 % Get Joint angles, Home position, TCP position and its orientation
 load UR5positions
+jointHomeAngles(1) = -pi/2;
 
 %% Set Inverse Kinematics Paramaters
 
@@ -51,7 +52,8 @@ switch typeTrajectory
         nameTrajectory  =   'hola_mundo_v3';
         % Import the information of the waypoints of the trajectory
         [waypoints, numberWaypoints, magnitudeDistances] = setTestTrajectory(nameTrajectory);
-    case 1
+        CADTrajectory.SurfacePathPoses = waypoints;
+    case 1 
         nameTransformedCAD = 'transformedCAD';
         CADTrajectory = setCADTrajectory(nameTransformedCAD);
         waypoints = CADTrajectory.SurfacePathPoses;
@@ -66,10 +68,10 @@ obstCell={};
 %% Parameters of the Trajectory of the Robot's TCP
 
 % TCP Speed(Defined by user)
-tcpSpeed_ms = 0.5; %[m/s]
+tcpSpeed_ms = 0.01; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
-nIntermediateWaypoints = 5;
+nIntermediateWaypoints = 1;
 
 % Get the cummulative sum of the magnitudes of the distance (initial distance = 0 m)
 csMagnitudeDistances = cumsum([0, magnitudeDistances]);
@@ -80,7 +82,7 @@ total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
 % Get time step(ts) interval
 ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
-%% TCP Pose adejustment
+%% TCP Pose adjustment
 % Adjustment between the pose of the tool and the pose of the Surface Pose Path
 toolPoseAdejustment = trvec2tform([0,0,0])*axang2tform([0,1,0,pi])*axang2tform([0,0,1,pi/2]);
 % Adjust Waypoinst to tool pose
@@ -189,7 +191,7 @@ figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPo
                         %[  -0.6    -0.6    0.5 ]
 
 %% Convertion to CSV
-FILENAME = 'trajectory.csv';
+FILENAME = 'adrian.csv';
 convert2csv(trajectory_data,FILENAME);
 
 % Delete process variables

@@ -1,11 +1,11 @@
 % The script was used to generate test trajectories
 
 %% Import Setup
-nameTrajectory='thunder_test';
+nameTrajectory='hola_mundo_v4';
 
 % Get positions declare w.r.t Global reference (Robot base)
 % Load struct with positions and orientations
-load Test_trajectories/thunder.mat
+load Test_trajectories/hola_mundo_v3.mat
 
 %% Trajectory processing
 
@@ -29,7 +29,7 @@ positions_m(:,3)    =   trajectoryModiefiers.stretch(3)*...
 number_waypoints = size(positions_m, 1);
 
 % Single orientation
-orientations= ones(number_waypoints,1)*[0, 1, 0, pi];
+orientations= ones(number_waypoints,1)*[0, 0, 1, pi/2];
 
 
 %% Plot Trajectory

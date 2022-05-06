@@ -14,7 +14,7 @@ load UR5positions
 % Create Figure for the Robot Simulation
 figureRobot=figure('Name','CAD Placement Figure','NumberTitle','off','WindowState','maximized');
 jointHomeAngles(1) = -pi/2;
-jointHomeAngles(6) = 0;
+%jointHomeAngles(6) = 0;
 % Show robot in Initial Configuration Space
 show(robot, jointHomeAngles);
 %show(robot, jointHomeAngles, 'Frames', 'off', 'PreservePlot', false);
@@ -27,8 +27,9 @@ processedCAD.SurfacePathPoses   =   surfacePathPoses;
 processedCAD.ReferenceFrame     =   eye(4);
 
 %% Modifing Processed CAD
-displacementVector  =   [0,0.3,0.3];
-rotationVector      =   [0,1,0,-pi/2];
+displacementVector  =   [0.15,0.68,0.125];
+rotationVector      =   [0,0,1,-pi/4];
+%rotationVector= [0.3574    0.8629   -0.3574    1.7178]
 transformedCAD = processedCADTransformation(processedCAD,displacementVector,rotationVector);
 
 %% Save Struct
