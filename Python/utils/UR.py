@@ -88,14 +88,15 @@ def popup_function(msg: str) -> str:
 
 
 def movel_function(
-    initial_pose: str, radius: str = "0.0", EOLC: bool = True, SOL: bool = False
+    pose: str, radius: str = "0.0", EOLC: bool = True, SOL: bool = False
 ) -> str:
     """Return string for movel function."""
     return_string = ""
     if not SOL:
         return_string += "\t"
 
-    return_string += f"movel({initial_pose}, r={radius})"
+    return_string += f"movel(pose_trans(starting_pose_tcp, pose_trans(first_trajectory_pose,{pose}, r={radius})))"
+    # return_string += f"movel({pose}, r={radius})"
 
     if EOLC:
         return_string += "\n"
@@ -103,19 +104,24 @@ def movel_function(
     return return_string
 
 
-def movej_function(initial_pose: str, EOLC: bool = True, SOL: bool = False) -> str:
+def movej_function(pose: str, EOLC: bool = True, SOL: bool = False) -> str:
     """Return string for movej function."""
 
     return_string = ""
     if not SOL:
         return_string += "\t"
 
-    return_string += f"movej({initial_pose})"
+    return_string += f"movej({pose})"
 
     if EOLC:
         return_string += "\n"
 
     return return_string
+
+
+def get_actual_tcp_pose() -> str:
+    """Return string for get_actual_tcp_pose function."""
+    return "get_actual_tcp_pose()"
 
 
 def get_inverse_kin_function(pose: str, qnear: str) -> str:
