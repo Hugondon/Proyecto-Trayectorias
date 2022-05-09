@@ -153,8 +153,8 @@ class Parser(tk.Tk):
 
             #  main en Script.
 
-            self.initialization_content += f"\tfirst_trajectory_pose = pose_inv({pose_1})\n"
-            self.initialization_content += f"\tstarting_pose_tcp = {get_actual_tcp_pose()}\n"
+            self.main_initialization = f"\tfirst_trajectory_pose = pose_inv({pose_1})\n"
+            self.main_initialization += f"\tstarting_pose_tcp = {get_actual_tcp_pose()}\n"
 
             self.main_initialization = f"\tcounter = 0\n"
             self.main_content = ""

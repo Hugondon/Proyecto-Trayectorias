@@ -95,7 +95,7 @@ def movel_function(
     if not SOL:
         return_string += "\t"
 
-    return_string += f"movel(pose_trans(starting_pose_tcp, pose_trans(first_trajectory_pose,{pose}, r={radius})))"
+    return_string += f"movel(pose_trans(starting_pose_tcp, pose_trans(first_trajectory_pose,{pose})), r={radius})"
     # return_string += f"movel({pose}, r={radius})"
 
     if EOLC:
