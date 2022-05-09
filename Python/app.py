@@ -151,11 +151,10 @@ class Parser(tk.Tk):
             #     "program_counter", "Inserte cantidad de repeticiones:"
             # )
 
-            self.initialization_content += movej_function(
-                get_inverse_kin_function(pose_1, initial_configuration_space)
-            )
-
             #  main en Script.
+
+            self.initialization_content += f"\tfirst_trajectory_pose = pose_inv({pose_1})\n"
+            self.initialization_content += f"\tstarting_pose_tcp = {get_actual_tcp_pose()}\n"
 
             self.main_initialization = f"\tcounter = 0\n"
             self.main_content = ""

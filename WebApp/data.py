@@ -1,0 +1,49 @@
+data = [
+    {
+        "Robot_State":[
+            {"Mode" : 9},
+            {"Power_ON" : True},
+            {"Security_Stopped" : True},
+            {"Emergency_Stopped" : True}
+        ],
+        "Joint_Angle":
+        {
+            "Base_mrad" : 3.14,
+            "Shoulder_mrad" : 3.14,
+            "Elbow_mrad" : 3.14,
+            "Wrist1_mrad" : 3.14,
+            "Wrist2_mrad" : 3.14,
+            "Wrist3_mrad" : 3.14
+        },
+        "Joint_Angle_Velocity":
+        {
+            "Base_mrad_s" : 3.14,
+            "Shoulder_mrad_s" : 3.14,
+            "Elbow_mrad_s" : 3.14,
+            "Wrist1_mrad_s" : 3.14,
+            "Wrist2_mrad_s" : 3.14,
+            "Wrist3_mrad_s" : 3.14
+        },
+        "TCP_Position":
+        {
+            "X_tenth_mm" : 2.5,
+            "Y_tenth_mm" : 2.5,
+            "Z_tenth_mm" : 2.5
+        },
+        "TCP_Orientation":
+        {
+            "RX_mrad" : 1.1,
+            "RY_mrad" : 1.1,
+            "RZ_mrad" : 1.1
+        },
+        "TCP_Speed":
+        {
+            "X_mm_s" : 4.5,
+            "Y_mm_s" : 4.5,
+            "Z_mm_s" : 4.5,
+            "RX_mrad_s" : 4.5,
+            "RY_mrad_s" : 4.5,
+            "RZ_mrad_s" : 4.5
+        }
+    }
+]
