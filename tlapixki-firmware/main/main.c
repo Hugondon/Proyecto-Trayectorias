@@ -8,15 +8,21 @@
 */
 #include <string.h>
 
+#include "esp_http_client.h"
+#include "esp_log.h"
 #include "esp_netif.h"
 #include "ethernet-wifi-connect.h"
 #include "nvs_flash.h"
+#include "requests.h"
 // #include "sdkconfig.h"
+
+#define DEBUG
 
 // TCP client multiple netif
 static const char *TAG = "main";
-static const char *payload = "GET / HTTP/1.1\r\n\r\n";
 
+#ifndef DEBUG
+static const char *payload = "GET / HTTP/1.1\r\n\r\n";
 static void app_multiple_handle(esp_ip4_addr_t *ip4_addr, esp_netif_t *esp_netif) {
     char rx_buffer[128] = {0};
     const char *netif_name = esp_netif_get_desc(esp_netif);
@@ -104,7 +110,6 @@ static void app_multiple_handle(esp_ip4_addr_t *ip4_addr, esp_netif_t *esp_netif
 app_multiple_handle_fail:
     close(sock);
 }
-
 static void app_connection_task(void *pvParameters) {
     esp_ip4_addr_t ip4_addr;
     const char *netif_desc = pvParameters;
@@ -137,6 +142,7 @@ static void app_connection_task(void *pvParameters) {
     ESP_LOGE(TAG, "%s with netif desc:%s Failed! exiting", __func__, netif_desc);
     vTaskDelete(NULL);
 }
+#endif
 
 void app_main(void) {
     // Initialize NVS
@@ -152,6 +158,10 @@ void app_main(void) {
     ESP_ERROR_CHECK(esp_event_loop_create_default());  // Event Loop
     ESP_ERROR_CHECK(example_connect());
 
-    xTaskCreate(&app_connection_task, "app_ethernet_task", 4096, "eth", 5, NULL);
-    xTaskCreate(&app_connection_task, "app_wifi_task", 4096, "sta", 5, NULL);
+    // xTaskCreate(&app_connection_task, "app_ethernet_task", 4096, "eth", 5, NULL);
+    // xTaskCreate(&app_connection_task, "app_wifi_task", 4096, "sta", 5, NULL);
+
+    // http_client_start();
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    http_client_get();
 }
