@@ -34,7 +34,8 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "chrono": "c"
+        "chrono": "c",
+        "*.inc": "c"
     },
     "idf.flashType": "UART"
 }

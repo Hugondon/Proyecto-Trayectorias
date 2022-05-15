@@ -24,7 +24,7 @@
 #define MASTER_MAX_RETRY (500)
 
 // Timeout to update cid over Modbus
-#define UPDATE_CIDS_TIMEOUT_MS (500)
+#define UPDATE_CIDS_TIMEOUT_MS (50)
 #define UPDATE_CIDS_TIMEOUT_TICS (UPDATE_CIDS_TIMEOUT_MS / portTICK_RATE_MS)
 
 // Timeout between polls

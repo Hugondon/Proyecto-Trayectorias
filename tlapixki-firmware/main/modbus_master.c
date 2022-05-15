@@ -3,8 +3,10 @@
 */
 #include "modbus_master.h"
 
+#include "configurations.h"
 #include "ethernet-wifi-connect.h"
 #include "tasks_common.h"
+#define SLAVE_IP_ADDRESS MB_SLAVE_IP_ADDRESS
 
 static const char *TAG = "Modbus Master";
 
@@ -47,9 +49,8 @@ const mb_parameter_descriptor_t device_parameters[] = {
 };
 
 char *slave_ip_address_table[] = {
-    // "192.168.1.102",  // Address corresponds to UR5
-    "192.168.1.103",  // Address corresponds to Debug PC
-    NULL,             // End of table condition (must be included)
+    SLAVE_IP_ADDRESS,
+    NULL,  // End of table condition (must be included)
 };
 // Calculate number of parameters in the table
 const uint16_t num_device_parameters = (sizeof(device_parameters) / sizeof(device_parameters[0]));
@@ -138,7 +139,7 @@ void master_operation_func(void *arg) {
 
     ESP_LOGI(TAG, "Start modbus test...");
 
-    for (uint16_t retry = 0; retry <= MASTER_MAX_RETRY && (!alarm_state); retry++) {
+    for (uint16_t retry = 0; retry <= MASTER_MAX_RETRY; retry++) {
         // Read all found characteristics from slave(s)
         for (uint16_t cid = 0; (err != ESP_ERR_NOT_FOUND) && cid < MASTER_MAX_CIDS; cid++) {
             // Get data from parameters description table
@@ -192,86 +193,6 @@ void master_operation_func(void *arg) {
         }
         vTaskDelay(UPDATE_CIDS_TIMEOUT_TICS);
     }
-
-    if (alarm_state) {
-        ESP_LOGI(TAG, "Alarm triggered by cid #%d.",
-                 param_descriptor->cid);
-    } else {
-        ESP_LOGE(TAG, "Alarm is not triggered after %d retries.",
-                 MASTER_MAX_RETRY);
-    }
-    ESP_LOGI(TAG, "Destroy master...");
-    vTaskDelay(100);
-}
-
-void mb_master_task(void *pvParameters) {
-    esp_err_t err = ESP_OK;
-    uint16_t value = 0;
-    bool alarm_state = false;
-    const mb_parameter_descriptor_t *param_descriptor = NULL;
-    for (;;) {
-        ESP_LOGI(TAG, "MB Master Polling!");
-        // for (uint16_t retry = 0; retry <= MASTER_MAX_RETRY && (!alarm_state); retry++) {
-        //     // Read all found characteristics from slave(s)
-        //     for (uint16_t cid = 0; (err != ESP_ERR_NOT_FOUND) && cid < MASTER_MAX_CIDS; cid++) {
-        //         // Get data from parameters description table
-        //         // and use this information to fill the characteristics description table
-        //         // and having all required fields in just one table
-        //         err = mbc_master_get_cid_info(cid, &param_descriptor);
-        //         if ((err != ESP_ERR_NOT_FOUND) && (param_descriptor != NULL)) {
-        //             void *temp_data_ptr = master_get_param_data(param_descriptor);
-        //             assert(temp_data_ptr);
-        //             uint8_t type = 0;
-        //             err = mbc_master_get_parameter(cid, (char *)param_descriptor->param_key,
-        //                                            (uint8_t *)&value, &type);
-        //             if (err == ESP_OK) {
-        //                 *(uint16_t *)temp_data_ptr = value;
-        //                 if ((param_descriptor->mb_param_type == MB_PARAM_HOLDING) ||
-        //                     (param_descriptor->mb_param_type == MB_PARAM_INPUT)) {
-        //                     // ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %f (0x%x) read successful.",
-        //                     //          param_descriptor->cid,
-        //                     //          (char*)param_descriptor->param_key,
-        //                     //          (char*)param_descriptor->param_units,
-        //                     //          value,
-        //                     //          *(uint32_t*)temp_data_ptr);
-        //                     ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %d read successful.",
-        //                              param_descriptor->cid,
-        //                              (char *)param_descriptor->param_key,
-        //                              (char *)param_descriptor->param_units,
-        //                              value);
-        //                     if (((value > param_descriptor->param_opts.max) ||
-        //                          (value < param_descriptor->param_opts.min))) {
-        //                         alarm_state = true;
-        //                         break;
-        //                     }
-        //                 } else {
-        //                     uint16_t state = *(uint16_t *)temp_data_ptr;
-        //                     const char *rw_str = (state & param_descriptor->param_opts.opt1) ? "ON" : "OFF";
-        //                     ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %s (0x%x) read successful.",
-        //                              param_descriptor->cid,
-        //                              (char *)param_descriptor->param_key,
-        //                              (char *)param_descriptor->param_units,
-        //                              (const char *)rw_str,
-        //                              *(uint16_t *)temp_data_ptr);
-        //                     if (state & param_descriptor->param_opts.opt1) {
-        //                         alarm_state = true;
-        //                         break;
-        //                     }
-        //                 }
-        //             } else {
-        //                 ESP_LOGE(TAG, "Characteristic #%d (%s) read fail, err = %d (%s).",
-        //                          param_descriptor->cid,
-        //                          (char *)param_descriptor->param_key,
-        //                          (int)err,
-        //                          (char *)esp_err_to_name(err));
-        //             }
-        //             vTaskDelay(POLL_TIMEOUT_TICS);  // timeout between polls
-        //         }
-        //     }
-        //     vTaskDelay(UPDATE_CIDS_TIMEOUT_TICS);
-        // }
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
-    }
 }
 
 void mb_master_start(void) {
@@ -279,7 +200,6 @@ void mb_master_start(void) {
 
     // Initializing modbus master
     mb_communication_init();
-    // Start the Modbus Masterapplication task
-    // xTaskCreatePinnedToCore(&mb_master_task, "mb_master_task", MB_MASTER_TASK_STACK_SIZE, NULL, MB_MASTER_TASK_PRIORITY, NULL, MB_MASTER_TASK_CODE_ID);
+    // Start the Modbus Master operations task
     master_operation_func(NULL);
 }

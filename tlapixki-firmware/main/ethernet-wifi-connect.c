@@ -18,9 +18,9 @@ esp_eth_phy_t *s_phy = NULL;
 esp_eth_netif_glue_handle_t s_eth_glue = NULL;
 
 static const char *TAG = "Multiple Netif";
-static const char *ip = "192.168.1.104";
-static const char *gateway = "192.168.1.101";
-static const char *netmask = "255.255.255.0";
+static const char *ip = IP_ADDRESS;
+static const char *gateway = GATEWAY;
+static const char *netmask = NETMASK;
 
 bool is_our_netif(const char *prefix, esp_netif_t *netif) {
     return strncmp(prefix, esp_netif_get_desc(netif), strlen(prefix) - 1) == 0;
