@@ -16,7 +16,25 @@
         "ethernet-wifi-connect.h": "c",
         "string.h": "c",
         "event_groups.h": "c",
-        "nvs_flash.h": "c"
+        "nvs_flash.h": "c",
+        "requests.h": "c",
+        "tasks_common.h": "c",
+        "modbus_master.h": "c",
+        "mbcontroller.h": "c",
+        "*.ipp": "c",
+        "*.tcc": "c",
+        "optional": "c",
+        "istream": "c",
+        "ostream": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "regex": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "chrono": "c"
     },
     "idf.flashType": "UART"
 }

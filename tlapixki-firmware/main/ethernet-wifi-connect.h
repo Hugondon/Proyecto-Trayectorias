@@ -78,6 +78,7 @@ void wifi_stop(void);
 esp_netif_t *eth_start(void);
 void eth_stop(void);
 
+esp_netif_t *get_eth_netif(void);
 esp_netif_t *get_example_netif(void);
 esp_netif_t *get_example_netif_from_desc(const char *desc);
 

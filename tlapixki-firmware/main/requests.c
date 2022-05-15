@@ -7,7 +7,7 @@
 
 #include "tasks_common.h"
 
-static const char *TAG = "HTTP_CLIENT";
+static const char *TAG = "HTTP Client";
 esp_err_t client_event_handler(esp_http_client_event_t *evt) {
     switch (evt->event_id) {
         case HTTP_EVENT_ERROR:
@@ -37,17 +37,7 @@ esp_err_t client_event_handler(esp_http_client_event_t *evt) {
     }
     return ESP_OK;
 }
-void http_client_get(void) {
-    esp_http_client_config_t client_configuration = {
-        .url = "http://worldclockapi.com/api/json/est/now",
-        .event_handler = client_event_handler};
 
-    esp_http_client_handle_t client = esp_http_client_init(&client_configuration);
-
-    ESP_LOGI(TAG, "Get Request!");
-    esp_http_client_perform(client);
-    esp_http_client_cleanup(client);
-}
 void http_client_task(void *pvParameters) {
     esp_http_client_config_t client_configuration = {
         .url = "http://worldclockapi.com/api/json/utc/now",
@@ -57,13 +47,14 @@ void http_client_task(void *pvParameters) {
     for (;;) {
         ESP_LOGI(TAG, "Get Request!");
         esp_http_client_perform(client);
-        esp_http_client_cleanup(client);
+        // esp_http_client_cleanup(client);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
 }
+
 void http_client_start(void) {
     ESP_LOGI(TAG, "STARTING HTTP Client Application");
 
-    // Start the WiFi application task
+    // Start the HTTP application task
     xTaskCreatePinnedToCore(&http_client_task, "http_client_task", HTTP_CLIENT_TASK_STACK_SIZE, NULL, HTTP_CLIENT_TASK_PRIORITY, NULL, HTTP_CLIENT_TASK_CODE_ID);
 }

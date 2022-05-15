@@ -9,6 +9,7 @@
 int s_active_interfaces = 0;
 xSemaphoreHandle s_semph_get_ip_addrs;
 esp_netif_t *s_example_esp_netif = NULL;
+esp_netif_t *s_eth_esp_netif = NULL;
 esp_ip4_addr_t s_ip_addr;
 
 esp_eth_handle_t s_eth_handle = NULL;
@@ -16,7 +17,7 @@ esp_eth_mac_t *s_mac = NULL;
 esp_eth_phy_t *s_phy = NULL;
 esp_eth_netif_glue_handle_t s_eth_glue = NULL;
 
-static const char *TAG = "tcp_client_multiple";
+static const char *TAG = "Multiple Netif";
 static const char *ip = "192.168.1.104";
 static const char *gateway = "192.168.1.101";
 static const char *netmask = "255.255.255.0";
@@ -28,7 +29,7 @@ bool is_our_netif(const char *prefix, esp_netif_t *netif) {
 /* set up connection, Wi-Fi and/or Ethernet */
 void start(void) {
 #if CONFIG_EXAMPLE_CONNECT_WIFI
-    s_example_esp_netif = wifi_start();
+    s_eth_esp_netif = wifi_start();
     s_active_interfaces++;
 #endif
 
@@ -319,6 +320,10 @@ void eth_stop(void) {
 
 esp_netif_t *get_example_netif(void) {
     return s_example_esp_netif;
+}
+
+esp_netif_t *get_eth_netif(void) {
+    return s_eth_esp_netif;
 }
 
 esp_netif_t *get_example_netif_from_desc(const char *desc) {

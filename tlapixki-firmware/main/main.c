@@ -12,6 +12,7 @@
 #include "esp_log.h"
 #include "esp_netif.h"
 #include "ethernet-wifi-connect.h"
+#include "modbus_master.h"
 #include "nvs_flash.h"
 #include "requests.h"
 // #include "sdkconfig.h"
@@ -161,7 +162,6 @@ void app_main(void) {
     // xTaskCreate(&app_connection_task, "app_ethernet_task", 4096, "eth", 5, NULL);
     // xTaskCreate(&app_connection_task, "app_wifi_task", 4096, "sta", 5, NULL);
 
-    // http_client_start();
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
-    http_client_get();
+    http_client_start();
+    mb_master_start();
 }
