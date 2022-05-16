@@ -42,45 +42,45 @@ def send_data():
             {"Emergency_Stopped" : request.json['Emergency_Stopped']}
         ],
         "Joint_Angle":
-        {
+        [
             {"Base_mrad" : request.json['Base_mrad']},
             {"Shoulder_mrad" : request.json['Shoulder_mrad']},
             {"Elbow_mrad" : request.json['Elbow_mrad']},
             {"Wrist1_mrad" : request.json['Wrist1_mrad']},
             {"Wrist2_mrad" : request.json['Wrist2_mrad']},
             {"Wrist3_mrad" : request.json['Wrist3_mrad']}
-        },
+        ],
         "Joint_Angle_Velocity":
-        {
+        [
             {"Base_mrad_s" : request.json['Base_mrad_s']},
             {"Shoulder_mrad_s" : request.json['Shoulder_mrad_s']},
             {"Elbow_mrad_s" : request.json['Elbow_mrad_s']},
             {"Wrist1_mrad_s" : request.json['Wrist1_mrad_s']},
             {"Wrist2_mrad_s" : request.json['Wrist2_mrad_s']},
             {"Wrist3_mrad_s" : request.json['Wrist3_mrad_s']}
-        },
+        ],
         "TCP_Position_Orientation":
-        {
+        [
             {"X_tenth_mm" : request.json['X_tenth_mm']},
             {"Y_tenth_mm" : request.json['Y_tenth_mm']},
             {"Z_tenth_mm" : request.json['Z_tenth_mm']},
             {"RX_mrad" : request.json['RX_mrad']},
             {"RY_mrad" : request.json['RY_mrad']},
             {"RZ_mrad" : request.json['RZ_mrad']}
-        },
+        ],
         "TCP_Speed":
-        {
+        [
             {"X_mm_s" : request.json['X_mm_s']},
             {"Y_mm_s" : request.json['Y_mm_s']},
             {"Z_mm_s" : request.json['Z_mm_s']},
             {"RX_mrad_s" : request.json['RX_mrad_s']},
             {"RY_mrad_s" : request.json['RY_mrad_s']},
             {"RZ_mrad_s" : request.json['RZ_mrad_s']}
-        }
+        ]
     }
 ]
     return jsonify(data)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host = "0.0.0.0", port = 5000)
 
