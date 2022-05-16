@@ -82,6 +82,7 @@ def send_data():
             ]
         }
     ]
+    print(json.dumps(data, indent=2))
     return jsonify(data)
 
 if __name__ == "__main__":
