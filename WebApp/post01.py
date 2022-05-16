@@ -25,60 +25,63 @@ def user(usr):
 @app.route("/data", methods= ["POST"])
 def det_data():
     data = {
-        "name": request.json['name'],
-        "number": request.json['number']
+        "dummy":
+        [
+            {"name": request.json['dummy'][0]['name']},
+            {"number": request.json['dummy'][1]['number']}
+        ]
     }
     return jsonify(data)
 
 @app.route("/send", methods= ["POST", "GET"])
 def send_data():
     data = [
-    {
-        "Robot_State":
-        [
-            {"Mode" : request.json['Mode']},
-            {"Power_ON" : request.json['Power_ON']},
-            {"Security_Stopped" : request.json['Security_Stopped']},
-            {"Emergency_Stopped" : request.json['Emergency_Stopped']}
-        ],
-        "Joint_Angle":
-        [
-            {"Base_mrad" : request.json['Base_mrad']},
-            {"Shoulder_mrad" : request.json['Shoulder_mrad']},
-            {"Elbow_mrad" : request.json['Elbow_mrad']},
-            {"Wrist1_mrad" : request.json['Wrist1_mrad']},
-            {"Wrist2_mrad" : request.json['Wrist2_mrad']},
-            {"Wrist3_mrad" : request.json['Wrist3_mrad']}
-        ],
-        "Joint_Angle_Velocity":
-        [
-            {"Base_mrad_s" : request.json['Base_mrad_s']},
-            {"Shoulder_mrad_s" : request.json['Shoulder_mrad_s']},
-            {"Elbow_mrad_s" : request.json['Elbow_mrad_s']},
-            {"Wrist1_mrad_s" : request.json['Wrist1_mrad_s']},
-            {"Wrist2_mrad_s" : request.json['Wrist2_mrad_s']},
-            {"Wrist3_mrad_s" : request.json['Wrist3_mrad_s']}
-        ],
-        "TCP_Position_Orientation":
-        [
-            {"X_tenth_mm" : request.json['X_tenth_mm']},
-            {"Y_tenth_mm" : request.json['Y_tenth_mm']},
-            {"Z_tenth_mm" : request.json['Z_tenth_mm']},
-            {"RX_mrad" : request.json['RX_mrad']},
-            {"RY_mrad" : request.json['RY_mrad']},
-            {"RZ_mrad" : request.json['RZ_mrad']}
-        ],
-        "TCP_Speed":
-        [
-            {"X_mm_s" : request.json['X_mm_s']},
-            {"Y_mm_s" : request.json['Y_mm_s']},
-            {"Z_mm_s" : request.json['Z_mm_s']},
-            {"RX_mrad_s" : request.json['RX_mrad_s']},
-            {"RY_mrad_s" : request.json['RY_mrad_s']},
-            {"RZ_mrad_s" : request.json['RZ_mrad_s']}
-        ]
-    }
-]
+        {
+            "Robot_State":
+            [
+                {"Mode" : request.json['Robot_State'][0]['Mode']},
+                {"Power_ON" : request.json['Robot_State'][1]['Power_ON']},
+                {"Security_Stopped" : request.json['Robot_State'][2]['Security_Stopped']},
+                {"Emergency_Stopped" : request.json['Robot_State'][3]['Emergency_Stopped']}
+            ],
+            "Joint_Angle":
+            [
+                {"Base_mrad" : request.json['Joint_Angle'][0]['Base_mrad']},
+                {"Shoulder_mrad" : request.json['Joint_Angle'][1]['Shoulder_mrad']},
+                {"Elbow_mrad" : request.json['Joint_Angle'][2]['Elbow_mrad']},
+                {"Wrist1_mrad" : request.json['Joint_Angle'][3]['Wrist1_mrad']},
+                {"Wrist2_mrad" : request.json['Joint_Angle'][4]['Wrist2_mrad']},
+                {"Wrist3_mrad" : request.json['Joint_Angle'][5]['Wrist3_mrad']}
+            ],
+            "Joint_Angle_Velocity":
+            [
+                {"Base_mrad_s" : request.json['Joint_Angle_Velocity'][0]['Base_mrad_s']},
+                {"Shoulder_mrad_s" : request.json['Joint_Angle_Velocity'][1]['Shoulder_mrad_s']},
+                {"Elbow_mrad_s" : request.json['Joint_Angle_Velocity'][2]['Elbow_mrad_s']},
+                {"Wrist1_mrad_s" : request.json['Joint_Angle_Velocity'][3]['Wrist1_mrad_s']},
+                {"Wrist2_mrad_s" : request.json['Joint_Angle_Velocity'][4]['Wrist2_mrad_s']},
+                {"Wrist3_mrad_s" : request.json['Joint_Angle_Velocity'][5]['Wrist3_mrad_s']}
+            ],
+            "TCP_Position_Orientation":
+            [
+                {"X_tenth_mm" : request.json['TCP_Position_Orientation'][0]['X_tenth_mm']},
+                {"Y_tenth_mm" : request.json['TCP_Position_Orientation'][1]['Y_tenth_mm']},
+                {"Z_tenth_mm" : request.json['TCP_Position_Orientation'][2]['Z_tenth_mm']},
+                {"RX_mrad" : request.json['TCP_Position_Orientation'][3]['RX_mrad']},
+                {"RY_mrad" : request.json['TCP_Position_Orientation'][4]['RY_mrad']},
+                {"RZ_mrad" : request.json['TCP_Position_Orientation'][5]['RZ_mrad']}
+            ],
+            "TCP_Speed":
+            [
+                {"X_mm_s" : request.json['TCP_Speed'][0]['X_mm_s']},
+                {"Y_mm_s" : request.json['TCP_Speed'][1]['Y_mm_s']},
+                {"Z_mm_s" : request.json['TCP_Speed'][2]['Z_mm_s']},
+                {"RX_mrad_s" : request.json['TCP_Speed'][3]['RX_mrad_s']},
+                {"RY_mrad_s" : request.json['TCP_Speed'][4]['RY_mrad_s']},
+                {"RZ_mrad_s" : request.json['TCP_Speed'][5]['RZ_mrad_s']}
+            ]
+        }
+    ]
     return jsonify(data)
 
 if __name__ == "__main__":
