@@ -14,7 +14,9 @@
 #define PASSWORD "myPassword"
 
 // HTTP
-#define URL "URL_TO_POST"
+// #define URL "http://198.54.116.58:80"
+// #define URL "http://192.168.0.12:2020"
+#define URL "http://192.168.0.12:5000/send"
 
 
 // Modbus

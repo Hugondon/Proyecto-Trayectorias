@@ -146,30 +146,29 @@ void http_client_task(void *pvParameters) {
     cJSON_AddItemToArray(joint_angle_velocity_array, wrist_3_mrad_s_json);
     cJSON_AddNumberToObject(wrist_3_mrad_s_json, "Wrist3_mrad_s", joint_angle_velocity_wrist_3_mrad_s);
 
-    cJSON *tcp_position_array = cJSON_AddArrayToObject(json, "TCP_Position");
+    cJSON *tcp_position_orientation_array = cJSON_AddArrayToObject(json, "TCP_Position_Orientation");
     cJSON *x_tenth_mm_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_position_array, x_tenth_mm_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, x_tenth_mm_json);
     cJSON_AddNumberToObject(x_tenth_mm_json, "X_tenth_mm", tcp_position_x_tenth_mm);
 
     cJSON *y_tenth_mm_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_position_array, y_tenth_mm_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, y_tenth_mm_json);
     cJSON_AddNumberToObject(y_tenth_mm_json, "Y_tenth_mm", tcp_position_y_tenth_mm);
 
     cJSON *z_tenth_mm_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_position_array, z_tenth_mm_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, z_tenth_mm_json);
     cJSON_AddNumberToObject(z_tenth_mm_json, "Z_tenth_mm", tcp_position_z_tenth_mm);
 
-    cJSON *tcp_orientation_array = cJSON_AddArrayToObject(json, "TCP_Orientation");
     cJSON *rx_mrad_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_orientation_array, rx_mrad_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, rx_mrad_json);
     cJSON_AddNumberToObject(rx_mrad_json, "RX_mrad", tcp_orientation_x_mrad);
 
     cJSON *ry_mrad_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_orientation_array, ry_mrad_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, ry_mrad_json);
     cJSON_AddNumberToObject(ry_mrad_json, "RY_mrad", tcp_orientation_y_mrad);
 
     cJSON *rz_mrad_json = cJSON_CreateObject();
-    cJSON_AddItemToArray(tcp_orientation_array, rz_mrad_json);
+    cJSON_AddItemToArray(tcp_position_orientation_array, rz_mrad_json);
     cJSON_AddNumberToObject(rz_mrad_json, "RZ_mrad", tcp_orientation_z_mrad);
 
     cJSON *tcp_speed_array = cJSON_AddArrayToObject(json, "TCP_Speed");
@@ -199,9 +198,7 @@ void http_client_task(void *pvParameters) {
 
     char *mesage_payload = cJSON_Print(json);
 
-    // esp_http_client_config_t client_configuration = {
-    //     .url = "http://worldclockapi.com/api/json/utc/now",
-    //     .event_handler = client_event_handler};
+
     esp_http_client_config_t client_configuration = {
         .url = URL,
         .method = HTTP_METHOD_POST};
