@@ -13,6 +13,8 @@
 #define SSID "mySSID"
 #define PASSWORD "myPassword"
 
+// HTTP
+#define URL "URL_TO_POST"
 
 
 // Modbus

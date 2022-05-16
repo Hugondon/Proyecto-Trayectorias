@@ -24,11 +24,11 @@
 #define MASTER_MAX_RETRY (500)
 
 // Timeout to update cid over Modbus
-#define UPDATE_CIDS_TIMEOUT_MS (50)
+#define UPDATE_CIDS_TIMEOUT_MS (1000)
 #define UPDATE_CIDS_TIMEOUT_TICS (UPDATE_CIDS_TIMEOUT_MS / portTICK_RATE_MS)
 
 // Timeout between polls
-#define POLL_TIMEOUT_MS (1)
+#define POLL_TIMEOUT_MS (50)
 #define POLL_TIMEOUT_TICS (POLL_TIMEOUT_MS / portTICK_RATE_MS)
 #define MB_MDNS_PORT (502)
 

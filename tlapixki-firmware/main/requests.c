@@ -5,9 +5,11 @@
 
 #include "requests.h"
 
+#include "configurations.h"
 #include "tasks_common.h"
 
 static const char *TAG = "HTTP Client";
+
 esp_err_t client_event_handler(esp_http_client_event_t *evt) {
     switch (evt->event_id) {
         case HTTP_EVENT_ERROR:
@@ -39,16 +41,197 @@ esp_err_t client_event_handler(esp_http_client_event_t *evt) {
 }
 
 void http_client_task(void *pvParameters) {
+    int robot_state_mode = 9;
+    int robot_state_power_on = 1;
+    int robot_state_security_stopped = 1;
+    int robot_state_emergency_stopped = 1;
+
+    float joint_angle_base_mrad = 3.14;
+    float joint_angle_shoulder_mrad = 3.14;
+    float joint_angle_elbow_mrad = 3.14;
+    float joint_angle_wrist_1_mrad = 3.14;
+    float joint_angle_wrist_2_mrad = 3.14;
+    float joint_angle_wrist_3_mrad = 3.14;
+
+    float joint_angle_velocity_base_mrad_s = 3.14;
+    float joint_angle_velocity_shoulder_mrad_s = 3.14;
+    float joint_angle_velocity_elbow_mrad_s = 3.14;
+    float joint_angle_velocity_wrist_1_mrad_s = 3.14;
+    float joint_angle_velocity_wrist_2_mrad_s = 3.14;
+    float joint_angle_velocity_wrist_3_mrad_s = 3.14;
+
+    float tcp_position_x_tenth_mm = 2.5;
+    float tcp_position_y_tenth_mm = 2.5;
+    float tcp_position_z_tenth_mm = 2.5;
+
+    float tcp_orientation_x_mrad = 1.1;
+    float tcp_orientation_y_mrad = 1.1;
+    float tcp_orientation_z_mrad = 1.1;
+
+    float tcp_speed_x_mm_s = 4.5;
+    float tcp_speed_y_mm_s = 4.5;
+    float tcp_speed_z_mm_s = 4.5;
+    float tcp_speed_rx_mrad_s = 4.5;
+    float tcp_speed_ry_mrad_s = 4.5;
+    float tcp_speed_rz_mrad_s = 4.5;
+
+    cJSON *json = cJSON_CreateObject();
+
+    cJSON *robot_state_array = cJSON_AddArrayToObject(json, "Robot_State");
+
+    cJSON *mode_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(robot_state_array, mode_json);
+    cJSON_AddNumberToObject(mode_json, "Mode", robot_state_mode);
+
+    cJSON *power_on_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(robot_state_array, power_on_json);
+    cJSON_AddNumberToObject(power_on_json, "Power_ON", robot_state_power_on);
+
+    cJSON *security_stopped_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(robot_state_array, security_stopped_json);
+    cJSON_AddNumberToObject(security_stopped_json, "Security_Stopped", robot_state_security_stopped);
+
+    cJSON *emergency_stopped_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(robot_state_array, emergency_stopped_json);
+    cJSON_AddNumberToObject(emergency_stopped_json, "Emergency_Stopped", robot_state_emergency_stopped);
+
+    cJSON *joint_angle_array = cJSON_AddArrayToObject(json, "Joint_Angle");
+
+    cJSON *base_mrad_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, base_mrad_json);
+    cJSON_AddNumberToObject(base_mrad_json, "Base_mrad", joint_angle_base_mrad);
+
+    cJSON *shoulder_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, shoulder_json);
+    cJSON_AddNumberToObject(shoulder_json, "Shoulder_mrad", joint_angle_shoulder_mrad);
+
+    cJSON *elbow_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, elbow_json);
+    cJSON_AddNumberToObject(elbow_json, "Elbow_mrad", joint_angle_elbow_mrad);
+
+    cJSON *wrist_1_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, wrist_1_json);
+    cJSON_AddNumberToObject(wrist_1_json, "Wrist1_mrad", joint_angle_wrist_1_mrad);
+
+    cJSON *wrist_2_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, wrist_2_json);
+    cJSON_AddNumberToObject(wrist_2_json, "Wrist2_mrad", joint_angle_wrist_2_mrad);
+
+    cJSON *wrist_3_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_array, wrist_3_json);
+    cJSON_AddNumberToObject(wrist_3_json, "Wrist3_mrad", joint_angle_wrist_3_mrad);
+
+    cJSON *joint_angle_velocity_array = cJSON_AddArrayToObject(json, "Joint_Angle_Velocity");
+    cJSON *base_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, base_mrad_s_json);
+    cJSON_AddNumberToObject(base_mrad_s_json, "Base_mrad_s", joint_angle_velocity_base_mrad_s);
+
+    cJSON *shoulder_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, shoulder_mrad_s_json);
+    cJSON_AddNumberToObject(shoulder_mrad_s_json, "Shoulder_mrad_s", joint_angle_velocity_shoulder_mrad_s);
+
+    cJSON *elbow_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, elbow_mrad_s_json);
+    cJSON_AddNumberToObject(elbow_mrad_s_json, "Elbow_mrad_s", joint_angle_velocity_elbow_mrad_s);
+
+    cJSON *wrist_1_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, wrist_1_mrad_s_json);
+    cJSON_AddNumberToObject(wrist_1_mrad_s_json, "Wrist1_mrad_s", joint_angle_velocity_wrist_1_mrad_s);
+
+    cJSON *wrist_2_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, wrist_2_mrad_s_json);
+    cJSON_AddNumberToObject(wrist_2_mrad_s_json, "Wrist2_mrad_s", joint_angle_velocity_wrist_2_mrad_s);
+
+    cJSON *wrist_3_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(joint_angle_velocity_array, wrist_3_mrad_s_json);
+    cJSON_AddNumberToObject(wrist_3_mrad_s_json, "Wrist3_mrad_s", joint_angle_velocity_wrist_3_mrad_s);
+
+    cJSON *tcp_position_array = cJSON_AddArrayToObject(json, "TCP_Position");
+    cJSON *x_tenth_mm_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_position_array, x_tenth_mm_json);
+    cJSON_AddNumberToObject(x_tenth_mm_json, "X_tenth_mm", tcp_position_x_tenth_mm);
+
+    cJSON *y_tenth_mm_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_position_array, y_tenth_mm_json);
+    cJSON_AddNumberToObject(y_tenth_mm_json, "Y_tenth_mm", tcp_position_y_tenth_mm);
+
+    cJSON *z_tenth_mm_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_position_array, z_tenth_mm_json);
+    cJSON_AddNumberToObject(z_tenth_mm_json, "Z_tenth_mm", tcp_position_z_tenth_mm);
+
+    cJSON *tcp_orientation_array = cJSON_AddArrayToObject(json, "TCP_Orientation");
+    cJSON *rx_mrad_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_orientation_array, rx_mrad_json);
+    cJSON_AddNumberToObject(rx_mrad_json, "RX_mrad", tcp_orientation_x_mrad);
+
+    cJSON *ry_mrad_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_orientation_array, ry_mrad_json);
+    cJSON_AddNumberToObject(ry_mrad_json, "RY_mrad", tcp_orientation_y_mrad);
+
+    cJSON *rz_mrad_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_orientation_array, rz_mrad_json);
+    cJSON_AddNumberToObject(rz_mrad_json, "RZ_mrad", tcp_orientation_z_mrad);
+
+    cJSON *tcp_speed_array = cJSON_AddArrayToObject(json, "TCP_Speed");
+    cJSON *x_mm_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, x_mm_s_json);
+    cJSON_AddNumberToObject(x_mm_s_json, "X_mm_s", tcp_speed_x_mm_s);
+
+    cJSON *y_mm_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, y_mm_s_json);
+    cJSON_AddNumberToObject(y_mm_s_json, "Y_mm_s", tcp_speed_y_mm_s);
+
+    cJSON *z_mm_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, z_mm_s_json);
+    cJSON_AddNumberToObject(z_mm_s_json, "Z_mm_s", tcp_speed_z_mm_s);
+
+    cJSON *rx_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, rx_mrad_s_json);
+    cJSON_AddNumberToObject(rx_mrad_s_json, "RX_mrad_s", tcp_speed_rx_mrad_s);
+
+    cJSON *ry_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, ry_mrad_s_json);
+    cJSON_AddNumberToObject(ry_mrad_s_json, "RY_mrad_s", tcp_speed_ry_mrad_s);
+
+    cJSON *rz_mrad_s_json = cJSON_CreateObject();
+    cJSON_AddItemToArray(tcp_speed_array, rz_mrad_s_json);
+    cJSON_AddNumberToObject(rz_mrad_s_json, "RZ_mrad_s", tcp_speed_rz_mrad_s);
+
+    char *mesage_payload = cJSON_Print(json);
+
+    // esp_http_client_config_t client_configuration = {
+    //     .url = "http://worldclockapi.com/api/json/utc/now",
+    //     .event_handler = client_event_handler};
     esp_http_client_config_t client_configuration = {
-        .url = "http://worldclockapi.com/api/json/utc/now",
-        .event_handler = client_event_handler};
+        .url = URL,
+        .method = HTTP_METHOD_POST};
 
     esp_http_client_handle_t client = esp_http_client_init(&client_configuration);
+    esp_http_client_set_header(client, "CONTENT-TYPE", "application/json");
+    esp_http_client_set_post_field(client, mesage_payload, strlen((mesage_payload)));
+
     for (;;) {
-        ESP_LOGI(TAG, "Get Request!");
-        esp_http_client_perform(client);
+        ESP_LOGI(TAG, "Posting %d!", robot_state_mode);
+        esp_err_t err = esp_http_client_perform(client);
+        if (err == ESP_OK) {
+            int length = esp_http_client_get_content_length(client);
+            char *response_payload = malloc(length + 1);
+            memset(response_payload, 0, length + 1);
+            esp_http_client_read(client, response_payload, length);
+            cJSON *json_response = cJSON_Parse(response_payload);
+            cJSON *response_message = cJSON_GetObjectItem(json_response, "message");
+            if (response_message) {
+                printf("%s\n", response_message->valuestring);
+            } else {
+                printf("No response!\nb");
+            }
+            cJSON_Delete(json_response);
+        } else {
+            ESP_LOGE(TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
+        }
         // esp_http_client_cleanup(client);
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 }
 
