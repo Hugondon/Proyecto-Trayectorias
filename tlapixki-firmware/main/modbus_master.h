@@ -21,15 +21,8 @@
 #define MASTER_MAX_CIDS num_device_parameters
 
 // Number of reading of parameters from slave
-#define MASTER_MAX_RETRY (500)
+// #define MASTER_MAX_RETRY (500)
 
-// Timeout to update cid over Modbus
-#define UPDATE_CIDS_TIMEOUT_MS (1000)
-#define UPDATE_CIDS_TIMEOUT_TICS (UPDATE_CIDS_TIMEOUT_MS / portTICK_RATE_MS)
-
-// Timeout between polls
-#define POLL_TIMEOUT_MS (50)
-#define POLL_TIMEOUT_TICS (POLL_TIMEOUT_MS / portTICK_RATE_MS)
 #define MB_MDNS_PORT (502)
 
 // The macro to get offset for parameter in the appropriate structure

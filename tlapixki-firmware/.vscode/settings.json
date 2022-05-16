@@ -37,7 +37,12 @@
         "chrono": "c",
         "*.inc": "c",
         "esp_http_client.h": "c",
-        "cjson.h": "c"
+        "cjson.h": "c",
+        "esp_system.h": "c",
+        "modbus_data.h": "c",
+        "freertos.h": "c",
+        "esp_event.h": "c",
+        "processing.h": "c"
     },
     "idf.flashType": "UART"
 }

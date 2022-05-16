@@ -12,8 +12,10 @@
 #include "esp_log.h"
 #include "esp_netif.h"
 #include "ethernet-wifi-connect.h"
+#include "modbus_data.h"
 #include "modbus_master.h"
 #include "nvs_flash.h"
+#include "processing.h"
 #include "requests.h"
 
 // TCP client multiple netif
@@ -33,6 +35,13 @@ void app_main(void) {
     ESP_ERROR_CHECK(esp_event_loop_create_default());  // Event Loop
     ESP_ERROR_CHECK(example_connect());
 
+    extern QueueHandle_t ProcessingQueue;
+    extern QueueHandle_t TransmissionQueue;
+
+    ProcessingQueue = xQueueCreate(AMOUNT_OF_MB_READ_DATA * 4, sizeof(MB_data_t));
+    TransmissionQueue = xQueueCreate(AMOUNT_OF_MB_READ_DATA * 4, sizeof(transmitted_float_data_t));
+
+    processing_start();
     http_client_start();
     mb_master_start();
 }

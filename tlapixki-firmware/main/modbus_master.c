@@ -5,10 +5,12 @@
 
 #include "configurations.h"
 #include "ethernet-wifi-connect.h"
+#include "modbus_data.h"
 #include "tasks_common.h"
 #define SLAVE_IP_ADDRESS MB_SLAVE_IP_ADDRESS
 
-static const char *TAG = "Modbus Master";
+extern QueueHandle_t ProcessingQueue;
+static const char *TAG = "MBMaster";
 
 holding_reg_params_t holding_reg_params;
 input_reg_params_t input_reg_params;
@@ -133,18 +135,18 @@ void *master_get_param_data(const mb_parameter_descriptor_t *param_descriptor) {
 
 void master_operation_func(void *arg) {
     esp_err_t err = ESP_OK;
-    float value = 0;
-    bool alarm_state = false;
+    uint16_t value = 0;
     const mb_parameter_descriptor_t *param_descriptor = NULL;
+
+    extern QueueHandle_t ProcessingQueue;
+
+    MB_data_t current_data;
 
     ESP_LOGI(TAG, "Start modbus test...");
 
-    for (uint16_t retry = 0; retry <= MASTER_MAX_RETRY; retry++) {
+    for (;;) {
         // Read all found characteristics from slave(s)
         for (uint16_t cid = 0; (err != ESP_ERR_NOT_FOUND) && cid < MASTER_MAX_CIDS; cid++) {
-            // Get data from parameters description table
-            // and use this information to fill the characteristics description table
-            // and having all required fields in just one table
             err = mbc_master_get_cid_info(cid, &param_descriptor);
             if ((err != ESP_ERR_NOT_FOUND) && (param_descriptor != NULL)) {
                 void *temp_data_ptr = master_get_param_data(param_descriptor);
@@ -156,29 +158,19 @@ void master_operation_func(void *arg) {
                     *(float *)temp_data_ptr = value;
                     if ((param_descriptor->mb_param_type == MB_PARAM_HOLDING) ||
                         (param_descriptor->mb_param_type == MB_PARAM_INPUT)) {
-                        ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %f (0x%x) read successful.",
-                                 param_descriptor->cid,
-                                 (char *)param_descriptor->param_key,
-                                 (char *)param_descriptor->param_units,
-                                 value,
-                                 *(uint32_t *)temp_data_ptr);
-                        if (((value > param_descriptor->param_opts.max) ||
-                             (value < param_descriptor->param_opts.min))) {
-                            alarm_state = true;
-                            break;
-                        }
-                    } else {
-                        uint16_t state = *(uint16_t *)temp_data_ptr;
-                        const char *rw_str = (state & param_descriptor->param_opts.opt1) ? "ON" : "OFF";
-                        ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %s (0x%x) read successful.",
-                                 param_descriptor->cid,
-                                 (char *)param_descriptor->param_key,
-                                 (char *)param_descriptor->param_units,
-                                 (const char *)rw_str,
-                                 *(uint16_t *)temp_data_ptr);
-                        if (state & param_descriptor->param_opts.opt1) {
-                            alarm_state = true;
-                            break;
+                        // ESP_LOGI(TAG, "Characteristic #%d %s (%s) value = %d (0x%x) read successful.",
+                        //          param_descriptor->cid,
+                        //          (char *)param_descriptor->param_key,
+                        //          (char *)param_descriptor->param_units,
+                        //          value,
+                        //          *(uint32_t *)temp_data_ptr);
+                        current_data.cid = param_descriptor->cid;
+                        current_data.value = value;
+
+                        if (!xQueueSend(ProcessingQueue, &current_data, pdMS_TO_TICKS(10))) {
+                            ESP_LOGE(TAG, "Error sending #%d %s with value %d to Processing Queue!", current_data.cid, (char *)param_descriptor->param_key, current_data.value);
+                        } else {
+                            ESP_LOGI(TAG, "#%d %s with value %d sent to Processing Queue!", current_data.cid, (char *)param_descriptor->param_key, current_data.value);
                         }
                     }
                 } else {
@@ -188,10 +180,10 @@ void master_operation_func(void *arg) {
                              (int)err,
                              (char *)esp_err_to_name(err));
                 }
-                vTaskDelay(POLL_TIMEOUT_TICS);  // timeout between polls
+                vTaskDelay(MB_MASTER_TASK_POLL_BLOCK_TIME_MS / portTICK_RATE_MS);  // timeout between polls
             }
         }
-        vTaskDelay(UPDATE_CIDS_TIMEOUT_TICS);
+        vTaskDelay(MB_MASTER_TASK_CIDS_BLOCK_TIME_MS / portTICK_RATE_MS);
     }
 }
 

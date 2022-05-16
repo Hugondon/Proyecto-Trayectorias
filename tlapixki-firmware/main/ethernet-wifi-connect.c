@@ -212,7 +212,7 @@ esp_netif_t *eth_start(void) {
     info_t.netmask.addr = esp_ip4addr_aton((const char *)netmask);
 
     esp_netif_set_ip_info(eth_netif, &info_t);
-    ESP_ERROR_CHECK(esp_eth_set_default_handlers(eth_netif));
+    // ESP_ERROR_CHECK(esp_eth_set_default_handlers(eth_netif));
 
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
     eth_phy_config_t phy_config = ETH_PHY_DEFAULT_CONFIG();

@@ -10,17 +10,27 @@
 
 // HTTP Client Task
 #define HTTP_CLIENT_TASK_STACK_SIZE 1024 * 10
-#define HTTP_CLIENT_TASK_PRIORITY 5
+#define HTTP_CLIENT_TASK_PRIORITY 7
 #define HTTP_CLIENT_TASK_CODE_ID 0
+#define HTTP_CLIENT_TASK_BLOCK_TIME_MS 100
 
 // Modbus Master Task
-#define MB_MASTER_TASK_STACK_SIZE 4096
-#define MB_MASTER_TASK_PRIORITY 1
+#define MB_MASTER_TASK_STACK_SIZE 1024 * 4
+#define MB_MASTER_TASK_PRIORITY 9
 #define MB_MASTER_TASK_CODE_ID 0
+#define MB_MASTER_TASK_CIDS_BLOCK_TIME_MS 1000  // Timeout to update cid over Modbus
+#define MB_MASTER_TASK_POLL_BLOCK_TIME_MS 50    // Timeout between polls
+
 // status = xTaskCreate((void*)&modbus_tcp_master_task,
 //                      "modbus_tcp_master_task",
 //                      MB_CONTROLLER_STACK_SIZE, (4096)NULL,  // No parameters
 //                      MB_CONTROLLER_PRIORITY(10 - 1),
 //                      &mbm_opts->mbm_task_handle);
+
+// Processing Task Task
+#define PROCESSING_TASK_STACK_SIZE 1024 * 2
+#define PROCESSING_TASK_PRIORITY 8
+#define PROCESSING_TASK_CODE_ID 0
+#define PROCESSING_TASK_BLOCK_TIME_MS 100
 
 #endif /* MAIN_TASKS_COMMON_H_ */
