@@ -26,6 +26,7 @@ class Parser(tk.Tk):
 
     MOVEJ_MOVEMENT = 0
     MOVEL_MOVEMENT = 1
+    ICON_ICO_PATH = "imgs/hara_services.ico"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,6 +67,8 @@ class Parser(tk.Tk):
 
         self["background"] = COLOUR_PRIMARY
         self.title("HARA Parser")
+        self.iconbitmap(self.ICON_ICO_PATH)
+
         self.movements_list = []
         self.poses_list = []
         self.configuration_spaces_list = []
