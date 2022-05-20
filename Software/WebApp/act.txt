@@ -1,0 +1,9 @@
+Virtual environment
+cd <project name>
+py -2 -m virtualenv NAME
+py -3 -m venv NAME
+
+cd \Users\danorteg\Documents\test01
+test01ENV\Scripts\activate
+setx FLASK_APP "post01.py"
+flask run

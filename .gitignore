@@ -1,4 +1,7 @@
-*/build/
-*/sdkconfig
-*/sdkconfig.old
-WebApp/venv/
+Firmware/tlapixki-firmware/build/
+Firmware/tlapixki-firmware/sdkconfig/
+Firmware/tlapixki-firmware/sdkconfig.old/
+Firmware/ESP32-firmware/build/
+Firmware/ESP32-firmware/sdkconfig/
+
+Software/WebApp/venv
