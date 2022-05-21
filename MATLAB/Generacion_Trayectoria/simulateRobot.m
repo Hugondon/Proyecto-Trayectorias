@@ -35,7 +35,7 @@ This function does 2 things:
         % Trajectory visualization of the Waypoints for the segment
         if plotMode == 1
             tcp_position = tform2trvec(trajectory_data{count,2});
-            plot3(tcp_position(:, 1), tcp_position(:, 2), tcp_position(:, 3), '-^', 'Color', 'k');
+            plot3(tcp_position(:, 1), tcp_position(:, 2), tcp_position(:, 3), '-^', 'Color', [1,83,165]./255);
 
         % Trajectory visualization of the TCP poses for the segment
         elseif plotMode == 2
