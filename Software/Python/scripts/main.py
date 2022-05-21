@@ -26,7 +26,7 @@ parent_directory_name = os.path.dirname(complete_path)
 parent_directory_name = os.path.dirname(parent_directory_name)
 CSV_PATH = os.path.join(parent_directory_name, "MATLAB")
 CSV_PATH = os.path.join(CSV_PATH, "Generacion_Trayectoria")
-CSV_PATH = os.path.join(CSV_PATH, "adrian.csv")
+CSV_PATH = os.path.join(CSV_PATH, "trajectory.csv")
 
 MOVEJ_MOVEMENT = 0
 MOVEL_MOVEMENT = 1

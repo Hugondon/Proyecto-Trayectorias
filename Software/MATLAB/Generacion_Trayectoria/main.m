@@ -24,6 +24,7 @@ simulateRobot               =   @simulateRobot;
 setObstacles                =   @setObstacles;
 setCADTrajectory            =   @setCADTrajectory;
 processedCADTransformation  =   @processedCADTransformation;
+imageTrajectory             =   @imageTrajectory;
 
 %% Loading Robot
 
@@ -32,7 +33,11 @@ processedCADTransformation  =   @processedCADTransformation;
 
 % Get Joint angles, Home position, TCP position and its orientation
 load UR5positions
-jointHomeAngles(1) = -pi/2;
+%jointHomeAngles(1) = -pi/2;
+%jointHomeAngles = deg2rad([180-94.94;-75.92;80.51;-100.65;89.82;1.35]);
+%jointHomeAngles = deg2rad([-94.94;-75.92;80.51;-100.65;89.82-180;1.35]);
+%jointHomeAngles = deg2rad([180;-84.49;-112.3;-165.65;-112.4;181.95]);
+jointHomeAngles = deg2rad([180;-84.49;-112.3;-90;90;0]);
 
 %% Set Inverse Kinematics Paramaters
 
@@ -44,22 +49,38 @@ ikWeights = ones(1, numJoints);
 ikInitialGuess = jointHomeAngles;
 
 %% Get Waypoints
-% Select trajectory 0: Test Trajectory 1: CAD Trajectory
-typeTrajectory = 1;
+% Select trajectory 0: Test Trajectory 1: CAD Trajectory 2: Image Trajectory
+typeTrajectory = 2;
 switch typeTrajectory
     case 0
         % Name of the CSV file where the trajectory is stored
-        nameTrajectory  =   'hola_mundo_v3';
+        nameTrajectory  =   'thunder_v2';
         % Import the information of the waypoints of the trajectory
         [waypoints, numberWaypoints, magnitudeDistances] = setTestTrajectory(nameTrajectory);
         CADTrajectory.SurfacePathPoses = waypoints;
+        toolPoseAdejustment = eye(4);
     case 1 
         nameTransformedCAD = 'transformedCAD';
         CADTrajectory = setCADTrajectory(nameTransformedCAD);
         waypoints = CADTrajectory.SurfacePathPoses;
         numberWaypoints = CADTrajectory.NumberWaypoints;
         magnitudeDistances = CADTrajectory.MagnitudeDistances;
+        % Adjustment between the pose of the tool and the pose of the Surface Pose Path
+        toolPoseAdejustment = trvec2tform([0,0,0])*axang2tform([0,1,0,pi])*axang2tform([0,0,1,pi/2]);
+    case 2
+        nameImageTrajectory = 'trajectoryPoses';
+        imageTrajectory = setImageTrajectory(nameImageTrajectory);
+        waypoints = imageTrajectory.Waypoints;
+        CADTrajectory.SurfacePathPoses = waypoints;
+        numberWaypoints = imageTrajectory.NumberWaypoints;
+        magnitudeDistances = imageTrajectory.MagnitudeDistances;
+        % Adjustment between the pose of the tool and the pose of the Surface Pose Path
+        toolPoseAdejustment = trvec2tform([0,0,0])*axang2tform([1,0,0,-pi/2])*axang2tform([0,1,0,pi]);
 end
+%% TCP Pose adjustment
+% Adjust Waypoinst to tool pose
+waypoints = pagemtimes(waypoints,toolPoseAdejustment);
+
 %% Obstacles
 % Set the obstacles for the trajectory (The cell array can be empty)
 %obstCell=setObstacles();
@@ -68,29 +89,26 @@ obstCell={};
 %% Parameters of the Trajectory of the Robot's TCP
 
 % TCP Speed(Defined by user)
-tcpSpeed_ms = 0.01; %[m/s]
+tcpSpeed_ms = 0.05; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
-nIntermediateWaypoints = 1;
+nIntermediateWaypoints = 0;
 
 % Get the cummulative sum of the magnitudes of the distance (initial distance = 0 m)
 csMagnitudeDistances = cumsum([0, magnitudeDistances]);
 
 % Total time to get to each waypoint from the initial waypoint. t = d / v
-total_time_to_waypoint = csMagnitudeDistances / tcpSpeed_ms;
+total_time_to_waypoint = double(csMagnitudeDistances / tcpSpeed_ms);
 
 % Get time step(ts) interval
 ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
-%% TCP Pose adjustment
-% Adjustment between the pose of the tool and the pose of the Surface Pose Path
-toolPoseAdejustment = trvec2tform([0,0,0])*axang2tform([0,1,0,pi])*axang2tform([0,0,1,pi/2]);
-% Adjust Waypoinst to tool pose
-waypoints = pagemtimes(waypoints,toolPoseAdejustment);
+
+
 %% Trajectory Graph Setup
 
 % Type of Plot
-plotMode = 3; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames of TCP 3 = Coordinate Frames of Surface Path
+plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames of TCP 3 = Coordinate Frames of Surface Path
 
 % Create Figure for the Robot Simulation
 figureRobot=figure('Name','Robot','NumberTitle','off','WindowState','maximized');
@@ -103,11 +121,11 @@ xlim([-0.8 0.8]), ylim([-0.8 0.8]), zlim([-0.5 1])
 hold on
 
 % Graph main waypoints
-waypoints_positions = tform2trvec(waypoints(:, :, :));
-plot3(  waypoints_positions(:, 1), ...
-        waypoints_positions(:, 2), ...
-        waypoints_positions(:, 3), ...
-        'ro', 'LineWidth', 2);
+% waypoints_positions = tform2trvec(waypoints(:, :, :));
+% plot3(  waypoints_positions(:, 1), ...
+%         waypoints_positions(:, 2), ...
+%         waypoints_positions(:, 3), ...
+%         'ro', 'LineWidth', 2);
 
 % Show Obstacles
 for count=1:size(obstCell,2)
@@ -132,7 +150,7 @@ trajectory_data = {};
     intermidiate waypoints which would put a heavy load on both the simulator and 
     the physical robot, that is the reason just a fraction of the waypoints is used)
 %}
-intervalWaypoints=10;
+intervalWaypoints=1;
 
 %% Waypoints Joint Trajectories(This sections is just for test)
 %{
@@ -143,16 +161,16 @@ intervalWaypoints=10;
         to home.
 %}
 
-% Trajectory 1 of moveJ
-waypointsJ1=zeros(4,4,2);
-waypointsJ1(:,:,1)=trvec2tform([-0.4,-0.4,0.5])*axang2tform([1 0 0 pi]);
-waypointsJ1(:,:,2)=trvec2tform(tform2trvec(waypoints(:,:,1)))*axang2tform([1 0 0 pi]);
-%waypointsJ1(:,:,2)=trvec2tform([-0.3,0.34,0.57])*axang2tform([1 0 0 pi]);
-
-% Trajectory 2 of moveJ
-waypointsJ2=zeros(4,4,2);
-waypointsJ2(:,:,2)=waypointsJ1(:,:,1);
-waypointsJ2(:,:,1)=waypointsJ1(:,:,2);
+% % Trajectory 1 of moveJ
+% waypointsJ1=zeros(4,4,2);
+% waypointsJ1(:,:,1)=trvec2tform([-0.4,-0.4,0.5])*axang2tform([1 0 0 pi]);
+% waypointsJ1(:,:,2)=trvec2tform(tform2trvec(waypoints(:,:,1)))*axang2tform([1 0 0 pi]);
+% %waypointsJ1(:,:,2)=trvec2tform([-0.3,0.34,0.57])*axang2tform([1 0 0 pi]);
+% 
+% % Trajectory 2 of moveJ
+% waypointsJ2=zeros(4,4,2);
+% waypointsJ2(:,:,2)=waypointsJ1(:,:,1);
+% waypointsJ2(:,:,1)=waypointsJ1(:,:,2);
 
 %% Rapidly exploring Random Tree (RRT)
 % So that moveJ can avoid obstacles
@@ -180,6 +198,9 @@ trajectory_data= moveL(     waypoints,total_time_to_waypoint,ts,...
 %                             plotMode,intervalWaypoints,...
 %                             trajectory_data);
 
+%% Convertion to CSV
+FILENAME = 'trajectory.csv';
+convert2csv(trajectory_data,FILENAME);
 
 %% Graph Trajectory and Simulate Robot                      
 figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPoses,...
@@ -190,15 +211,15 @@ figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPo
                         %[  0.6     -1      0   ]
                         %[  -0.6    -0.6    0.5 ]
 
-%% Convertion to CSV
-FILENAME = 'adrian.csv';
-convert2csv(trajectory_data,FILENAME);
 
-% Delete process variables
+%% Delete process variables
 clear   axis_angle_rotation pose_rotation pose_translation COLUMN_HEADERS ik ikWeights...
         ikInitialGuess poses_array configuration_space FILENAME nIntermediateWaypoints...
         intermediate_waypoints main_waypoint movement_type pose tcpSpeed_ms ...
-        total_time_to_waypoint count declareRobot getTimeInterval moveL moveJ...
+        count declareRobot getTimeInterval moveL moveJ...
         numJoints setObstacles setWaypoints simulateRobot nameTrajectory
+
+
+
 
 

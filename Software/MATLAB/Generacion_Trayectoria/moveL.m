@@ -44,8 +44,6 @@ Calculates the IK for linear movement of the robot
                                                                 waypoints(:, :, count + 1), ...
                                                                 main_waypoints_time_interval, ...
                                                                 intermediate_waypoints_time_interval);
-
-
         % To avoid repeated Waypoints the first one is always eliminated
         if count > 1
             transformation_matrix_array(:, :, 1) = [];

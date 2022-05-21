@@ -38,7 +38,7 @@ centroid.position=[0,0,0];
 
 %Establish maximum and minimum edge lenght( in milimeters)
 edgeLenght.Hmax=0.005;
-edgeLenght.Hmin=edgeLenght.Hmax/2;
+edgeLenght.Hmin=edgeLenght.Hmax/5;
 
 % Generate a Mesh
 %msh = generateMesh(msd,'GeometricOrder','linear');
@@ -78,7 +78,7 @@ boton.a=figure;
 figure
 
 % Plot Mesh in 3D
-handle.p = pdemesh(msd,'FaceAlpha',0.5,'FaceColor',[0.9,0.9,0.9]);
+handle.p = pdemesh(msd,'FaceAlpha',1,'FaceColor',[0.9,0.9,0.9]);
 hold on
 
 %Setup Cursor Mode
