@@ -15,22 +15,10 @@ app.use(cors({
     origin: true,
 }));
 app.use(express.json())
-function getRobotData(request, response) {
-    let bucketName = "gs://tlapixki.appspot.com"
-    // // I am using async/await here
-   app.get("/download", async (req, res) => {
-
-   // You have to wait till the file is downloaded
-      await storage.bucket(bucketName).file("robot-data.json").download({destination: './robot-data.json'});
-   // Send the file to the client
-       //storageRef.download('./robot-data.json')
-       //response.json({
-       //    'Status Get': 'OK'
-       //})
-
-
-    });
-
+async function getRobotData(request, response) {
+    const downloadResponse = await storageRef.file('robot-data.json').download();
+    const jsonParsed = JSON.parse(downloadResponse[0].toString());
+    response.json(jsonParsed);
 }
 
 function postRobotData(request, response) {
