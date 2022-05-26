@@ -6,6 +6,7 @@
 #include "requests.h"
 
 #include "configurations.h"
+#include "driver/gpio.h"
 #include "freertos/semphr.h"
 #include "processing.h"
 #include "tasks_common.h"
@@ -45,6 +46,7 @@ esp_err_t client_event_handler(esp_http_client_event_t *evt) {
 
 void http_client_task(void *pvParameters) {
     extern QueueHandle_t TransmissionQueue;
+    uint8_t blue_led_level = 0;
 
     // Semaphore
     received_data_semaphore = xSemaphoreCreateBinary();
@@ -99,8 +101,8 @@ void http_client_task(void *pvParameters) {
         } else {
             ESP_LOGI(TAG, "#%d with value %f received from Processing Queue", modbus_float_data.cid, modbus_float_data.value);
 
-            // switch (modbus_float_data.cid) {
-            switch (data_count) {
+            switch (modbus_float_data.cid) {
+                    // switch (data_count) {
                 case 0:
                     robot_state_mode = (int)(modbus_float_data.value);
                     break;
@@ -321,6 +323,8 @@ void http_client_task(void *pvParameters) {
             mesage_payload = cJSON_Print(json);
             /* Generate JSON */
             esp_http_client_set_post_field(client, mesage_payload, strlen((mesage_payload)));
+            blue_led_level = !blue_led_level;
+            gpio_set_level(LED_BLUE_GPIO, blue_led_level);
             esp_err_t err = esp_http_client_perform(client);
             if (err == ESP_OK) {
                 int length = esp_http_client_get_content_length(client);
@@ -332,7 +336,7 @@ void http_client_task(void *pvParameters) {
                 if (response_message) {
                     printf("%s\n", response_message->valuestring);
                 } else {
-                    printf("No response!\nb");
+                    printf("No response!\n");
                 }
                 cJSON_Delete(json_response);
             } else {

@@ -4,6 +4,7 @@
 #include "modbus_master.h"
 
 #include "configurations.h"
+#include "driver/gpio.h"
 #include "ethernet-wifi-connect.h"
 #include "modbus_data.h"
 #include "tasks_common.h"
@@ -142,11 +143,12 @@ void master_operation_func(void *arg) {
 
     MB_data_t current_data;
 
-    ESP_LOGI(TAG, "Start modbus test...");
+    ESP_LOGI(TAG, "Start Modbus Master...");
+    gpio_set_level(LED_GREEN_GPIO, 1);
 
     for (;;) {
         // Read all found characteristics from slave(s)
-        for (uint16_t cid = 0; (err != ESP_ERR_NOT_FOUND) && cid < MASTER_MAX_CIDS; cid++) {
+        for (uint16_t cid = 0; (err != ESP_ERR_NOT_FOUND) && cid < MASTER_MAX_CIDS;) {
             err = mbc_master_get_cid_info(cid, &param_descriptor);
             if ((err != ESP_ERR_NOT_FOUND) && (param_descriptor != NULL)) {
                 void *temp_data_ptr = master_get_param_data(param_descriptor);
@@ -172,6 +174,7 @@ void master_operation_func(void *arg) {
                         } else {
                             ESP_LOGI(TAG, "#%d %s with value %d sent to Processing Queue!", current_data.cid, (char *)param_descriptor->param_key, current_data.value);
                         }
+                        cid++;
                     }
                 } else {
                     ESP_LOGE(TAG, "Characteristic #%d (%s) read fail, err = %d (%s).",
