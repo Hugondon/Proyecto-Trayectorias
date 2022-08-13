@@ -32,3 +32,34 @@ Para el uso general del código después de instalaciones previas se deben ajust
 `FILENAME`: nombre del archivo script que contendrá el código para llevar a cabo la trayectoria.
 
 `URSCRIPT_FILE_PATH`: path en el cual se generará el archivo script.
+
+### Procesamiento de Imagenes
+
+Este modulo fue hecho especificamente para demostraciones.  
+`Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria\Image_processing`: Path relativo al modulo para procesamiento de imagenes.  
+En la carpeta `Imagenes` guarda la imagen que quieras procesar.  
+Estas son las caracteristicas que mejoran el resultado del procesamiento de imagenes:
+- Formato JPEG
+- Imagenes caricaturescas
+- Alto contraste entre fondo y objeto de interes
+
+
+Las variables que debes modificar del script son las siguientes:
+- `nameImage`: nombre de la imagen en la carpeta `Imagenes` la cual se quiere procesar.
+- `physicalSize_m`: longitud del lado más largo del lienzo fisico del dibujo en metros. El programa en automatico expande o comprime la imagen, esto para que la longitud del lado más largo del dibujo digital coincida con la longitud del lado más largo del lienzo fisico.
+- `reductionConstant`: numero de reducion de waypoints en la trayectoria. Que el robot no ejecute una trayectoria de más de 3000 waypoints, de preferencia mantente por debajo de 1,800 waypoints. Para reducir el numero de waypoints aumenta esta variable a tu discreción. La relación se expresa con la siguiente formula:  
+$length(outputTrajectory) = \lceil {\frac {length(originalTrajectory)} {reductionConstant}}\rceil$
+
+- `numLowPointsThreshold`: los objetos con menos de esta cantidad de waypoints son eliminados. Por lo general se usa para eliminar puntos muy pequeños de la imagen.
+- `numHighPointsThreshold`: los objetos con más de esta cantidad de waypoints son eliminados. Por lo general se usa para eliminar el marco de la imagen.
+- `eliminatedObject`: el ID de un objeto que se quiere eliminar en especifico.
+
+El resultado es guardado en el archivo `waypoints.mat`.
+
+### Procesamiento de Modelos CAD
+
+### Simulacion del Robot
+
+### Parser
+
+### Ejecutar programa en el Robot
