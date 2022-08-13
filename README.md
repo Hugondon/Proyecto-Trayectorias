@@ -60,7 +60,7 @@ El resultado es guardado en el archivo `waypoints.mat`.
 En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria` abre el script `imagePlacement.m` para que puedas apreciar el tamaño del dibujo con respecto al robot. Debido a que las poses son relativas con el primer waypoint de la trayectoria no importa la posicion u orientacion. Las poses son guardadas en `trajectoryPoses.mat` .
 
 #### Procesamiento de Modelos CAD
-
+TO-DO
 
 
 #### Simulacion del Robot
@@ -76,6 +76,8 @@ El tipo de movimiento, las poses y las configuraciones del robot en la trayector
 
 ### Python
 #### Parser
+TO-DO
 
 ### Polyscope
 #### Ejecutar programa en el Robot
+TO-DO
