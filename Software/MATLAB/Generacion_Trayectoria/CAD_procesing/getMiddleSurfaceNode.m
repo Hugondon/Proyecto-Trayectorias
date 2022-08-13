@@ -98,7 +98,6 @@ the MSP.
             [~,idxNearestNode2MSP]=min(vecnorm(vectors2Surface));
             % Get the ID of the node closes to the MSP
             middleNodeInSurfaceID=nodesInRadiusAndInSurfaceID(idxNearestNode2MSP,1);
-
             break
         end
 
