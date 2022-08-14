@@ -54,7 +54,7 @@ typeTrajectory = 2;
 switch typeTrajectory
     case 0
         % Name of the CSV file where the trajectory is stored
-        nameTrajectory  =   'thunder_v2';
+        nameTrajectory  =   'trajectory.csv';
         % Import the information of the waypoints of the trajectory
         [waypoints, numberWaypoints, magnitudeDistances] = setTestTrajectory(nameTrajectory);
         CADTrajectory.SurfacePathPoses = waypoints;
@@ -89,7 +89,7 @@ obstCell={};
 %% Parameters of the Trajectory of the Robot's TCP
 
 % TCP Speed(Defined by user)
-tcpSpeed_ms = 0.05; %[m/s]
+tcpSpeed_ms = 0.02; %[m/s]
 
 % Number of Intermediate Waypoints(Defined by user)
 nIntermediateWaypoints = 0;

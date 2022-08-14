@@ -68,7 +68,7 @@ void processing_task(void *pvParameters) {
                     } else {
                         received_modbus_data.value = 65535 - received_modbus_data.value;
                         modbus_float_data.value = (float)(received_modbus_data.value) / 10;
-                        modbus_float_data.value -= 1;
+                        modbus_float_data.value *= -1;
                     }
                     // Transmision
                     if (!xQueueSend(TransmissionQueue, &modbus_float_data, pdMS_TO_TICKS(5))) {

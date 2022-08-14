@@ -8,7 +8,13 @@
 % nameImage = 'reconocimiento.jpg';
 % nameImage = 'marvel.png';
 % nameImage = 'logo_tec_y_nombre.jpg';
- nameImage = 'batisenial.jpg';
+ nameImage = 'soca_exchange.png';
+%  nameImage = 'aro_sith.png';
+% nameImage = 'ANSSATZ_2.jpg';
+% nameImage = 'nao_2.jpg';
+% nameImage = 'dorime.jpg';
+% nameImage = 'marvel.jpg';
+% nameImage = 'mosfet.jpg'
 % nameImage = 'among_us_mex.jpg';
 
 path = ['Imagenes\', nameImage];
@@ -48,7 +54,7 @@ numLowPointsThreshold = 20;
 numObjects=length(B);
 % List of elements to be erased
 listObjectsToErase=[];
-numHighPointsThreshold = 190000;
+numHighPointsThreshold = 200000;
 
 % Iterates through cell array if an element is smaller than threshold it saves its index
 for cont = 1:numObjects
@@ -107,7 +113,8 @@ end
 
 
 %% Image correction and adjustment
-physicalSize_m=500E-3;
+% physicalSize_m=500E-3; % Pizarron
+physicalSize_m=200E-3; % Hoja
 sizeCorrection = eye(4);
 sizeCorrection(4,4) =  length(image)/physicalSize_m;
 
