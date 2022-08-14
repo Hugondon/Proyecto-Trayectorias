@@ -9,6 +9,7 @@
 - Polyscope
 
 ## Manual de Usuario
+***
 ### Instalación Polyscope en Ubuntu
 
 Seguir tutorial en [este repositorio](https://github.com/arunavanag591/ursim) con las siguientes modificaciones:
@@ -34,8 +35,8 @@ Para el uso general del código después de instalaciones previas se deben ajust
 `URSCRIPT_FILE_PATH`: path en el cual se generará el archivo script.
 
 ### MATLAB
-#### Procesamiento de Imagenes
-
+Procesamiento de Imagenes
+---
 Este modulo fue hecho especificamente para demostraciones.  
 `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria\Image_processing`: Path relativo al modulo para procesamiento de imagenes.  
 En la carpeta `Imagenes` guarda la imagen que quieras procesar.  
@@ -43,7 +44,7 @@ Estas son las caracteristicas que mejoran el resultado del procesamiento de imag
 - Formato JPEG
 - Imagenes caricaturescas
 - Alto contraste entre fondo y objeto de interes
----
+
 En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria\Image_processing` abre el script `prueba_imagen.m` es donde atraves de procesamiento de imagenes algoritmos de deteccion de bordes el objeto de una imagen se convierte en una trayectoria.   Las variables que debes modificar de este  script son las siguientes:
 - `nameImage`: nombre de la imagen en la carpeta `Imagenes` la cual se quiere procesar.
 - `physicalSize_m`: longitud del lado más largo del lienzo fisico del dibujo en metros. El programa en automatico expande o comprime la imagen, esto para que la longitud del lado más largo del dibujo digital coincida con la longitud del lado más largo del lienzo fisico.
@@ -56,14 +57,36 @@ $length(outputTrajectory) = \lceil {\frac {length(originalTrajectory)} {reductio
 
 El resultado es guardado en el archivo `waypoints.mat`.
 
+
+En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria` abre el script `imagePlacement.m` para que puedas apreciar el tamaño del dibujo con respecto al robot. Debido a que las poses son relativas con el primer waypoint de la trayectoria no importa la posicion u orientacion. Las poses son guardadas en `trajectoryPoses.mat` para posteriormente ser simulados con el robot.
+
+
+
+Procesamiento de Modelos CAD
 ---
-En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria` abre el script `imagePlacement.m` para que puedas apreciar el tamaño del dibujo con respecto al robot. Debido a que las poses son relativas con el primer waypoint de la trayectoria no importa la posicion u orientacion. Las poses son guardadas en `trajectoryPoses.mat` .
+En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria\CAD_procesing` abre el script `cad_interactive_node_selector.m` es un selector interactivo de los nodos del modelo CAD.   
+En la carpeta `Parts` guarda las piezas CAD en formato CSV.   
+En la linea `gm=importGeometry(msd,'Part\botella.STL')` esta el Path para exportar el modelo CAD.   
+En el apartado `Generate Mesh`:   
+- `edgeLenght.Hmax`: maxima longitud de una arista de la malla.
+- `edgeLenght.Hmin`: minima longitud de una arista de la malla.   
+Modifica `edgeLenght.Hmax` y `edgeLenght.Hmin` a tu conveniencia, aristas muy pequeñas haran el programa muy lento, aristas muy grandes haran que se pierda resolución del modelo.  
+El modelo CAD  y sus parametros es guardado en `CADparameters.mat` y las poses en latrayectoria del modelo CAD junto con el modelo CAD son guardados en `processedCAD.mat`.   
 
-#### Procesamiento de Modelos CAD
-TO-DO
 
 
-#### Simulacion del Robot
+En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria` esta el script `CADplacement.m` sirve para vizualizar el robot, el modelo CAD y la trayectoria sobre la superficie del modelo CAD. Además puedes modificar la pose del modelo CAD.   
+En el apartado `Modifing Processed CAD` tienes las siguientes variables para modificar la pose del modelo CAD y la trayectoria en la superficie del modelo CAD: 
+- `displacementVector` : representa la posicion del modelo CAD y la trayectoria.
+- `rotationVector` : representa la orientacion del modelo CAD y la trayectoria.   
+Importante: la posicion y orientacion del modelo CAD y la trayectoria sobre su superficie estan ligadas modificar `displacementVector` y `rotationVector` afectara a ambas.   
+El modelo CAD y la trayectoria en su superficie son guardados en `transformedCAD.mat`, para posteriormente ser simulados con el robot.
+
+
+
+
+Simulacion del Robot
+---
 En el path `Proyecto-Trayectorias\Software\MATLAB\Generacion_Trayectoria` abre el script `main.m` Toma la trayectoria deseada, calcula la cinematica inversa, grafica la trayectoria y simula el robot. Ve a la subseccion `Get Waypoints` ahi podras definir de donde quieres que se obtenga la trayectoria. El numero en la variable `typeTrajectory` define cual trayectoria es utilizada.   
 0-Test Trajectory  
 1-CAD Trajectory  
@@ -72,12 +95,13 @@ La funcion `simulateRobot` unicamente simula el movimiento del robot. Si es come
 
 El tipo de movimiento, las poses y las configuraciones del robot en la trayectoria son guardadas en el CSV `trajectory.csv` .
 
----
 
 ### Python
-#### Parser
+Parser
+---
 TO-DO
 
 ### Polyscope
-#### Ejecutar programa en el Robot
+Ejecutar programa en el Robot
+---
 TO-DO
