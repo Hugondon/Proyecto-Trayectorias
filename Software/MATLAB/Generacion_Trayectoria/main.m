@@ -117,7 +117,7 @@ figureRobot=figure('Name','Robot','NumberTitle','off','WindowState','maximized')
 show(robot, jointHomeAngles, 'Frames', 'off', 'PreservePlot', false);
 
 % Establish graph limits
-xlim([-0.8 0.8]), ylim([-0.8 0.8]), zlim([-0.5 1])
+xlim([-0.6 0.6]), ylim([-0.6 0.6]), zlim([0 1])
 hold on
 
 % Graph main waypoints
@@ -202,9 +202,9 @@ trajectory_data= moveL(     waypoints,total_time_to_waypoint,ts,...
 FILENAME = 'trajectory.csv';
 convert2csv(trajectory_data,FILENAME);
 
-%% Graph Trajectory and Simulate Robot                      
-figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPoses,...
-                            robot,figureRobot,[0.6 0.6 0.3]);
+%% Graph Trajectory and Simulate Robot
+viewVector = [0.6 0.6 0.3]; 
+%figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPoses,robot,figureRobot,viewVector);
                         %   Ux      Uy      Uz
                         %[  -0.6    -0.2    0.8 ]
                         %[  -0.6    -1      0.2 ]

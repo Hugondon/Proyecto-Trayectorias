@@ -1,23 +1,24 @@
 %% Importing image
 % Use JPG format
 
-% nameImage = 'logo_tec_vector_recortado';
+% nameImage = 'logo_tec_vector_recortado.jpg';
 % nameImage = 'logo_tec_con_nombre_2.jpg';
 % nameImage = 'i_love_robots_nautilus_4010_cut.jpg';
-%  nameImage = 'proyecto_danya_miguel.jpg';
+% nameImage = 'proyecto_danya_miguel.jpg';
 % nameImage = 'reconocimiento.jpg';
-% nameImage = 'marvel.png';
+%nameImage = 'hecho_en_mexico.jpg';
 % nameImage = 'logo_tec_y_nombre.jpg';
- nameImage = 'soca_exchange.png';
-%  nameImage = 'aro_sith.png';
-% nameImage = 'ANSSATZ_2.jpg';
-% nameImage = 'nao_2.jpg';
-% nameImage = 'dorime.jpg';
-% nameImage = 'marvel.jpg';
-% nameImage = 'mosfet.jpg'
+ nameImage = 'batisenial.jpg';
 % nameImage = 'among_us_mex.jpg';
 
 path = ['Imagenes\', nameImage];
+
+physicalSize_m=150E-3;
+reductionConstant = 2;
+numLowPointsThreshold = 40;
+numHighPointsThreshold = 900;
+eliminatedObject = 0;
+
 image = imread(path);
 
 %% Process image
@@ -25,16 +26,18 @@ image = imread(path);
 imageGray=im2gray(image);
 % Binarize grayscale image
 BW = imbinarize(imageGray);
+BWcolors = imbinarize(image);
+%BW = or(BWcolors(:,:,1),BWcolors(:,:,2));
 % Get boundaries of objects
 [B,L]  = bwboundaries(imrotate(BW,180),'holes');
 [Bup,Lup] = bwboundaries(BW,'holes');
 
 %% Binarize by colors
-BWcolors = imbinarize(image);
+% BWcolors = imbinarize(image);
 
 % Plot original image and binarize colors images
 % figureBinarizeColors = figure('Name','Binarize Colors','NumberTitle','off');
-% % Original
+% %Original
 % subplot(2,2,1)
 % imshow(image);
 % % Red Image
@@ -49,17 +52,17 @@ BWcolors = imbinarize(image);
 
 %% Check if objects are small
 % Minimum pixel perimeter to be consider an object
-numLowPointsThreshold = 20;
+
 % Current quantity of objects in the image
 numObjects=length(B);
 % List of elements to be erased
 listObjectsToErase=[];
-numHighPointsThreshold = 200000;
+numHighPointsThreshold = 190000;
 
 % Iterates through cell array if an element is smaller than threshold it saves its index
 for cont = 1:numObjects
    numPoints = length(B{cont});
-   if (numPoints<numLowPointsThreshold ||numPoints>numHighPointsThreshold)
+   if (numPoints<numLowPointsThreshold ||numPoints>numHighPointsThreshold || cont== eliminatedObject)
         listObjectsToErase(end+1)=cont;
    end
 end
@@ -101,7 +104,7 @@ figure3DSpace = figure('Name','Image in Workspace','NumberTitle','off');
 hold on
 grid on
 
-reductionConstant = 5;
+
 imagePoses = cell(length(B),1);
 for cont = 1:numObjects
    boundary = B{cont};
@@ -113,8 +116,7 @@ end
 
 
 %% Image correction and adjustment
-% physicalSize_m=500E-3; % Pizarron
-physicalSize_m=200E-3; % Hoja
+physicalSize_m=500E-3;
 sizeCorrection = eye(4);
 sizeCorrection(4,4) =  length(image)/physicalSize_m;
 
@@ -135,16 +137,13 @@ for cont = 1:numObjects
     imagePoses{cont}= cat(3,aprochingPose,cat(3,imagePoses{cont},aprochingPose));
 end
 %% Insert starting pose
-imageWidth = size(image,1);
-imageHeight = size(image,2);
-correctionCoefficientStartPose = imageWidth/imageHeight;
-% if(imageWidth>imageHeight)
-%     correctionCoefficientStartPose = imageHeight/imageWidth;
-% elseif(imageWidth<imageHeight)
-%     correctionCoefficientStartPose = imageWidth/imageHeight;
-% else
-%     correctionCoefficientStartPose = 1;
-% end
+imageHeight = size(image,1);
+imageWidth = size(image,2);
+if(imageWidth>imageHeight)
+    correctionCoefficientStartPose = imageHeight/imageWidth;
+elseif(imageWidth<=imageHeight)
+    correctionCoefficientStartPose = 1;
+end
 
 supportCellArray=imagePoses;
 startPoses=zeros(4,4,2);
@@ -206,9 +205,10 @@ eraseList=[];
 for contObjects = 1:numObjects
     numPoints=size(imagePoses{contObjects},3);
     objectPoses=imagePoses{contObjects};
-    %disp(contObjects)
     for contPoints = 1:numPoints
-        if(sumNumWaypoints>0 & waypoints(:,:,contPoints+sumNumWaypoints-1)==objectPoses(:,:,contPoints))
+        if((sumNumWaypoints>0 & waypoints(:,:,contPoints+sumNumWaypoints-1)==objectPoses(:,:,contPoints)))
+            eraseList(end+1) = contPoints+sumNumWaypoints;
+        elseif (sum(objectPoses(:,:,contPoints),"all") == 0)
             eraseList(end+1) = contPoints+sumNumWaypoints;
         end
         waypoints(:,:,contPoints+sumNumWaypoints) = objectPoses(:,:,contPoints);
@@ -218,7 +218,8 @@ end
 if (length(eraseList)>0)
    waypoints(:,:,eraseList) = [];
 end
-
+disp(nameImage);
+disp(length(waypoints));
 save('waypoints.mat','waypoints');
 
 
