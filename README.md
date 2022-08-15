@@ -78,7 +78,7 @@ El tipo de movimiento, las poses y las configuraciones del robot en la trayector
 
 </details>
 
-<details open>
+<details>
 <summary id="python">Python</summary>
 <h4> Parser </h4>
 
@@ -119,11 +119,13 @@ Es importante mencionar que este puede variar de acuerdo al Path desde el cual s
 
 El uso general de la GUI consiste en dos pasos:
 
-1. Seleccionar el archivo CSV con el que se desea generar el `.script` a través de la ventana que se abre cuando se presiona el botón `Load CSV File`
-   ![image](https://user-images.githubusercontent.com/47252665/184567620-f309f8d7-fa87-4ab4-8f90-65d967862bf9.png)
+1.  Seleccionar el archivo CSV con el que se desea generar el `.script` a través de la ventana que se abre cuando se presiona el botón `Load CSV File`
 
-2) Seleccionar el path en el cual se desea crear este archivo a través del uso del botón `Save to specific folder`
-   ![image](https://user-images.githubusercontent.com/47252665/184567498-ff3761d8-6326-443b-908a-6c6b4940ff8b.png)
+
+    ![image](https://user-images.githubusercontent.com/47252665/184567620-f309f8d7-fa87-4ab4-8f90-65d967862bf9.png)
+
+2.  Seleccionar el path en el cual se desea crear este archivo a través del uso del botón `Save to specific folder`
+    ![image](https://user-images.githubusercontent.com/47252665/184567498-ff3761d8-6326-443b-908a-6c6b4940ff8b.png)
 
 Como comentario adicional, el botón de `Save URScript File` es útil para guardar directamente el archivo después de una modificación en el path (el nombre del archivo, por ejemplo) sin tener que seleccionar el folder de nuevo desde la ventana.
 
