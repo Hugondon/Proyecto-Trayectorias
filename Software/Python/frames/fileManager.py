@@ -11,7 +11,7 @@ class FileManager(ttk.Frame):
 
     DEFAULT_CSV_PATH = "C:/*.csv"
     DEFAULT_USCRIPT_PATH = "C:/*.script"
-    LOGO_PATH = "imgs/hara_services_v3.png"
+    LOGO_PATH = "Software/Python/imgs/hara_services_v3.png"
     LOGO_WIDTH, LOGO_HEIGHT = 291, 241
 
     def __init__(self, parent, controller):
