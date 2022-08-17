@@ -14,19 +14,12 @@ COLOUR_GRAY_BACKGROUND = "#c3c3c3"
 COLOUR_LIGHT_TEXT = "#000000"
 COLOUR_DARK_TEXT = "#000000"
 
-"""
-Pendientes:
-
-1. No me agrada row de URScript file path. Modificar para nada más asignar nombre?
-
-"""
-
 
 class Parser(tk.Tk):
 
     MOVEJ_MOVEMENT = 0
     MOVEL_MOVEMENT = 1
-    ICON_ICO_PATH = "imgs/hara_services.ico"
+    ICON_ICO_PATH = "Software/Python/imgs/hara_services.ico"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

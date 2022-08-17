@@ -197,85 +197,97 @@ def send_data():
     robot_state_list.append(robot_state_row)
     joint_angle_list.append(joint_angle_row)
     joint_angle_velocity_list.append(joint_angle_velocity_row)
+    tcp_position_orientation_header = [
+        "Index",
+        "X [mm/10]",
+        "Y [mm/10]",
+        "Z [mm/10]",
+        "RX [mrad]",
+        "RY [mrad]",
+        "RZ [mrad]",
+    ]
+    tcp_posititon_orientation_list.append(tcp_position_orientation_header)
     tcp_posititon_orientation_list.append(tcp_position_orientation_row)
     tcp_speed_list.append(tcp_speed_row)
 
-    # Print Robot State
-    print("Robot State")
-    print(
-        tabulate(
-            robot_state_list,
-            headers=['Index',
-                     'Mode',
-                     'Power On',
-                     'Security Stopped',
-                     'Emergency Stopped'],
-            tablefmt='fancy_grid')
-    )
+    # # Print Robot State
+    # print("Robot State")
+    # print(
+    #     tabulate(
+    #         robot_state_list,
+    #         headers=[
+    #             "Index",
+    #             "Mode",
+    #             "Power On",
+    #             "Security Stopped",
+    #             "Emergency Stopped",
+    #         ],
+    #         tablefmt="fancy_grid",
+    #     )
+    # )
 
-    # Print Joint Angle
-    print("Joint Angle")
-    print(
-        tabulate(
-            joint_angle_list,
-            headers=['Index', 'Base [mrad]',
-                     'Shoulder [mrad]', 'Elbow [mrad]',
-                     'Wrist 1 [mrad]', 'Wrist 2 [mrad]', 'Wrist 3 [mrad]'],
-            tablefmt='fancy_grid')
-    )
+    # # Print Joint Angle
+    # print("Joint Angle")
+    # print(
+    #     tabulate(
+    #         joint_angle_list,
+    #         headers=[
+    #             "Index",
+    #             "Base [mrad]",
+    #             "Shoulder [mrad]",
+    #             "Elbow [mrad]",
+    #             "Wrist 1 [mrad]",
+    #             "Wrist 2 [mrad]",
+    #             "Wrist 3 [mrad]",
+    #         ],
+    #         tablefmt="fancy_grid",
+    #     )
+    # )
 
-    # Print Joint Angle Velocity
-    print("Joint Angle Velocity")
-    print(
-        tabulate(
-            joint_angle_velocity_list,
-            headers=[
-                "Index",
-                "Base[mrad/s]",
-                "Shoulder[mrad/s]",
-                "Elbow[mrad/s]",
-                "Wrist 1 [mrad/s]",
-                "Wrist 2 [mrad/s]",
-                "Wrist 3 [mrad/s]",
-            ],
-            tablefmt="fancy_grid",
-        )
-    )
+    # # Print Joint Angle Velocity
+    # print("Joint Angle Velocity")
+    # print(
+    #     tabulate(
+    #         joint_angle_velocity_list,
+    #         headers=[
+    #             "Index",
+    #             "Base[mrad/s]",
+    #             "Shoulder[mrad/s]",
+    #             "Elbow[mrad/s]",
+    #             "Wrist 1 [mrad/s]",
+    #             "Wrist 2 [mrad/s]",
+    #             "Wrist 3 [mrad/s]",
+    #         ],
+    #         tablefmt="fancy_grid",
+    #     )
+    # )
 
     # Print TCP Position / Orientation
     print("TCP Position / Orientation")
     print(
         tabulate(
             tcp_posititon_orientation_list,
-            headers=[
-                "Index",
-                "X [mm/10]",
-                "Y [mm/10]",
-                "Z [mm/10]",
-                "RX [mrad]",
-                "RY [mrad]",
-                "RZ [mrad]",
-            ],
+            headers=tcp_position_orientation_header,
             tablefmt="fancy_grid",
         )
     )
 
-    print("TCP Speed")
-    print(
-        tabulate(
-            tcp_speed_list,
-            headers=[
-                "Index",
-                "X [mm/s]",
-                "Y [mm/s]",
-                "Z [mm/s]",
-                "RX [mrad/s]",
-                "RY [mrad/s]",
-                "RZ [mrad/s]",
-            ],
-            tablefmt="fancy_grid",
-        )
-    )
+    # print("TCP Speed")
+    # print(
+    #     tabulate(
+    #         tcp_speed_list,
+    #         headers=[
+    #             "Index",
+    #             "X [mm/s]",
+    #             "Y [mm/s]",
+    #             "Z [mm/s]",
+    #             "RX [mrad/s]",
+    #             "RY [mrad/s]",
+    #             "RZ [mrad/s]",
+    #         ],
+    #         tablefmt="fancy_grid",
+    #     )
+    # )
     # print(json.dumps(data, indent=2))
     current_index += 1
     return jsonify(data)

@@ -12,7 +12,7 @@ view([1,0,0])
 %% Image
 load Image_processing\waypoints.mat
 numWaypoints= size(waypoints,3);
-placementTransformationMatrix = trvec2tform([0.4,-0.075,0.4])*axang2tform([0,0,1,0]);
+placementTransformationMatrix = trvec2tform([0.6,0,0.4])*axang2tform([0,0,1,0]);
 trajectoryPoses = pagemtimes(placementTransformationMatrix,waypoints);
 
 for cont = 1:numWaypoints

@@ -67,7 +67,7 @@ ikInitialGuess = jointHomeAngles;
 switch typeTrajectory
     case 0
         % Name of the CSV file where the trajectory is stored
-        nameTrajectory  =   'thunder_v2';
+        nameTrajectory  =   'trajectory.csv';
         % Import the information of the waypoints of the trajectory
         [waypoints, numberWaypoints, magnitudeDistances] = setTestTrajectory(nameTrajectory);
         CADTrajectory.SurfacePathPoses = waypoints;

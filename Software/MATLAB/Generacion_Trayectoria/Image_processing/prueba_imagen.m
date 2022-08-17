@@ -1,15 +1,24 @@
-%% User selected variables
-
+%% Importing image
 % Use JPG format
-nameImage = 'borregos.jpg';
+
+% nameImage = 'logo_tec_vector_recortado.jpg';
+% nameImage = 'logo_tec_con_nombre_2.jpg';
+% nameImage = 'i_love_robots_nautilus_4010_cut.jpg';
+% nameImage = 'proyecto_danya_miguel.jpg';
+% nameImage = 'reconocimiento.jpg';
+%nameImage = 'hecho_en_mexico.jpg';
+% nameImage = 'logo_tec_y_nombre.jpg';
+ nameImage = 'batisenial.jpg';
+% nameImage = 'among_us_mex.jpg';
+
+path = ['Imagenes\', nameImage];
+
 physicalSize_m=150E-3;
-reductionConstant = 1; %3;
-numLowPointsThreshold = 0; %10;
-numHighPointsThreshold = 3000; %600;
+reductionConstant = 2;
+numLowPointsThreshold = 40;
+numHighPointsThreshold = 900;
 eliminatedObject = 0;
 
-%% Importing image
-path = ['Imagenes\', nameImage];
 image = imread(path);
 
 %% Process image
@@ -48,7 +57,7 @@ BWcolors = imbinarize(image);
 numObjects=length(B);
 % List of elements to be erased
 listObjectsToErase=[];
-
+numHighPointsThreshold = 190000;
 
 % Iterates through cell array if an element is smaller than threshold it saves its index
 for cont = 1:numObjects
@@ -107,7 +116,7 @@ end
 
 
 %% Image correction and adjustment
-
+physicalSize_m=500E-3;
 sizeCorrection = eye(4);
 sizeCorrection(4,4) =  length(image)/physicalSize_m;
 

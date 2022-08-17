@@ -42,7 +42,8 @@
         "modbus_data.h": "c",
         "freertos.h": "c",
         "esp_event.h": "c",
-        "processing.h": "c"
+        "processing.h": "c",
+        "semphr.h": "c"
     },
     "idf.flashType": "UART"
 }
