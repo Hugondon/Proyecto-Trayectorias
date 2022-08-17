@@ -5,6 +5,14 @@
 %% Pre-execution setup
 close all
 delete listSelectedNodesID.csv nodesTrajectoryInSurfaceID.csv
+
+%% User selected variables
+ filename = 'botella.STL';
+maximumMeshEdgeLength = 0.005;
+minimumMeshEdgeLength = maximumMeshEdgeLength/5 ;
+% Plot Mode 1- Points in surface  2- Poses of the trajectory
+plotMode = 2;
+
 %% Function Handles
 getSurfacePath                  =   @getSurfacePath;
 calculatePosesOfSurfaceNodes    =   @calculatePosesOfSurfaceNodes;
@@ -13,7 +21,7 @@ calculatePosesOfSurfaceNodes    =   @calculatePosesOfSurfaceNodes;
 msd = createpde;
 
 % Import STL into the PDE model
-gm=importGeometry(msd,'Part\botella.STL');
+gm=importGeometry(msd,['Part\',filename]);
 
 %Conversion constant, from milimiters to meters
 unitConvertionConstant_mm2m=1E-3;
@@ -35,10 +43,9 @@ pdegplot(gm);
 centroid.position=[0,0,0];
 
 %% Generate Mesh
-
 %Establish maximum and minimum edge lenght( in milimeters)
-edgeLenght.Hmax=0.005;
-edgeLenght.Hmin=edgeLenght.Hmax/5;
+edgeLenght.Hmax =   maximumMeshEdgeLength;
+edgeLenght.Hmin =   minimumMeshEdgeLength;
 
 % Generate a Mesh
 %msh = generateMesh(msd,'GeometricOrder','linear');
@@ -96,11 +103,11 @@ save('CADparameters.mat','gm','edgeLenght');
 
 % Add callback figure 1 'handle.p' is clicked.
 % 'click' is the callback function being called when user clicks on Figure 1
-boton.a.ButtonDownFcn = {@click,handle,gm,msh,surfaceInfo,edgeLenght,nodes};
+boton.a.ButtonDownFcn = {@click,handle,gm,msh,surfaceInfo,edgeLenght,nodes,plotMode};
 
 
 % Callback to Select Node
-function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
+function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes,plotMode)
     
     % Get info from Data tip
     cursorInfo=getCursorInfo(handle.dcm);
@@ -150,8 +157,8 @@ function click(~,~,handle,gm,msh,surfaceInfo,edgeLenght,nodes)
         save('processedCAD.mat','surfacePathPoses');
         %save('processedCAD.mat','surfacePathPoses');
         %% Plot Nodes
-        plotMode = 2;
-        % Trajectory visualization of the Waypoints for the segment
+        %plotMode = 2;
+        % Trajectory visualization of the points for the segment
         if plotMode == 1
             plot3(...
                     nodes(1,nodesTrajectoryInSurfaceID),...

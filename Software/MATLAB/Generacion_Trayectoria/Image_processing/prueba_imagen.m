@@ -1,25 +1,15 @@
-%% Importing image
+%% User selected variables
+
 % Use JPG format
-
-% nameImage = 'logo_tec_vector_recortado.jpg';
-% nameImage = 'logo_tec_con_nombre_2.jpg';
-% nameImage = 'i_love_robots_nautilus_4010_cut.jpg';
-% nameImage = 'proyecto_danya_miguel.jpg';
-% nameImage = 'reconocimiento.jpg';
-%nameImage = 'hecho_en_mexico.jpg';
-% nameImage = 'logo_tec_y_nombre.jpg';
-% nameImage = 'batisenial.jpg';
-% nameImage = 'pelon_merca_contorno_2.jpeg';
-nameImage = 'faro.jpg';
-% nameImage = 'itse.jpg';
-path = ['Imagenes\', nameImage];
-
+nameImage = 'borregos.jpg';
 physicalSize_m=150E-3;
-reductionConstant = 2;
-numLowPointsThreshold = 40;
-numHighPointsThreshold = 900;
+reductionConstant = 1; %3;
+numLowPointsThreshold = 0; %10;
+numHighPointsThreshold = 3000; %600;
 eliminatedObject = 0;
 
+%% Importing image
+path = ['Imagenes\', nameImage];
 image = imread(path);
 
 %% Process image

@@ -7,10 +7,23 @@
 Comentarios:
 https: // la.mathworks.com / help / robotics / ref / inversekinematics - system - object.html?searchHighlight = inverse %20kinematics&s_tid=srchtitle
 %}
-
 %% Setup
 
 clear, clc, clear
+
+%% User selected variables
+jointHomeAngles = deg2rad([180;-84.49;-112.3;-90;90;0]);
+% Select trajectory 0: Test Trajectory 1: CAD Trajectory 2: Image Trajectory
+typeTrajectory = 2;
+% TCP Speed(Defined by user)
+tcpSpeed_ms = 0.02; %[m/s]
+% Number of Intermediate Waypoints(Defined by user)
+nIntermediateWaypoints = 0;
+% Type of Plot
+plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames of TCP 3 = Coordinate Frames of Surface Path
+viewVector = [0.6 0.6 0.3]; 
+% Simulation Mode 0: No simulation 1: Simulate robot
+simulationMode = 0;
 
 %% Function Handles
 % Pre-loads the functions that will be used in memory thus improving performance.
@@ -26,6 +39,8 @@ setCADTrajectory            =   @setCADTrajectory;
 processedCADTransformation  =   @processedCADTransformation;
 imageTrajectory             =   @imageTrajectory;
 
+%% User 
+
 %% Loading Robot
 
 % Get the object robot, the number of joints and endEffector's label
@@ -37,7 +52,7 @@ load UR5positions
 %jointHomeAngles = deg2rad([180-94.94;-75.92;80.51;-100.65;89.82;1.35]);
 %jointHomeAngles = deg2rad([-94.94;-75.92;80.51;-100.65;89.82-180;1.35]);
 %jointHomeAngles = deg2rad([180;-84.49;-112.3;-165.65;-112.4;181.95]);
-jointHomeAngles = deg2rad([180;-84.49;-112.3;-90;90;0]);
+
 
 %% Set Inverse Kinematics Paramaters
 
@@ -49,8 +64,6 @@ ikWeights = ones(1, numJoints);
 ikInitialGuess = jointHomeAngles;
 
 %% Get Waypoints
-% Select trajectory 0: Test Trajectory 1: CAD Trajectory 2: Image Trajectory
-typeTrajectory = 2;
 switch typeTrajectory
     case 0
         % Name of the CSV file where the trajectory is stored
@@ -88,12 +101,6 @@ obstCell={};
 
 %% Parameters of the Trajectory of the Robot's TCP
 
-% TCP Speed(Defined by user)
-tcpSpeed_ms = 0.02; %[m/s]
-
-% Number of Intermediate Waypoints(Defined by user)
-nIntermediateWaypoints = 0;
-
 % Get the cummulative sum of the magnitudes of the distance (initial distance = 0 m)
 csMagnitudeDistances = cumsum([0, magnitudeDistances]);
 
@@ -107,8 +114,7 @@ ts = getTimeInterval(nIntermediateWaypoints, csMagnitudeDistances, tcpSpeed_ms);
 
 %% Trajectory Graph Setup
 
-% Type of Plot
-plotMode = 1; % 0 = No Plot, 1 = Trajectory Points, 2 = Coordinate Frames of TCP 3 = Coordinate Frames of Surface Path
+
 
 % Create Figure for the Robot Simulation
 figureRobot=figure('Name','Robot','NumberTitle','off','WindowState','maximized');
@@ -203,13 +209,15 @@ FILENAME = 'trajectory.csv';
 convert2csv(trajectory_data,FILENAME);
 
 %% Graph Trajectory and Simulate Robot
-viewVector = [0.6 0.6 0.3]; 
-%figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPoses,robot,figureRobot,viewVector);
-                        %   Ux      Uy      Uz
-                        %[  -0.6    -0.2    0.8 ]
-                        %[  -0.6    -1      0.2 ]
-                        %[  0.6     -1      0   ]
-                        %[  -0.6    -0.6    0.5 ]
+switch simulationMode
+    case 1
+        figureRobot = simulateRobot(plotMode,trajectory_data,CADTrajectory.SurfacePathPoses,robot,figureRobot,viewVector);
+                                %   Ux      Uy      Uz
+                                %[  -0.6    -0.2    0.8 ]
+                                %[  -0.6    -1      0.2 ]
+                                %[  0.6     -1      0   ]
+                                %[  -0.6    -0.6    0.5 ]
+end
 
 
 %% Delete process variables
