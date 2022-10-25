@@ -1,10 +1,10 @@
 %% User selected variables
 % Use JPG format
-nameImage = 'borregos.jpg';
+nameImage = 'quanser.jpg';
 physicalSize_m=150E-3;
 reductionConstant = 1; %3;
 numLowPointsThreshold = 0; %10
-numHighPointsThreshold = 3000; %600
+numHighPointsThreshold = 700; %600
 eliminatedObject = 0;
 
 %% Importing image
@@ -23,7 +23,7 @@ BWcolors = imbinarize(image);
 [Bup,Lup] = bwboundaries(BW,'holes');
 
 %% Binarize by colors
-% BWcolors = imbinarize(image);
+BWcolors = imbinarize(image);
 
 % Plot original image and binarize colors images
 % figureBinarizeColors = figure('Name','Binarize Colors','NumberTitle','off');
