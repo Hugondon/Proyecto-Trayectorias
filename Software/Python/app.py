@@ -142,17 +142,17 @@ class Parser(tk.Tk):
 
             # Inicializaciones en Script.
 
-            self.initialization_content = "/t" + "global program_counter = 1/n"
+            self.initialization_content = "\t" + "global program_counter = 1\n"
             # self.initialization_content = request_integer_from_primary_client_function(
             #     "program_counter", "Inserte cantidad de repeticiones:"
             # )
 
             #  main en Script.
 
-            self.main_initialization = f"/tfirst_trajectory_pose = pose_inv({pose_1})/n"
-            self.main_initialization += f"/tstarting_pose_tcp = {get_actual_tcp_pose()}/n"
+            self.main_initialization = f"\tfirst_trajectory_pose = pose_inv({pose_1}) \n"
+            self.main_initialization += f"\tstarting_pose_tcp = {get_actual_tcp_pose()} \n"
 
-            self.main_initialization += f"/tcounter = 0/n"
+            self.main_initialization += f"\tcounter = 0\n"
             self.main_content = ""
 
             # Empezamos desde el segundo elemento debido a que el primero siempre será el de inicialización

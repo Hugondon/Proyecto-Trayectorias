@@ -1,10 +1,10 @@
 %% User selected variables
 % Use JPG format
-nameImage = 'bimbo_texto.jpg';
+nameImage = 'quanser.jpg';
 physicalSize_m=150E-3;
-reductionConstant = 12; %3;
-numLowPointsThreshold = 100; %10
-numHighPointsThreshold = 2000; %600
+reductionConstant = 1; %3;
+numLowPointsThreshold = 1; %10
+numHighPointsThreshold = 700; %600
 eliminatedObject = 0;
 
 %% Importing image
