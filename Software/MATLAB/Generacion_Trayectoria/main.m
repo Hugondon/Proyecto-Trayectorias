@@ -16,7 +16,7 @@ jointHomeAngles = deg2rad([180;-84.49;-112.3;-90;90;0]);
 % Select trajectory 0: Test Trajectory 1: CAD Trajectory 2: Image Trajectory
 typeTrajectory = 2;
 % TCP Speed(Defined by user)
-tcpSpeed_ms = 0.02; %[m/s]
+tcpSpeed_ms = 0.2; %[m/s]
 % Number of Intermediate Waypoints(Defined by user)
 nIntermediateWaypoints = 0;
 % Type of Plot

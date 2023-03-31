@@ -1,11 +1,11 @@
 %% User selected variables
 % Use JPG format
-nameImage = 'quanser.jpg';
+nameImage = 'logo_UR.jpg';
 physicalSize_m=150E-3;
-reductionConstant = 1; %3;
-numLowPointsThreshold = 1; %10
-numHighPointsThreshold = 700; %600
-eliminatedObject = 0;
+reductionConstant = 6; %3;
+numLowPointsThreshold = 100; %10
+numHighPointsThreshold = 15000; %600
+eliminatedObject = 320;
 
 %% Importing image
 path = ['Imagenes\', nameImage];
